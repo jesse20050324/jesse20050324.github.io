@@ -32,10 +32,10 @@
   --grid: rgba(255,255,255,.2);
   --grid-strong: rgba(255,255,255,.36);
   --warm: #fdfcf9;
-  --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-  --head: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --head: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
   --mono: "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace;
-  --hand: "Segoe Print", "Ink Free", "Comic Sans MS", "Marker Felt", cursive;
+  --hand: "Bradley Hand", "Segoe Print", "Ink Free", cursive;
   --spring: cubic-bezier(.34,1.45,.5,1);
   --out: cubic-bezier(.22,.8,.28,1);
   --navh: 64px;
@@ -1723,24 +1723,24 @@ p { color: var(--ink-soft); }
 (() => {
   if (!/[?#&]font=1/.test(location.href)) return;
   const DEF = {
-    body: '"Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
-    head: '"Trebuchet MS", "Segoe UI", Verdana, sans-serif',
+    body: 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif',
+    head: '"Segoe UI", system-ui, -apple-system, Arial, sans-serif',
     mono: '"JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace',
-    hand: '"Segoe Print", "Ink Free", "Comic Sans MS", "Marker Felt", cursive',
+    hand: '"Bradley Hand", "Segoe Print", "Ink Free", cursive',
   };
   const KEY = 'grayrepair-font-tune';
   const OPTS = {
-    body: [['Segoe UI（默认）', DEF.body], ['Arial', 'Arial, "Helvetica Neue", sans-serif'],
+    body: [['system-ui（默认）', DEF.body], ['Segoe UI', '"Segoe UI", system-ui, sans-serif'], ['Arial', 'Arial, "Helvetica Neue", sans-serif'],
            ['Verdana', 'Verdana, Geneva, sans-serif'], ['Tahoma', 'Tahoma, Geneva, sans-serif'],
            ['Calibri', 'Calibri, "Segoe UI", sans-serif'], ['Trebuchet MS', '"Trebuchet MS", "Segoe UI", sans-serif'],
            ['system-ui', 'system-ui, sans-serif']],
-    head: [['Trebuchet MS（默认）', DEF.head], ['Segoe UI', '"Segoe UI", system-ui, sans-serif'],
+    head: [['Segoe UI（默认）', DEF.head], ['Trebuchet MS', '"Trebuchet MS", "Segoe UI", sans-serif'],
            ['Verdana', 'Verdana, Geneva, sans-serif'], ['Tahoma', 'Tahoma, Geneva, sans-serif'],
            ['Arial', 'Arial, "Helvetica Neue", sans-serif'], ['Calibri', 'Calibri, "Segoe UI", sans-serif']],
     mono: [['默认 JetBrains/Cascadia（默认）', DEF.mono], ['Consolas', 'Consolas, monospace'],
            ['Cascadia Code', '"Cascadia Code", Consolas, monospace'], ['Courier New', '"Courier New", monospace'],
            ['Menlo', 'Menlo, Consolas, monospace']],
-    hand: [['Segoe Print（默认）', DEF.hand], ['Ink Free', '"Ink Free", "Segoe Print", cursive'],
+    hand: [['Bradley Hand（默认）', DEF.hand], ['Segoe Print', '"Segoe Print", cursive'], ['Ink Free', '"Ink Free", "Segoe Print", cursive'],
            ['Comic Sans MS', '"Comic Sans MS", "Segoe Print", cursive'], ['Bradley Hand', '"Bradley Hand", "Segoe Print", cursive'],
            ['楷体（中文手写）', '"Kaiti SC", "KaiTi", "STKaiti", cursive']],
   };
