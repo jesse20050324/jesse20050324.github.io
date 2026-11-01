@@ -438,13 +438,13 @@ p { color: var(--ink-soft); }
 #noteLayer { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: visible; }
 .lvnote {
   position: absolute; left: 0; transform: translateX(-50%);
-  width: 250px; text-align: center; white-space: nowrap;
-  font-family: var(--hand); font-size: 19px; line-height: 1.4;
+  width: max-content; text-align: center; white-space: nowrap;
+  font-family: var(--hand); font-size: var(--rail-up-size, 19px); line-height: 1.4;
   color: var(--red); letter-spacing: .02em;
 }
 .lvnote.up { top: calc(-1 * var(--rail-up, 187px)); }
 /* 下批注是次级说明：字号更小、退成灰蓝，和上批注的红字拉开层次 */
-.lvnote.dn { top: calc(-1 * var(--rail-dn, 102px)); font-size: 15px; line-height: 1.4; color: #4e6072; letter-spacing: .05em; }
+.lvnote.dn { top: calc(-1 * var(--rail-dn, 102px)); font-size: var(--rail-dn-size, 15px); line-height: 1.4; color: #4e6072; letter-spacing: .05em; }
 /* 下带收尾：手写结论，与上带的「前因/问句」同族 */
 .st.finale {
   width: 340px; background: transparent; border: 0; box-shadow: none;
@@ -1425,6 +1425,8 @@ p { color: var(--ink-soft); }
     noteH: 26,    // 批注组底（下批注）↔ 放大后的卡片顶
     dnGap: 26,    // 虚线 ↔ 下批注顶
     upGap: 26,    // 虚线 ↔ 上批注底
+    upSize: 19,   // 上批注字号
+    dnSize: 15,   // 下批注字号
     gapV:  40,    // 上下两带的垂直间距
     gapU:  133,   // 上带卡片水平间距
     gapL:  113,   // 下带卡片水平间距
@@ -1467,13 +1469,14 @@ p { color: var(--ink-soft); }
       cardH = tU.querySelector('.st:not(.hub)').offsetHeight;
       hubH  = tU.querySelector('.hub').offsetHeight;
       /* 批注组锚定放大后的卡片顶。距离都以"离卡片顶向上"计：
-         D = 下批注底（下字 15px/1.4 ≈ 21 高）；曲线 = 下字顶 + dnGap；上字底 = 曲线 + upGap；上字占 27。
+         D = 下批注底；下字高 = dnSize*1.4；曲线 = 下字顶 + dnGap；上字底 = 曲线 + upGap；上字高 = upSize*1.4。
          注意 svg 内部 y 向下 = 向卡片靠近，所以 svg 顶 = 曲线 + 12（曲线画在 svg 内 y=12 处）。 */
       const rise = R.amp * cardH * .92;
       const D = rise + R.noteH;
-      dnTopD = D + 21;                            // 下批注顶
+      const dnH = R.dnSize * 1.4, upH = R.upSize * 1.4;
+      dnTopD = D + dnH;                           // 下批注顶
       chainSvgTop = dnTopD + R.dnGap + 12;        // 虚线画在 svg 内 y=12 → svg 顶 = 曲线 + 12
-      bandTop = dnTopD + R.dnGap + R.upGap + 27;  // 上批注顶 = 曲线 + upGap + 27
+      bandTop = dnTopD + R.dnGap + R.upGap + upH; // 上批注顶 = 曲线 + upGap + 上字高
       tuTop = Math.max(headBottom + R.headPad + bandTop, Math.round(Hv * .20));
       tlTop = tuTop + Math.max(cardH, hubH) + R.gapV;
       if (tlTop + cardH <= Hv - 18 || stW <= 200) break;
@@ -1482,6 +1485,8 @@ p { color: var(--ink-soft); }
     document.documentElement.style.setProperty('--rail-up', bandTop + 'px');
     document.documentElement.style.setProperty('--rail-dn', dnTopD + 'px');
     document.documentElement.style.setProperty('--rail-chain', chainSvgTop + 'px');
+    document.documentElement.style.setProperty('--rail-up-size', R.upSize + 'px');
+    document.documentElement.style.setProperty('--rail-dn-size', R.dnSize + 'px');
     /* 高屏会把两带挤在上半部：多出来的空白对半分给上下 */
     const slack = Hv - 18 - (tlTop + cardH);
     if (slack > 0) { tuTop += Math.round(slack * .5); tlTop += Math.round(slack * .5); }
@@ -1636,13 +1641,14 @@ p { color: var(--ink-soft); }
 (() => {
   if (!/[?&]tune=1|#tune/.test(location.href)) return;
   const KEY = 'grayrepair-rail-tune';
-  const DEF = { noteH:26, dnGap:26, upGap:26, gapV:40, gapU:133, gapL:113, amp:.2, maxW:440, headPad:80 };
+  const DEF = { noteH:26, dnGap:26, upGap:26, upSize:19, dnSize:15, gapV:40, gapU:133, gapL:113, amp:.2, maxW:440, headPad:80 };
   const NAME = {
     noteH:'批注组↔卡片（整体）', dnGap:'虚线↔下批注', upGap:'虚线↔上批注',
+    upSize:'上批注字号', dnSize:'下批注字号',
     gapV:'上下两带垂直间距', gapU:'上带卡片间距', gapL:'下带卡片间距',
     amp:'居中放大幅度', maxW:'卡宽上限', headPad:'标题下留白',
   };
-  const RANGE = { noteH:[8,120], dnGap:[10,70], upGap:[10,70], gapV:[20,110], gapU:[40,180], gapL:[40,200], amp:[0,.3], maxW:[240,480], headPad:[8,120] };
+  const RANGE = { noteH:[8,120], dnGap:[10,70], upGap:[10,70], upSize:[13,28], dnSize:[10,22], gapV:[20,110], gapU:[40,180], gapL:[40,200], amp:[0,.3], maxW:[240,480], headPad:[8,120] };
   let cur;
   try { cur = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e) { cur = Object.assign({}, DEF); }
 
