@@ -3,1526 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>灰度修理铺 · The Gray Workshop — 作品页</title>
-<meta name="description" content="灰度修理铺：一个用通关过程教懂数字图像处理基础概念的网页游戏。13 关，零文字教学。">
-<!--
-  ============================================================
-  灰度修理铺 · 完整作品站（合并版）
-  ============================================================
-  结构：导航栏 / 首屏 / 01 灵感 / 02 概述 / 03 操作 / 04 界面解说 /
-        05 关卡设计（横屏锁定叙事）/ 06 逐关解析 / 07 总体设计 / 08 心得 / 09 试玩
-  视觉：雾蓝工坊（游戏同源色板）+ 白线网格底 + 空心数字小标题
-  素材：素材/*.png（160×160 关卡图，需 image-rendering: pixelated）
-  ============================================================
--->
+<title>唐浩翔 Jesse — 游戏设计与开发</title>
+<meta name="description" content="唐浩翔（Jesse）的个人作品集：游戏设计与开发方向，数字媒体技术本科在读。">
 <style>
-/* ========== 令牌 ========== */
-:root {
-  --paper: #cde8fa;
-  --card: #f1f7fb;
-  --ink: #122133;
-  --ink-soft: #3d4d60;
-  --muted: #556373;
-  --accent: #449df0;
-  --accent-deep: #3081cb;
-  --red: #c4503c;
-  --line: #a9cdec;
-  --shadow: rgba(18,33,51,.28);
-  --mark: rgba(255,214,64,.5);
-  --grid: rgba(255,255,255,.2);
-  --grid-strong: rgba(255,255,255,.36);
-  --warm: #fdfcf9;
-  --sans: "MiSans", "HarmonyOS Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --mono: "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace;
-  --hand: "Kaiti SC", "KaiTi", "STKaiti", cursive;
-  --spring: cubic-bezier(.34,1.45,.5,1);
-  --out: cubic-bezier(.22,.8,.28,1);
-  --navh: 64px;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--sans);
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.9;
-  overflow-x: hidden;
-  background-color: var(--paper);
-  /* 白线网格：130px 强格 + 26px 弱格（内容区底纹） */
-  background-image:
-    linear-gradient(var(--grid-strong) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 130px 130px, 130px 130px, 26px 26px, 26px 26px;
-}
-img { display: block; }
-.px { image-rendering: pixelated; }
-.mono { font-family: var(--mono); }
-.kai { font-family: var(--hand); }
-mark, .mark {
-  background: linear-gradient(transparent 58%, var(--mark) 58%);
-  color: inherit; padding: 0 1px;
-}
-
-/* ========== 顶部导航 ========== */
-.site-head {
-  position: sticky; top: 0; z-index: 60;
-  height: var(--navh);
-  background: rgba(205,232,250,.9);
-  backdrop-filter: blur(8px);
-  border-bottom: 2px solid var(--ink);
-}
-.progress {
-  position: absolute; left: 0; bottom: -2px; height: 3px; width: 0;
-  background: var(--red); z-index: 2;
-}
-.head-inner {
-  max-width: 1240px; height: 100%; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 0 26px;
-}
-.brand {
-  display: flex; align-items: center;
-  color: var(--ink); text-decoration: none;
-  font-weight: 900; letter-spacing: .1em; white-space: nowrap;
-  font-size: 15px;
-}
-.brand-dot {
-  display: inline-block; width: 12px; height: 12px; margin-right: 9px;
-  border: 2px solid var(--ink); border-radius: 3px;
-  background: linear-gradient(135deg, #1b2a3d 0 50%, #fff 50% 100%);
-  transition: rotate .6s var(--spring);
-}
-.brand:hover .brand-dot { rotate: 135deg; }
-.site-nav { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
-.site-nav a {
-  position: relative; margin-left: 19px;
-  color: var(--muted); text-decoration: none;
-  font-size: 13.5px; font-weight: 600; letter-spacing: .06em;
-  transition: color .2s ease;
-}
-.site-nav a::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
-  background: var(--red); transform: scaleX(0); transform-origin: left;
-  transition: transform .32s var(--out);
-}
-.site-nav a:hover, .site-nav a.active { color: var(--red); }
-.site-nav a:hover::after, .site-nav a.active::after { transform: scaleX(1); }
-.site-nav a.nav-play { color: var(--red); font-weight: 800; }
-.site-nav a.nav-play::after { display: none; }
-
-/* ========== 首屏（雾蓝工坊） ========== */
-.hero {
-  position: relative;
-  min-height: calc(100svh - var(--navh));
-  padding: clamp(28px,5vh,64px) 6vw clamp(28px,4vh,48px);
-  display: flex; flex-direction: column; justify-content: center;
-  background: var(--paper);
-  overflow: hidden;
-}
-.hero .b-grid {
-  display: grid;
-  grid-template-columns: 1fr minmax(0, clamp(452px,19vw,524px));
-  gap: clamp(44px,4vw,96px);
-  align-items: center;
-  width: 100%; max-width: 1560px; margin: 0 auto;
-}
-.hero .title {
-  font-weight: 900;
-  font-size: clamp(60px,7.6vw,150px);
-  letter-spacing: .02em; line-height: 1.08;
-  text-shadow: 0 6px 0 #f1f7fb, 0 11px 0 rgba(18,33,51,.2);
-  margin-bottom: 18px;
-}
-.hero .sub { font-weight: 600; color: var(--accent-deep); margin-bottom: 24px; font-size: clamp(16px,.9vw,18.5px); }
-.hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; list-style: none; }
-.hero .facts li {
-  display: flex; align-items: baseline; gap: 8px;
-  background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
-  box-shadow: 0 3px 0 var(--shadow);
-  padding: 7px 12px; font-size: 12px; font-weight: 600; letter-spacing: .06em;
-}
-.hero .facts b { font-weight: 700; color: var(--accent-deep); letter-spacing: .14em; }
-.hero .overview { max-width: 640px; margin-bottom: 26px; }
-.hero .overview h2 {
-  font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--muted); margin-bottom: 10px;
-}
-.hero .overview p { font-size: clamp(13.5px,.75vw,15.5px); line-height: 1.9; }
-.hero .overview p + p { margin-top: .8em; }
-.hero .nums { display: flex; gap: 12px; list-style: none; flex-wrap: wrap; }
-.hero .nums li {
-  background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
-  box-shadow: 0 4px 0 var(--shadow); padding: 14px 20px;
-}
-.hero .nums li:nth-child(1) { rotate: -1.5deg; }
-.hero .nums li:nth-child(3) { rotate: 1.5deg; }
-.hero .nums b { display: block; font-size: clamp(34px,3.4vw,50px); font-weight: 900; line-height: 1; }
-.hero .nums span { display: block; margin-top: 9px; font-size: 12px; letter-spacing: .2em; color: var(--muted); }
-.hero .nums .zero b { color: var(--red); }
-.hero .b-stack { position: relative; padding: 34px 14px; }
-.hero .card {
-  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
-  box-shadow: 0 7px 0 var(--shadow); padding: 9px;
-}
-.hero .card img { width: 100%; height: auto; border-radius: 8px; }
-.hero .card figcaption { padding: 8px 4px 3px; font-size: 11px; font-weight: 600; letter-spacing: .1em; }
-.hero .card-main { rotate: 1.2deg; z-index: 2; position: relative; }
-.hero .card-side1 { position: absolute; width: 35%; left: -62px; top: -52px; rotate: -8deg; z-index: 1; }
-.hero .card-side2 { position: absolute; width: 31%; right: -26px; bottom: -32px; rotate: 5deg; z-index: 3; }
-.hero .sun {
-  position: absolute; top: -22px; right: 26px; width: 40px; height: 40px;
-  background: #e8b84a; border: 3px solid var(--ink); border-radius: 10px;
-  box-shadow: 0 4px 0 var(--shadow); z-index: 4;
-}
-
-/* ========== 章节骨架 ========== */
-main { position: relative; }
-.sec {
-  position: relative;
-  max-width: 1140px;
-  margin: clamp(72px,9vh,120px) auto 0;
-  padding: 0 26px;
-  scroll-margin-top: calc(var(--navh) + 20px);
-}
-.sec-wide { max-width: 1280px; }
-.sec-head {
-  position: relative; z-index: 1;
-  display: flex; align-items: flex-end; gap: 16px;
-  margin-bottom: 26px;
-}
-.sec-ghost {
-  position: absolute; top: -78px; left: -12px;
-  font-size: clamp(2.9rem,5.2vw,4.8rem); font-weight: 800; line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 2px rgba(196,80,60,.26);
-  pointer-events: none; user-select: none;
-  rotate: -2deg;
-  z-index: 0;
-}
-.sec-en {
-  color: var(--red); letter-spacing: .4em; font-size: .68rem;
-  text-transform: uppercase; margin-bottom: 3px; font-family: var(--mono);
-}
-.sec-head h2 {
-  font-size: clamp(1.7rem,3vw,2.3rem); font-weight: 900;
-  letter-spacing: .02em; line-height: 1.15;
-}
-.sec-lead { max-width: 760px; margin-bottom: 22px; font-size: clamp(14.5px,.95vw,16px); color: var(--ink-soft); }
-p { color: var(--ink-soft); }
-.sec b, .sec strong { color: var(--ink); }
-
-/* ========== 不对称排版：文字 / 美术元素交替 ========== */
-.asym-row {
-  display: grid;
-  grid-template-columns: minmax(0,1.22fr) minmax(0,.78fr);
-  gap: clamp(26px,3.6vw,58px);
-  align-items: center;
-  margin: 10px 0 26px;
-}
-.asym-row.flip { grid-template-columns: minmax(0,.78fr) minmax(0,1.22fr); }
-.asym-row.flip .asym-text { order: 2; }
-.asym-row.flip .asym-art { order: 1; }
-.asym-text p { font-size: clamp(15px,.98vw,16.5px); line-height: 2; }
-.asym-text p + p { margin-top: .9em; }
-.asym-art { position: relative; aspect-ratio: 5 / 4; }
-.asym-art img {
-  border: 2px solid var(--ink); border-radius: 10px;
-  box-shadow: 0 6px 0 var(--shadow);
-  background: #fff;
-}
-.asym-art .aa-1 { position: absolute; width: 64%; left: 2%; top: 4%; rotate: -3.5deg; z-index: 1; }
-.asym-art .aa-2 { position: absolute; width: 44%; right: 0; bottom: 6%; rotate: 4.5deg; z-index: 2; }
-.asym-art .aa-chip {
-  position: absolute; right: 30%; top: 2%; width: 26px; height: 26px;
-  background: #e8b84a; border: 2px solid var(--ink); border-radius: 6px;
-  box-shadow: 0 3px 0 var(--shadow); z-index: 3; rotate: 8deg;
-}
-.asym-art .aa-cap {
-  position: absolute; left: 2%; bottom: -2px;
-  font-size: 10.5px; letter-spacing: .1em; color: var(--muted); z-index: 3;
-}
-
-/* ========== 03 操作：操控元素条 ========== */
-.ops-rail {
-  position: relative;
-  display: grid; grid-template-columns: repeat(4,minmax(0,1fr));
-  gap: clamp(20px,2.2vw,34px);
-  margin: 30px 0 8px;
-}
-.ops-rail::before {
-  content: ""; position: absolute; left: 4%; right: 4%; top: 37%;
-  border-top: 2px dashed rgba(196,80,60,.45); z-index: 0;
-}
-.op::after {
-  content: "→"; position: absolute; right: -19px; top: 33%;
-  font-family: var(--hand); font-size: 19px; color: var(--red);
-  opacity: .75; z-index: 2;
-}
-.op:last-child::after { display: none; }
-.op {
-  position: relative; z-index: 1;
-  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
-  box-shadow: 0 6px 0 var(--shadow);
-  padding: 11px 11px 13px;
-  transition: translate .35s var(--spring), rotate .35s var(--spring);
-}
-.op:nth-child(odd) { rotate: -1deg; }
-.op:nth-child(even) { rotate: .8deg; }
-.op:hover { translate: 0 -6px; rotate: 0deg; }
-.op-no {
-  position: absolute; top: -12px; left: 10px; z-index: 3;
-  background: var(--red); color: #fff;
-  font-family: var(--mono); font-size: 11px; font-weight: 700;
-  padding: 2px 8px; border-radius: 6px; box-shadow: 0 3px 0 var(--shadow);
-}
-/* 取景框：直接用游戏实机截图，只做取景与标注，不再重画控件 */
-.op-deck {
-  position: relative; aspect-ratio: 4 / 3; overflow: hidden;
-  background: #eaf3fb; border: 2px solid var(--ink); border-radius: 9px;
-  margin-bottom: 11px; box-shadow: 0 4px 0 var(--shadow);
-}
-.op-deck img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.op-deck.is-pix img { image-rendering: pixelated; }
-/* 红色虚线标注：圈出卡片正文提到的那个部件 */
-.op-mark {
-  position: absolute; border: 2px dashed var(--red); border-radius: 5px;
-  box-shadow: 0 0 0 4px rgba(196,80,60,.12); pointer-events: none;
-}
-.op-mark::after {
-  content: attr(data-label);
-  position: absolute; left: -2px; top: -19px;
-  font-family: var(--hand); font-size: 13px; line-height: 1.2;
-  color: var(--red); background: rgba(255,255,255,.9);
-  padding: 0 4px; border-radius: 3px; white-space: nowrap;
-}
-.op-mark.below::after { top: auto; bottom: -20px; }
-.op h3 { font-size: 15.5px; font-weight: 900; letter-spacing: .05em; margin-bottom: 5px; }
-.op p { font-size: 12.5px; line-height: 1.75; color: var(--muted); }
-.op-foot { margin-top: 16px; font-size: 12.5px; color: var(--muted); }
-
-/* ========== 04 界面解说：1600×1200 说明画布 ========== */
-.guide-wrap { position: relative; width: 100%; margin: 26px auto 0; }
-.guide-canvas {
-  position: relative; width: 1600px; height: 1000px;
-  transform-origin: top left;
-  background: var(--warm);
-  border: 2px solid var(--ink); border-radius: 16px;
-  box-shadow: 0 10px 0 var(--shadow);
-  overflow: hidden;
-}
-.gc-wash { position: absolute; border-radius: 50%; filter: blur(2px); pointer-events: none; }
-.gc-wash.w1 { left: -180px; top: -160px; width: 620px; height: 560px; background: radial-gradient(circle at 40% 40%, rgba(217,192,143,.28), rgba(217,192,143,0) 70%); }
-.gc-wash.w2 { right: -200px; bottom: -180px; width: 680px; height: 600px; background: radial-gradient(circle at 60% 60%, rgba(126,159,179,.26), rgba(126,159,179,0) 70%); }
-/* 中央截图 */
-.gc-shot {
-  position: absolute; left: 352px; top: 40px; width: 896px;
-  background: #fff; border: 2px solid var(--ink); border-radius: 12px;
-  padding: 14px; box-shadow: 0 8px 0 rgba(46,43,37,.12);
-}
-.gc-shot img { width: 100%; height: auto; border-radius: 4px; }
-/* 标注卡 */
-.gc-card {
-  position: absolute; width: 300px; min-height: 220px;
-  background: #fff; border: 2px solid var(--ink); border-radius: 12px;
-  padding: 20px 20px 18px; box-shadow: 0 5px 0 rgba(46,43,37,.1);
-}
-.gc-card .chip { position: absolute; right: 16px; top: 16px; width: 20px; height: 20px; border-radius: 4px; border: 1.5px solid rgba(18,33,51,.35); }
-.gc-card .no { font-family: var(--mono); font-size: 13px; letter-spacing: .2em; color: #8a968d; }
-.gc-card b { display: block; font-size: 29px; font-weight: 900; line-height: 1.25; margin: 6px 0 8px; letter-spacing: .01em; }
-.gc-card p { font-size: 17px; line-height: 1.7; color: #4a5a6b; }
-.gc-arrows { position: absolute; inset: 0; width: 1600px; height: 1000px; pointer-events: none; }
-.gc-arrows path.lead { fill: none; stroke: #3f6170; stroke-width: 3; stroke-dasharray: 11 8; stroke-linecap: round; }
-.gc-arrows circle { fill: #b0574a; }
-.gc-arrows path.tip { fill: #3f6170; }
-/* 窄屏兜底：画布改为上下堆叠，不再整体缩放 */
-@media (max-width: 900px) {
-  .guide-canvas {
-    display: grid; gap: 14px; width: 100%; height: auto !important;
-    transform: none !important; padding: 22px 18px 26px;
+  :root{
+    --ink:#1c1c1a; --ink-2:#55554f; --ink-3:#8a8a82;
+    --paper:#fafaf7; --card:#ffffff; --line:#e4e4dd;
+    --accent:#2f5d8a; --accent-soft:#e8eff6;
+    --max:1080px;
   }
-  .gc-shot, .gc-card { position: relative; left: auto !important; top: auto !important; width: auto; }
-  .gc-shot { max-width: 100%; }
-  .gc-card { min-height: 0; }
-  .gc-arrows, .gc-wash { display: none; }
-  .guide-wrap { height: auto !important; }
-}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--paper); color:var(--ink);
+    line-height:1.7; font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
 
-/* ========== 05 关卡设计：横屏锁定叙事 ========== */
-.rail-wrap { position: relative; width: 100%; background: var(--paper); margin-top: clamp(60px,8vh,100px); scroll-margin-top: var(--navh); }
-.rail-stage { position: sticky; top: var(--navh); height: calc(100vh - var(--navh)); overflow: hidden; }
-#cam { position: absolute; inset: 0; will-change: transform; }
-.rail-head { position: absolute; left: 6vw; top: 4vh; z-index: 5; display: flex; align-items: flex-start; gap: 18px; }
-.rail-head .sec-ghost { position: static; font-size: clamp(42px,4vw,58px); line-height: .86; margin-top: 1px; }
-.rail-head h2 { font-size: clamp(28px,2.4vw,40px); font-weight: 900; letter-spacing: .02em; line-height: 1.15; }
-.rail-head .rail-sub { margin-top: 9px; font-size: 13px; color: var(--muted); letter-spacing: .04em; }
-.rail-head .rail-sub em { font-style: normal; color: var(--red); }
-.track { position: absolute; left: 0; display: flex; align-items: flex-start; gap: 34px; will-change: transform; }
-#trackU { z-index: 3; gap: 58px; }
-#trackU .st { z-index: 1; }
-#trackL { z-index: 2; transition: opacity .25s linear; }
-#trackL.ghost {
-  opacity: .45;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 26%);
-  mask-image: linear-gradient(180deg, transparent 0, #000 26%);
-}
-.st {
-  flex: none; width: var(--st-w, 252px);
-  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
-  box-shadow: 0 6px 0 var(--shadow); padding: 12px;
-  transition: opacity .2s linear;
-  position: relative; transform-origin: 50% 92%;
-}
-.st .st-thumb {
-  display: block; width: 100%; aspect-ratio: 1;
-  background: #fff; border: 2px solid var(--ink); border-radius: 9px; overflow: hidden;
-}
-.st .st-thumb img { width: 100%; height: 100%; }
-.st figcaption { padding: 10px 4px 2px; }
-.st b { display: block; font-size: 15px; font-weight: 900; letter-spacing: .04em; }
-.st i { display: block; font-style: normal; margin-top: 5px; font-size: 12px; color: var(--muted); letter-spacing: .05em; }
-#trackU .st:not(.hub) .st-thumb img { filter: grayscale(1) contrast(.92); }
-.st.live { box-shadow: 0 6px 0 var(--shadow), 0 0 0 3px var(--accent); }
-.st.live b { color: var(--accent-deep); }
-.st.hub {
-  width: calc(var(--st-w, 252px) + 40px);
-  border: 3px solid var(--red);
-  box-shadow: 0 6px 0 var(--shadow), 0 0 0 5px var(--paper), 0 0 0 8px var(--red);
-}
-#trackU .st.hub { width: calc(var(--st-w, 252px) + 80px); }
-.st.hub .st-thumb img { filter: none !important; }
-.st.hub .tag {
-  position: absolute; top: -16px; right: -14px;
-  background: var(--red); color: #fff;
-  font-size: 11px; font-weight: 700; letter-spacing: .14em;
-  padding: 5px 10px; border-radius: 7px;
-  box-shadow: 0 3px 0 var(--shadow); rotate: 3deg;
-}
-.st.hub b { color: var(--red); }
-#chainLine { position: absolute; left: 0; top: -155px; height: 155px; overflow: visible; pointer-events: none; z-index: 0; }
-#chainLine path { stroke: var(--red); stroke-width: 3; stroke-dasharray: 12 9; stroke-linecap: round; fill: none; opacity: .85; }
-#chainLine circle { fill: var(--red); }
-html.compact #chainLine { top: -130px; height: 130px; }
-#noteLayer { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: visible; }
-.lvnote {
-  position: absolute; left: 0; transform: translateX(-50%);
-  width: 250px; text-align: center; white-space: nowrap;
-  font-family: var(--hand); font-size: 19px; line-height: 1.4;
-  color: var(--red); letter-spacing: .02em;
-}
-.lvnote.up { top: -155px; }
-.lvnote.dn { top: -97px; }
-html.compact .lvnote.up { top: -131px; }
-html.compact .lvnote.dn { top: -73px; }
-/* 下带收尾：手写结论，与上带的「前因/问句」同族 */
-.st.finale {
-  width: 340px; background: transparent; border: 0; box-shadow: none;
-  padding: 14px 4px 0; display: block;
-}
-.st.finale.live { box-shadow: none; }
-.st.finale .fin-seal {
-  display: inline-block; border: 2px solid var(--red); color: var(--red);
-  font-size: 11px; font-weight: 700; letter-spacing: .2em;
-  padding: 2px 9px; border-radius: 4px; rotate: -4deg; margin-bottom: 16px;
-}
-.st.finale b {
-  display: block; font-family: var(--hand); font-size: 33px; line-height: 1.5;
-  color: var(--red); letter-spacing: .04em;
-}
-.st.finale .fin-line { display: block; margin: 4px 0 12px; color: rgba(196,80,60,.5); }
-.st.finale i { display: block; font-style: normal; font-size: 12px; color: var(--muted); letter-spacing: .1em; }
-.ask { flex: none; width: 560px; height: 236px; align-self: center; position: relative; }
-.ask .why {
-  position: absolute; left: 0; top: -6px; width: 210px;
-  font-family: var(--hand); font-size: 19px; line-height: 1.6;
-  color: var(--red); letter-spacing: .03em; rotate: -2.5deg;
-}
-.ask .why b { display: block; font-size: 22px; margin-bottom: 2px; }
-.ask q {
-  position: absolute; left: 226px; top: 46px; width: 330px;
-  font-family: var(--hand); font-size: 25px; font-weight: 700; line-height: 1.6;
-  color: var(--red); letter-spacing: .02em; quotes: none; rotate: -1deg;
-}
-.ask q small { display: block; margin-top: 6px; font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: .06em; }
-.ask > svg { position: absolute; right: 6px; bottom: -28px; overflow: visible; }
-.tail { flex: none; width: 272px; align-self: center; rotate: 1.5deg; font-family: var(--hand); font-size: 18px; line-height: 1.65; color: var(--red); letter-spacing: .03em; }
-#link { position: absolute; z-index: 4; width: 0; border-left: 3px dashed var(--red); pointer-events: none; }
-#link span {
-  position: absolute; left: 14px; top: 50%; translate: 0 -50%; white-space: nowrap;
-  background: var(--red); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .16em;
-  padding: 5px 10px; border-radius: 7px; box-shadow: 0 3px 0 var(--shadow);
-}
-.rail-note { position: absolute; z-index: 5; left: 6vw; top: 56.5vh; max-width: 560px; opacity: 0; }
-.rail-note p { font-weight: 900; font-size: clamp(17px,1.3vw,23px); color: var(--red); letter-spacing: .05em; line-height: 1.4; }
-.rail-note small { display: block; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .08em; }
-.rail-hud { position: absolute; z-index: 6; right: 6vw; top: 5vh; display: flex; align-items: center; gap: 12px; }
-.rail-hud .phase {
-  background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
-  box-shadow: 0 3px 0 var(--shadow); padding: 7px 13px;
-  font-size: 12px; font-weight: 700; letter-spacing: .12em; min-width: 150px; text-align: center;
-}
-.rail-hud .bar { width: 170px; height: 10px; background: rgba(18,33,51,.15); border-radius: 6px; overflow: hidden; }
-.rail-hud .bar b { display: block; height: 100%; width: 0; background: var(--red); border-radius: 6px; }
+  /* ---------- 导航 ---------- */
+  .nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,250,247,.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{max-width:var(--max); margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between}
+  .nav-logo{font-weight:600; color:var(--ink); letter-spacing:.02em}
+  .nav-logo:hover{text-decoration:none}
+  .nav-links{display:flex; gap:28px; list-style:none}
+  .nav-links a{color:var(--ink-2); font-size:15px}
+  .nav-links a:hover{color:var(--ink); text-decoration:none}
 
-/* ========== 06 逐关解析：大图交替 ========== */
-.lvg {
-  display: grid;
-  grid-template-columns: minmax(0,1.16fr) minmax(0,.84fr);
-  gap: clamp(22px,3vw,44px);
-  align-items: start;
-  margin: 0 0 clamp(44px,6.5vh,78px);
-  padding-top: 8px;
-  border-top: 2px dashed rgba(18,33,51,.16);
-}
-.lvg.flip .lvg-media { order: 2; }
-.lvg > .lvg-head { grid-column: 1 / -1; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin: 14px 0 4px; }
-.lvg-title { font-size: clamp(1.3rem,2vw,1.75rem); font-weight: 900; letter-spacing: .03em; }
-.lvg-title span { font-family: var(--hand); font-weight: 400; font-size: 15px; color: var(--red); margin-left: 10px; letter-spacing: .04em; }
-.lvg-media { display: grid; gap: 12px; grid-template-columns: 1fr; }
-.lvg-media.two, .lvg-media.multi { grid-template-columns: 1fr 1fr; }
-/* 奇数张时，最后一张通栏放大 */
-.lvg-media.multi .shot:last-child:nth-child(odd) { grid-column: 1 / -1; }
-.shot {
-  background: var(--card); border: 2px solid var(--ink); border-radius: 12px;
-  box-shadow: 0 6px 0 var(--shadow); padding: 9px;
-  transition: translate .35s var(--spring);
-}
-.shot:hover { translate: 0 -5px; }
-.shot .shot-img { position: relative; border: 2px solid var(--ink); border-radius: 8px; overflow: hidden; background: #fff; }
-.shot img { width: 100%; height: auto; }
-.shot figcaption { padding: 8px 3px 2px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; color: var(--muted); }
-.shot .gif-badge {
-  position: absolute; top: 8px; right: 8px;
-  background: rgba(18,33,51,.82); color: #cde8fa;
-  font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em;
-  padding: 3px 7px; border-radius: 5px;
-}
-.lv-txt .lv-card {
-  background: var(--card); border: 2px solid var(--ink); border-radius: 12px;
-  box-shadow: 0 4px 0 var(--shadow); padding: 15px 17px; margin-bottom: 12px;
-}
-.lv-card .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; color: var(--accent-deep); margin-bottom: 6px; }
-.lv-card p { font-size: 14px; line-height: 1.9; }
-.lv-card p + p { margin-top: .7em; }
-.lv-card.is-note { background: #eaf4fc; }
-/* 迭代：试玩后改掉的地方 —— 独立卡片，与「玩法 / 设计思路」同级 */
-.iter {
-  position: relative; margin: 14px 0 0; padding: 15px 18px 16px 22px;
-  background: #fbefea; border: 2px solid var(--ink); border-radius: 12px;
-  box-shadow: 0 4px 0 var(--shadow);
-}
-.iter::before {
-  content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 5px;
-  background: var(--red); border-radius: 0 4px 4px 0;
-}
-.iter-head { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
-.iter-tag {
-  background: var(--red); color: #fff; font-size: 11px; font-weight: 700;
-  letter-spacing: .16em; padding: 3px 9px; border-radius: 5px;
-  box-shadow: 0 2px 0 rgba(46,43,37,.16);
-}
-.iter-head em {
-  font-style: normal; font-family: var(--mono); font-size: 10.5px;
-  letter-spacing: .14em; color: #a5624f;
-}
-.iter p { font-family: var(--hand); font-size: 16px; line-height: 1.9; color: #3a2f2b; }
-.iter p.chg { position: relative; margin-top: 10px; padding-left: 22px; }
-.iter p.chg::before {
-  content: "→"; position: absolute; left: 0; top: 0;
-  color: var(--red); font-weight: 700;
-}
-/* 设计细节：轻量批注，明确弱于迭代 */
-.quote-note { border-left: 3px dashed rgba(196,80,60,.55); padding: 2px 0 2px 14px; margin: 12px 0 0 4px; }
-.quote-note .q-tag { font-family: var(--mono); font-size: 10.5px; color: var(--red); letter-spacing: .2em; margin-bottom: 4px; }
-.quote-note p { font-family: var(--hand); font-size: 15.5px; line-height: 1.85; color: #3c4a58; }
-.scene-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-.scene-card { background: var(--card); border: 2px solid var(--ink); border-radius: 10px; padding: 10px 12px; box-shadow: 0 3px 0 var(--shadow); }
-.scene-en { font-family: var(--mono); font-size: 12px; color: var(--red); }
-.scene-zh { font-family: var(--hand); font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+  /* ---------- Hero ---------- */
+  .hero{padding:110px 0 90px}
+  .hero .kicker{font-size:14px; color:var(--ink-3); letter-spacing:.14em; margin-bottom:18px}
+  .hero h1{font-size:clamp(34px,5.5vw,54px); line-height:1.25; font-weight:600; letter-spacing:.01em}
+  .hero h1 .en{color:var(--ink-3); font-weight:400}
+  .hero p.lead{margin-top:22px; max-width:560px; font-size:18px; color:var(--ink-2)}
+  .hero .cta{margin-top:36px; display:flex; gap:14px; flex-wrap:wrap}
+  .btn{
+    display:inline-block; padding:11px 26px; border-radius:8px; font-size:15px;
+    border:1px solid var(--ink); color:var(--ink);
+  }
+  .btn:hover{text-decoration:none; background:var(--ink); color:#fff}
+  .btn.primary{background:var(--ink); color:#fff}
+  .btn.primary:hover{background:#000}
 
-/* ========== 07 总体设计 ========== */
-.principles { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 26px 0 10px; }
-.pr {
-  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
-  box-shadow: 0 6px 0 var(--shadow); padding: 20px 20px 18px;
-}
-.pr:nth-child(1) { rotate: -.8deg; }
-.pr:nth-child(2) { rotate: .7deg; }
-.pr:nth-child(3) { rotate: -.5deg; }
-.pr .pr-no { font-family: var(--mono); font-size: 11px; color: var(--red); letter-spacing: .22em; }
-.pr h3 { font-size: 16.5px; font-weight: 900; margin: 8px 0; letter-spacing: .03em; }
-.pr p { font-size: 13.5px; line-height: 1.85; }
+  /* ---------- 区块通用 ---------- */
+  section{padding:84px 0}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:44px}
+  .sec-head .no{font-family:ui-monospace,Consolas,monospace; font-size:14px; color:var(--ink-3)}
+  .sec-head h2{font-size:28px; font-weight:600}
+  .sec-head .line{flex:1; height:1px; background:var(--line)}
 
-/* ========== 08 心得 ========== */
-.notes-grid { display: grid; grid-template-columns: minmax(0,.92fr) minmax(0,1.08fr); gap: clamp(24px,3.4vw,52px); align-items: start; }
-.note-quote blockquote {
-  font-family: var(--hand); font-size: clamp(19px,1.7vw,24px); line-height: 1.75;
-  color: var(--red); margin-bottom: 22px; padding-left: 18px;
-  border-left: 3px dashed rgba(196,80,60,.5);
-}
-.notes-body p { font-size: clamp(15px,.98vw,16.5px); line-height: 2; }
-.notes-body p + p { margin-top: 1em; }
+  /* ---------- 作品卡片 ---------- */
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:28px}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden; display:flex; flex-direction:column;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  a.card:hover{transform:translateY(-4px); box-shadow:0 12px 32px rgba(28,28,26,.08); text-decoration:none}
+  .card-img{aspect-ratio:16/9; background:var(--accent-soft); overflow:hidden}
+  .card-img img{width:100%; height:100%; object-fit:cover; display:block}
+  .card-body{padding:22px 22px 24px; display:flex; flex-direction:column; gap:10px; flex:1}
+  .card-body h3{font-size:19px; font-weight:600}
+  .card-body h3 .en{font-weight:400; color:var(--ink-3); font-size:15px; margin-left:6px}
+  .card-body p{font-size:14.5px; color:var(--ink-2)}
+  .tags{margin-top:auto; display:flex; gap:8px; flex-wrap:wrap; padding-top:8px}
+  .tag{
+    font-size:12.5px; color:var(--ink-2); background:var(--paper);
+    border:1px solid var(--line); border-radius:99px; padding:3px 12px;
+  }
+  .tag.accent{color:var(--accent); border-color:var(--accent); background:var(--accent-soft)}
+  .card.placeholder{border-style:dashed; background:transparent}
+  .card.placeholder .card-img{display:flex; align-items:center; justify-content:center; color:var(--ink-3); font-size:14px; background:transparent}
+  .badge-soon{font-size:12.5px; color:var(--ink-3); border:1px dashed var(--ink-3); border-radius:99px; padding:2px 12px; width:fit-content}
 
-/* ========== 09 试玩 ========== */
-.play-frame-wrap {
-  position: relative; border: 2px solid var(--ink); border-radius: 14px;
-  overflow: hidden; background: #0d1620;
-  box-shadow: 0 8px 0 var(--shadow); margin-top: 20px;
-}
-.play-frame { display: block; width: 100%; aspect-ratio: 16 / 10; border: 0; }
-.play-alt { margin-top: 12px; font-size: 12px; color: var(--muted); }
-.play-alt a { color: var(--red); font-weight: 700; }
+  /* ---------- 关于 ---------- */
+  .about-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:56px; align-items:start}
+  .about-text p{margin-bottom:16px; color:var(--ink-2); font-size:16px}
+  .about-text p strong{color:var(--ink)}
+  .photo-wall h3{font-size:15px; font-weight:600; color:var(--ink-2); margin-bottom:16px; letter-spacing:.08em}
+  .photos{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+  .ph{aspect-ratio:1; border:1px dashed var(--line); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--ink-3); font-size:12.5px; background:var(--card)}
 
-/* ========== 页脚 ========== */
-.site-foot {
-  margin-top: clamp(64px,9vh,110px);
-  border-top: 2px solid var(--ink);
-  background: rgba(241,247,251,.72);
-  padding: 26px 26px 34px; text-align: center;
-}
-.site-foot p { font-size: 12px; letter-spacing: .1em; color: var(--ink); }
-.site-foot .dim { color: var(--muted); margin-top: 6px; font-size: 11px; }
+  /* ---------- 联系 ---------- */
+  .contact-inner{max-width:640px}
+  .contact-inner .big-mail{font-size:clamp(20px,3.4vw,30px); font-weight:600; word-break:break-all}
+  .contact-inner p{margin-top:14px; color:var(--ink-2)}
+  .contact-links{margin-top:26px; display:flex; gap:22px; flex-wrap:wrap}
+  .contact-links a{font-size:15px}
 
-/* ========== 浮现动效 ========== */
-.rv { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--out), transform .8s var(--out); transition-delay: var(--d,0s); }
-.rv.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .rv { opacity: 1 !important; transform: none !important; } }
+  footer{border-top:1px solid var(--line); padding:28px 0; color:var(--ink-3); font-size:13.5px}
+  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px}
 
-/* ========== 响应式 ========== */
-@media (max-width: 1180px) {
-  .hero .b-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero .b-stack { max-width: 620px; }
-  .ops-rail { grid-template-columns: 1fr 1fr; }
-  .ops-rail::before { display: none; }
-  .asym-row, .asym-row.flip { grid-template-columns: 1fr; }
-  .asym-row.flip .asym-text { order: 0; }
-  .asym-row.flip .asym-art { order: 1; }
-  .asym-art { min-height: 360px; }
-  .lvg, .lvg.flip { grid-template-columns: 1fr; }
-  .lvg.flip .lvg-media { order: 0; }
-  .principles { grid-template-columns: 1fr; }
-  .notes-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 820px) {
-  .head-inner { padding: 0 14px; }
-  .site-nav a { margin-left: 11px; font-size: 12px; }
-  .brand { font-size: 12.5px; letter-spacing: .04em; }
-  .hero .card-side1, .hero .card-side2 { display: none; }
-  .ops-rail { grid-template-columns: 1fr; }
-  .lvg-media.two, .lvg-media.multi, .scene-row { grid-template-columns: 1fr; }
-}
+  @media (max-width:760px){
+    .hero{padding:72px 0 60px}
+    section{padding:60px 0}
+    .about-grid{grid-template-columns:1fr}
+    .nav-links{gap:18px}
+  }
 </style>
 </head>
 <body>
-<!-- ============ 顶部导航 ============ -->
-<header class="site-head">
-  <i class="progress" id="progress" aria-hidden="true"></i>
-  <div class="head-inner">
-    <a class="brand" href="#top"><span class="brand-dot" aria-hidden="true"></span>灰度修理铺</a>
-    <nav class="site-nav" aria-label="页面目录">
-      <a href="#inspiration">灵感</a>
-      <a href="#overview">概述</a>
-      <a href="#ops">操作</a>
-      <a href="#interface">界面解说</a>
-      <a href="#levels">关卡设计</a>
-      <a href="#levels-detail">逐关解析</a>
-      <a href="#overall">总体设计</a>
-      <a href="#notes">心得</a>
-      <a href="#play" class="nav-play">试玩 →</a>
-    </nav>
+
+<nav class="nav" aria-label="主导航">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top">唐浩翔 Jesse</a>
+    <ul class="nav-links">
+      <li><a href="#work">作品</a></li>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="kicker">GAME DESIGN &amp; DEVELOPMENT</p>
+    <h1>把日常情绪，<br>做成能玩的小游戏。<span class="en"> — 唐浩翔 / Jesse</span></h1>
+    <p class="lead">数字媒体技术本科在读，游戏设计与开发方向。关注玩法机制与叙事的结合，代表作《灰度修理铺》。</p>
+    <div class="cta">
+      <a class="btn primary" href="#work">看作品 ↓</a>
+      <a class="btn" href="#contact">联系我</a>
+    </div>
   </div>
 </header>
 
-<main id="top">
+<main>
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head"><span class="no">01</span><h2>作品</h2><span class="line"></span></div>
+      <div class="cards">
 
-  <!-- ============ 首屏：雾蓝工坊 ============ -->
-  <section class="hero" id="hero">
-    <div class="b-grid">
-      <div>
-        <h1 class="title rv" style="--d:.05s">灰度修理铺</h1>
-        <p class="sub rv" style="--d:.12s">把数字图像处理，做成一个修图的游戏</p>
-        <ul class="facts rv" style="--d:.2s">
-          <li><b>平台</b>HTML 5</li>
-          <li><b>开发周期</b>1 个月</li>
-          <li><b>类型</b>个人独立项目</li>
-        </ul>
-        <div class="overview rv" style="--d:.3s">
-          <h2>项目速览</h2>
-          <p>一款「修图」解谜游戏：你是一间灰度修理铺的师傅，接到的委托全是被抹掉颜色的照片。你只有四种操作——点像素、拖滑块、拖色块、拖阈值——要用它们把灰度照片一步步修回原来的样子。13 个关卡，从认出灰度，一路走到综合运用。</p>
-          <p>它最特别的地方，是全程没有一行教程文字：玩法规则完全藏在关卡结构里，由玩家自己试出来——零文字教学，本身就是这款教育游戏的教学设计。</p>
-        </div>
-        <ul class="nums rv" style="--d:.4s">
-          <li><b>13</b><span>关卡</span></li>
-          <li><b>4</b><span>种操作</span></li>
-          <li class="zero"><b>0</b><span>行文字教程</span></li>
-        </ul>
-      </div>
-      <div class="b-stack rv" style="--d:.3s">
-        <span class="sun"></span>
-        <figure class="card card-side1"><img class="px" src="素材/level-7.png" alt=""><figcaption>第 7 关</figcaption></figure>
-        <figure class="card card-side2"><img class="px" src="素材/level-4.png" alt=""><figcaption>第 4 关</figcaption></figure>
-        <figure class="card card-main">
-          <img class="px" src="素材/game-level8.png" alt="第 8 关实机画面">
-          <figcaption>第 8 关「综合运用」· 实机画面</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 01 灵感 ============ -->
-  <section class="sec" id="inspiration">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">01</span>
-      <div>
-        <p class="sec-en">INSPIRATION</p>
-        <h2>灵感</h2>
-      </div>
-    </div>
-    <div class="asym-row rv">
-      <div class="asym-text">
-        <p>我上学期在学数字图像处理时，由于平时喜欢拍照和剪视频，摄影里的调性、修图时调的曝光和灰度，这些概念我接触得早，这门课学得也轻松。但我的舍友一直觉得这门课很难：公式能背下来，却不明白那些数字在描述图里的什么。这些知识本身并不抽象，图像放大到像素层面就是一块块小格子，<mark>灰度就是这些格子的明暗程度</mark>。</p>
-        <p>学不懂的原因，可能不在知识本身的难度，而在接触方式：这些概念一直以公式和讲义的形式出现，没有亲手操作、直接看到效果的机会。所以我把其中最基础的概念做成了一个游戏，让玩家在通关的过程中自己理解这些概念。</p>
-        <p>这个游戏做给两种人：不了解相关知识的人，和正在学这门课、概念还没建立起来的同学。</p>
-      </div>
-      <div class="asym-art" aria-hidden="true">
-        <img class="aa-1 px" src="素材/level-6.png" alt="">
-        <img class="aa-2 px" src="素材/level-2.png" alt="">
-        <i class="aa-chip"></i>
-        <p class="aa-cap mono">L6 雾中月牙 / L2 5×5 像素</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 02 概述 ============ -->
-  <section class="sec" id="overview">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">02</span>
-      <div>
-        <p class="sec-en">OVERVIEW</p>
-        <h2>概述</h2>
-      </div>
-    </div>
-    <div class="asym-row flip rv">
-      <div class="asym-text">
-        <p>灰度修理铺（The Gray Workshop）是一个网页游戏，一共 13 关，共用同一套界面：左侧一张目标图（玩家要把操作图修成的那张图），右侧一张操作图，屏幕下方是上下对齐的两条轴。</p>
-        <p><mark>操作图是目标图的灰度版</mark>，也就是去掉颜色、只保留明暗的版本。上面一条是灰度轴，从黑到白的渐变，每个像素的灰度都能在这条轴上找到对应的位置。下面一条是映射条，在对应位置标出灰度轴每一段会变成的颜色；图里的一个像素落在哪一段，就会显示成那一段的颜色。</p>
-      </div>
-      <div class="asym-art" aria-hidden="true">
-        <img class="aa-1 px" src="素材/level-3.png" alt="">
-        <img class="aa-2 px" src="素材/level-5.png" alt="">
-        <i class="aa-chip"></i>
-        <p class="aa-cap mono">L3 四色映射 / L5 双色阈值</p>
-      </div>
-    </div>
-    <p class="sec-lead">通关条件分两个阶段。前九关判定标准是两张图逐像素一致，通过时图框绿闪、进入下一关，未通过则红闪。第十关起，左侧换成待修复的原图，配一句英文情景（例如 “A faded old photo.”，一张褪色的旧照片）；目标由玩家根据情景自己推断，判定通过后左侧才显示修好的那张。</p>
-    <p class="sec-lead">除了通关后的简单讲解和情景句，关卡里没有针对玩法的任何教学文字或教程；<mark>每一关只出现这一关需要的操作，规则由玩家在尝试的过程中自己发现</mark>。</p>
-  </section>
-
-  <!-- ============ 03 操作：四种操作 × 游戏操控元素 ============ -->
-  <section class="sec sec-wide" id="ops">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">03</span>
-      <div>
-        <p class="sec-en">FOUR MOVES</p>
-        <h2>玩家能做的，只有四种操作</h2>
-      </div>
-    </div>
-    <p class="sec-lead">整个游戏只有下面这四件工具。它们全部长在同一条灰度轴上——从第一关到最后一关，界面没有变过，变的只是你要用哪几件、用得多准。</p>
-
-    <div class="ops-rail">
-      <article class="op rv" style="--d:.02s">
-        <span class="op-no">01</span>
-        <div class="op-deck is-pix">
-          <img src="素材/op-1-pixel.png" alt="游戏第 2 关：左右两张 5×5 的像素图，中间一格的灰度明显不对">
-          <i class="op-mark below" style="left:42.6%; top:60%; width:14.8%; height:20%" data-label="点这一格"></i>
-        </div>
-        <h3>点像素</h3>
-        <p>在操作图里选一个格子。第三关起，选中时轴上会亮起一个小标记，标出它的灰度位置。</p>
-      </article>
-
-      <article class="op rv" style="--d:.1s">
-        <span class="op-no">02</span>
-        <div class="op-deck">
-          <img src="素材/op-2-axis.png" alt="游戏界面下方的灰度轴、斜纹映射条与候选色块">
-          <i class="op-mark" style="left:2%; top:43.5%; width:96%; height:13%" data-label="黑 → 白"></i>
-        </div>
-        <h3>拖滑块</h3>
-        <p>改变选中像素的灰度值。黑到白一格一格地试，拖回来、再拖过去，明暗就变了。</p>
-      </article>
-
-      <article class="op rv" style="--d:.18s">
-        <span class="op-no">03</span>
-        <div class="op-deck">
-          <img src="素材/op-3-threshold.png" alt="灰度轴上的一条阈值线，下端是深色圆角手柄">
-          <i class="op-mark" style="left:43.5%; top:49%; width:13%; height:18%" data-label="拖这个手柄"></i>
-        </div>
-        <h3>拖阈值</h3>
-        <p>拖动轴上的分界线，决定轴在哪里分开、每段归哪边。把手能拖到轴的两端之外，把一段灰度整个并进相邻段。</p>
-      </article>
-
-      <article class="op rv" style="--d:.26s">
-        <span class="op-no">04</span>
-        <div class="op-deck">
-          <img src="素材/op-4-chip.png" alt="一排候选色块，上方是斜纹映射条">
-          <i class="op-mark below" style="left:35%; top:41%; width:26%; height:27%" data-label="拖进映射条"></i>
-        </div>
-        <h3>拖色块</h3>
-        <p>把颜色放进映射条的某一段，这段灰度里的所有像素就一起变成这个颜色。</p>
-      </article>
-    </div>
-    <p class="op-foot">这四件工具对应的是数字图像处理里四个真实概念：像素、灰度值、阈值、灰度映射。游戏只是把它们做成可以拖的东西。</p>
-  </section>
-
-  <!-- ============ 04 界面解说 ============ -->
-  <section class="sec sec-wide" id="interface">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">04</span>
-      <div>
-        <p class="sec-en">INTERFACE GUIDE</p>
-        <h2>界面解说</h2>
-      </div>
-    </div>
-    <p class="sec-lead">下面这张图直接取自线上实机，选的是第 8 关：前几关用不到的元素（映射条、阈值把手、候选色块）在这一关全部出现。标号指出界面的六个组成部分。想亲手拖动这些把手，到页面底部的「试玩」区。</p>
-
-    <div class="guide-wrap" id="guideWrap">
-      <div class="guide-canvas" id="guideCanvas">
-        <i class="gc-wash w1"></i>
-        <i class="gc-wash w2"></i>
-
-        <figure class="gc-shot">
-          <img src="素材/game-level8.png" alt="第 8 关实机界面：左侧彩色目标图，右侧灰度操作图，下方灰度轴、映射条、候选色块">
-        </figure>
-
-        <!-- 标注卡：左列 -->
-        <div class="gc-card" style="left:40px; top:116px">
-          <i class="chip" style="background:#D9C08F"></i>
-          <span class="no">01</span>
-          <b>目标图</b>
-          <p>展示本关的修复目标。调整右图，使两张图达到逐像素一致。</p>
-        </div>
-        <div class="gc-card" style="left:40px; top:386px">
-          <i class="chip" style="background:#7E9FB3"></i>
-          <span class="no">02</span>
-          <b>灰度轴</b>
-          <p>黑到白表示灰度值。选中像素后，轴上标记其位置；拖滑块调整该像素明暗。</p>
-        </div>
-        <div class="gc-card" style="left:40px; top:656px">
-          <i class="chip" style="background:#D3B25C"></i>
-          <span class="no">03</span>
-          <b>映射条</b>
-          <p>与灰度轴对应。把颜色放入某一段，该灰度范围内的像素会统一显示为这个颜色。</p>
-        </div>
-
-        <!-- 标注卡：右列 -->
-        <div class="gc-card" style="left:1260px; top:116px">
-          <i class="chip" style="background:#C98B6B"></i>
-          <span class="no">04</span>
-          <b>操作图</b>
-          <p>目标图的灰度版，也是主要编辑区域。点击像素可选中，调整会实时显示在这里。</p>
-        </div>
-        <div class="gc-card" style="left:1260px; top:386px">
-          <i class="chip" style="background:#8FA985"></i>
-          <span class="no">05</span>
-          <b>阈值</b>
-          <p>竖线和圆形手柄是阈值。拖动分界线可重新划分灰度范围，每段再对应一种颜色。</p>
-        </div>
-        <div class="gc-card" style="left:1260px; top:656px">
-          <i class="chip" style="background:#A98BA8"></i>
-          <span class="no">06</span>
-          <b>候选色块</b>
-          <p>提供可选择的颜色。把色块拖入映射条，为对应的灰度段指定颜色。</p>
-        </div>
-
-        <!-- 引线：墨蓝虚线 + 红点起点 + 实心三角终点 -->
-        <svg class="gc-arrows" viewBox="0 0 1600 1000" aria-hidden="true">
-          <defs>
-            <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0 0 L10 5 L0 10 Z" fill="#3f6170"/>
-            </marker>
-          </defs>
-          <path class="lead" marker-end="url(#tip)" d="M344 230 C 430 236, 520 336, 592 394"/>
-          <path class="lead" marker-end="url(#tip)" d="M344 496 C 416 548, 480 682, 560 720"/>
-          <path class="lead" marker-end="url(#tip)" d="M344 766 C 430 790, 600 776, 700 752"/>
-          <path class="lead" marker-end="url(#tip)" d="M1256 230 C 1170 244, 1060 348, 991 394"/>
-          <path class="lead" marker-end="url(#tip)" d="M1256 496 C 1150 566, 946 730, 806 768"/>
-          <path class="lead" marker-end="url(#tip)" d="M1256 766 C 1120 806, 900 818, 804 805"/>
-          <circle cx="344" cy="230" r="6"/><circle cx="344" cy="496" r="6"/><circle cx="344" cy="766" r="6"/>
-          <circle cx="1256" cy="230" r="6"/><circle cx="1256" cy="496" r="6"/><circle cx="1256" cy="766" r="6"/>
-        </svg>
-      </div>
-    </div>
-  </section>
-  <!-- ============ 05 关卡设计：横屏锁定叙事 ============ -->
-  <section class="rail-wrap" id="levels">
-    <div class="rail-stage">
-      <header class="rail-head">
-        <span class="sec-ghost mono" aria-hidden="true">05</span>
-        <div>
-          <p class="sec-en">LEVEL DESIGN · LEVELS 01–13</p>
-          <h2>关卡设计</h2>
-          <p class="rail-sub">13 关的由来 —— 先<em>倒推</em>，再<em>延伸</em>：上行拆出前置概念，下行走向现实修理</p>
-        </div>
-      </header>
-
-      <div id="cam">
-        <!-- 上带：思考链（L8 起点 → 前因/提问 → L1–L7 升序补齐前置概念） -->
-        <div class="track" id="trackU">
-          <figure class="st hub" data-lv="8">
-            <span class="tag">起点</span>
-            <span class="st-thumb"><img class="px" src="素材/level-8.png" alt=""></span>
-            <figcaption><b>第 8 关 · 综合运用</b><i>四条阈值 · 五个色块 · 全部自主设置</i></figcaption>
-          </figure>
-
-          <div class="ask">
-            <p class="why"><b>前因</b>同学试玩第 8 关原型，看不懂界面</p>
-            <q>要做出第 8 关，<br>玩家得先会什么？<small>把第 8 关拆开 —— 缺一个概念，就补一关</small></q>
-            <svg viewBox="0 0 240 70" width="225" height="66" fill="none" aria-hidden="true">
-              <path d="M8 36 C 52 24, 96 48, 142 37 S 204 30, 220 36" stroke="#c4503c" stroke-width="5" stroke-linecap="round"/>
-              <path d="M202 19 L228 36 L200 51 Z" fill="#c4503c"/>
-            </svg>
+        <a class="card" href="grayrepair/" aria-label="查看灰度修理铺作品详情">
+          <div class="card-img"><img src="grayrepair/素材/game-level8.png" alt="灰度修理铺 第 8 关画面：灰色机械装置场景" loading="lazy"></div>
+          <div class="card-body">
+            <h3>灰度修理铺<span class="en">The Gray Workshop</span></h3>
+            <p>一款围绕"色彩与修理"机制的独立游戏，在线上可以完整试玩，配套设计文书完整可读。</p>
+            <div class="tags">
+              <span class="tag accent">独立游戏</span>
+              <span class="tag">设计 / 开发</span>
+              <span class="tag">线上可玩</span>
+            </div>
           </div>
+        </a>
 
-          <figure class="st" data-lv="1">
-            <span class="lvnote up">至少要明白什么是灰度</span>
-            <span class="st-thumb"><img class="px" src="素材/level-1.png" alt=""></span>
-            <figcaption><b>第 1 关 · 引入灰度</b><i>单像素 · 拖滑块</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="2">
-            <span class="lvnote dn">多个像素，拼成图像</span>
-            <span class="st-thumb"><img class="px" src="素材/level-2.png" alt=""></span>
-            <figcaption><b>第 2 关 · 引入像素</b><i>图像由像素组成</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="3">
-            <span class="lvnote up">灰度能映射成颜色</span>
-            <span class="st-thumb"><img class="px" src="素材/level-3.png" alt=""></span>
-            <figcaption><b>第 3 关 · 颜色映射</b><i>灰度段对应颜色</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="4">
-            <span class="lvnote dn">前三关的操作，合到一起</span>
-            <span class="st-thumb"><img class="px" src="素材/level-4.png" alt=""></span>
-            <figcaption><b>第 4 关 · 操作合并</b><i>灰度 × 映射合并</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="5">
-            <span class="lvnote up">认识灰度阈值</span>
-            <span class="st-thumb"><img class="px" src="素材/level-5.png" alt=""></span>
-            <figcaption><b>第 5 关 · 引入阈值</b><i>第一次拖阈值</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="6">
-            <span class="lvnote dn">两条阈值，难度加一档</span>
-            <span class="st-thumb"><img class="px" src="素材/level-6.png" alt=""></span>
-            <figcaption><b>第 6 关 · 两条阈值</b><i>颜色预先涂好</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="7">
-            <span class="lvnote up">四条阈值 + 全自主配色</span>
-            <span class="st-thumb"><img class="px" src="素材/level-7.png" alt=""></span>
-            <figcaption><b>第 7 关 · 全自主</b><i>阈值 + 涂色自主</i></figcaption>
-          </figure>
-
-          <p class="tail">从认出灰度到全自主 ——<br>通往第 8 关的路，铺好了</p>
-
-          <svg id="chainLine" aria-hidden="true"></svg>
-          <div id="noteLayer" aria-hidden="true"></div>
+        <div class="card placeholder" aria-label="新项目，文书准备中">
+          <div class="card-img">主图占位</div>
+          <div class="card-body">
+            <h3>新项目 · 制作中</h3>
+            <p>一个正在制作中的项目，详细介绍与设计文书整理中。</p>
+            <div class="tags">
+              <span class="badge-soon">占位 · 待补充</span>
+            </div>
+          </div>
         </div>
 
-        <!-- 下带：L8–L13（自然顺序，镜头从轴心向右延伸） -->
-        <div class="track" id="trackL">
-          <figure class="st hub" data-lv="8">
-            <span class="tag">起点</span>
-            <span class="st-thumb"><img class="px" src="素材/level-8.png" alt=""></span>
-            <figcaption><b>第 8 关 · 综合运用</b><i>同一个第 8 关，向下延伸</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="9">
-            <span class="st-thumb"><img class="px" src="素材/level-9.png" alt=""></span>
-            <figcaption><b>第 9 关 · 删太阳</b><i>阈值拖出轴外 · 太阳并入天空</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="10">
-            <span class="st-thumb"><img class="px" src="素材/level-10.png" alt=""></span>
-            <figcaption><b>第 10 关 · 去墨渍</b><i>墨水段并入纸色</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="11">
-            <span class="st-thumb"><img class="px" src="素材/level-11.png" alt=""></span>
-            <figcaption><b>第 11 关 · 去树枝</b><i>只留下人物</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="12">
-            <span class="st-thumb"><img class="px" src="素材/level-12.png" alt=""></span>
-            <figcaption><b>第 12 关 · 去日期戳</b><i>复用第 9 关解法</i></figcaption>
-          </figure>
-          <figure class="st" data-lv="13">
-            <span class="st-thumb"><img class="px" src="素材/level-13.png" alt=""></span>
-            <figcaption><b>第 13 关 · 修旧照</b><i>涂更浓的颜色</i></figcaption>
-          </figure>
-          <figure class="st finale">
-            <span class="fin-seal">结论</span>
-            <b>从一个构想，<br>倒推出 13 关</b>
-            <svg class="fin-line" viewBox="0 0 240 14" width="240" height="14" fill="none" aria-hidden="true">
-              <path d="M4 9 C 52 3, 108 12, 168 6 S 224 4, 236 8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-            <i>1–7 前置概念 · 8 枢纽 · 9–13 现实应用</i>
-          </figure>
+        <div class="card placeholder" aria-label="早期项目，整理中">
+          <div class="card-img">主图占位</div>
+          <div class="card-body">
+            <h3>早期项目</h3>
+            <p>我的第一个游戏项目，长屏设计文档整理中，将在此展示完整的创作过程。</p>
+            <div class="tags">
+              <span class="badge-soon">占位 · 待补充</span>
+            </div>
+          </div>
         </div>
 
-        <div id="link"><span>轴心 · 同一个第 8 关</span></div>
-      </div>
-
-      <div class="rail-note" id="railNote">
-        <p id="noteText">← 倒推：要支撑第 8 关，先要教会什么？</p>
-        <small id="noteSub">每个概念拆成一关 —— 玩家先学会零件，再见到整机</small>
-      </div>
-
-      <div class="rail-hud">
-        <span class="phase" id="phase">① 倒推 L8 → L1</span>
-        <span class="bar"><b id="barFill"></b></span>
       </div>
     </div>
   </section>
 
-  <!-- ============ 06 逐关解析：大图交替 ============ -->
-  <section class="sec sec-wide" id="levels-detail">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">06</span>
-      <div>
-        <p class="sec-en">LEVEL BY LEVEL</p>
-        <h2>逐关解析</h2>
-      </div>
-    </div>
-    <p class="sec-lead">每一关都只教一件事：玩法上多一个动作，理解上多一个关系。下面按关卡组说明它教什么、为什么这样设计 —— 以及试玩之后改掉的那些地方。</p>
-
-    <!-- 第 1 关 -->
-    <div class="lvg rv">
-      <div class="lvg-head">
-        <h3 class="lvg-title">第 1 关<span>引入灰度</span></h3>
-      </div>
-      <div class="lvg-media">
-        <!-- 动态图位：容器规格统一，后续把 img 换成通关过程 GIF 即可 -->
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-1.png" alt="第 1 关画面"></div>
-          <figcaption>L1 · 单像素 · 拖滑块</figcaption>
-        </figure>
-      </div>
-      <div class="lv-txt">
-        <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p>左右各一个方块，初始灰度不同，下方一个滑块。拖动滑块改变右侧方块的灰度，松手时判定，与左侧一致即通关。</p>
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><span class="no">02</span><h2>关于我</h2><span class="line"></span></div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p><strong>唐浩翔（Jesse）</strong>，数字媒体技术专业本科在读，方向是游戏设计与开发。</p>
+          <p>我喜欢从日常生活里找灵感，把情绪和经历转译成玩法机制。代表作《灰度修理铺》探索了色彩与修理的结合；正在进行的两个项目分别偏向叙事与系统设计。</p>
+          <p>除了做游戏，我也拍照 —— 相机教会我的事和游戏设计是同一件：取景即取舍。</p>
+          <p>目前正在准备研究生申请，欢迎通过页面底部的邮箱与我联系。</p>
         </div>
-        <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>这一关的位置是从最终目标倒推出来的。最初想直接实现的是后来第八关的形式：一张图、多条阈值、一组颜色自由配置，但朋友试玩过原型后，我发现他没法理解这个界面，说明关卡预设了大量前置概念。</p>
-          <p>因此改为从零推演：一个不了解这些知识的人要理解第八关，中间需要先理解哪些概念、按什么顺序。推演的第一步是灰度本身，最简单的呈现形式是一张只含一个像素的图像，这就是第一关：右图只有一个方块，玩家唯一的操作是拖动滑块，在拖动过程中体会灰度从黑到白的连续变化。</p>
-        </div>
-        <aside class="iter">
-          <p class="iter-head"><span class="iter-tag">迭代</span><em>试玩之后改掉的地方</em></p>
-          <p>这一关最初带有「接近提示」：拖到接近正确灰度时界面会亮。试玩中发现，玩家会拖着滑块扫过整根轴、等提示出现就松手，通关过程不包含任何比较和判断。</p>
-          <p class="chg">因此改为松手时判定，判定失败则滑块弹回原位，玩家必须先比较两边的灰度，再决定调整方向。</p>
+        <aside class="photo-wall" aria-label="摄影小画廊">
+          <h3>PHOTO WALL · 摄影</h3>
+          <div class="photos">
+            <div class="ph">照片占位</div>
+            <div class="ph">照片占位</div>
+            <div class="ph">照片占位</div>
+            <div class="ph">照片占位</div>
+            <div class="ph">照片占位</div>
+            <div class="ph">照片占位</div>
+          </div>
         </aside>
-      </div>
-    </div>
-
-    <!-- 第 2 关 -->
-    <div class="lvg flip rv">
-      <div class="lvg-head">
-        <h3 class="lvg-title">第 2 关<span>引入像素</span></h3>
-      </div>
-      <div class="lvg-media">
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-2.png" alt="第 2 关画面"></div>
-          <figcaption>L2 · 5×5 像素 · 逐个修正</figcaption>
-        </figure>
-      </div>
-      <div class="lv-txt">
-        <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p>左右各一张 5×5 的图像，大部分像素一致，个别像素的灰度明显不对。点击一个像素，滑块跳到该像素的灰度上；逐个修正后通关。</p>
-        </div>
-        <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>这一关把单个像素扩展为一张 5×5 的图像，教学点是图像由像素组成。</p>
-        </div>
-        <aside class="iter">
-          <p class="iter-head"><span class="iter-tag">迭代</span><em>试玩之后改掉的地方</em></p>
-          <p>试玩中发现，玩家不知道像素可以点击，而是沿用第一关的经验直接拖动滑块，操作没有任何效果。</p>
-          <p class="chg">因此这一关开局预先选中一个错误的像素：选中框亮着，滑块停在它的灰度上。玩家要么注意到选中框，要么拖滑块时发现像素跟着变化，两种情况都能理解这一关的操作方式。这一关没有文字提示，教学信息全部放在初始状态里，这一点贯穿全部关卡。</p>
-        </aside>
-      </div>
-    </div>
-
-    <!-- 第 3–4 关 -->
-    <div class="lvg rv">
-      <div class="lvg-head">
-        <h3 class="lvg-title">第 3–4 关<span>引入颜色映射</span></h3>
-      </div>
-      <div class="lvg-media two">
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-3.png" alt="第 3 关画面"></div>
-          <figcaption>L3 · 四色映射 · 阈值预固定</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-4.png" alt="第 4 关画面"></div>
-          <figcaption>L4 · 蒙德里安 · 灰度 × 映射合并</figcaption>
-        </figure>
-      </div>
-      <div class="lv-txt">
-        <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p><b>第三关</b>：左侧一幅四色抽象画，右侧为其灰度版；灰度轴预先分段，把色块拖到对应段上，图像中该灰度段的像素全部映射为拖入的颜色，涂对全部灰度段即通关。</p>
-          <p><b>第四关</b>：图换成蒙德里安的画，灰度调整和颜色映射同时可操作；右下角的两个黄色像素，需要同时应用灰度调整和映射颜色才能复原。</p>
-        </div>
-        <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>第三关的存在解决一个理解断层。前两关中，灰度轴上的滑块位置对应单个像素的灰度值；而阈值是轴上的分界线，切分的是一段灰度范围，同一个位置概念在这里含义发生了变化。直接进入阈值关，玩家会沿用前两关的理解来操作，无法对应这一关的目标。因此第三关将阈值预先固定，玩家只需要处理「一段灰度对应一种颜色」这一个关系。</p>
-          <p>第四关把第 1–2 关的灰度调整和第 3 关的颜色映射合并到同一关。右下角两个黄色像素的灰度被设成与背景相同，在灰度版里不可见；选择「不可见」而不是「颜色错误」，是因为颜色错误会让玩家认为是拖放位置不对、在映射条上反复调整，而设为不可见时，玩家能较快判断问题不在映射，转而去调整它的灰度。玩家在此会遇到一条贯穿全程的规则：<mark>灰度相同的像素颜色必然相同</mark>，要让这两个像素单独变黄，只能先修改它们的灰度。</p>
-        </div>
-        <aside class="quote-note">
-          <p class="q-tag">设计细节</p>
-          <p>开局预先涂好背景所在的灰度段，第一次见到映射条的玩家有一个已完成的样本可以参照。点像素从这一关起会在灰度轴上显示标记，指示该像素的灰度位置：判断像素的灰度不是游戏的核心，这个标记避免了不必要的比对负担，之后每关通用。</p>
-        </aside>
-      </div>
-    </div>
-
-    <!-- 第 5–7 关 -->
-    <div class="lvg flip rv">
-      <div class="lvg-head">
-        <h3 class="lvg-title">第 5–7 关<span>阈值的递进</span></h3>
-      </div>
-      <div class="lvg-media multi">
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-5.png" alt="第 5 关画面"></div>
-          <figcaption>L5 · 双色阈值 · 第一次拖</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-6.png" alt="第 6 关画面"></div>
-          <figcaption>L6 · 雾中月牙 · 两条阈值</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-7.png" alt="第 7 关画面"></div>
-          <figcaption>L7 · 雾中爱心 · 全自主配色</figcaption>
-        </figure>
-      </div>
-      <div class="lv-txt">
-        <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p><b>第五关</b>：右图是嵌套的方块图案，左图是双色目标；一条阈值、两个候选色块，玩家自行放置色块并拖动阈值。</p>
-          <p><b>第六关</b>：雾中的月牙，颜色预先涂好，两条阈值开局位于灰度轴两端，需要把月牙所在的灰度层从雾和背景之间分离出来，雾与背景显示为同一颜色。</p>
-          <p><b>第七关</b>：雾中的爱心，机制与第六关相同，颜色不预涂，涂色与阈值均由玩家完成。</p>
-        </div>
-        <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>这三关的递进只围绕阈值展开：第五关玩家第一次拖动阈值，同时颜色只有两种，操作范围最小；第六关增加到两条阈值，颜色预先涂好，以平衡新增加的操作难度；第七关阈值数量不变，把涂色也交还给玩家。</p>
-        </div>
-        <aside class="quote-note">
-          <p class="q-tag">设计细节</p>
-          <p>第五关的两个候选色块，左右位置与正确答案相反，防止玩家按顺序摆放直接通关、跳过对「阈值两侧各归一种颜色」的理解；摆反会得到一张颜色互换的图，需要玩家识别并交换。</p>
-        </aside>
-      </div>
-    </div>
-
-    <!-- 第 8–9 关 -->
-    <div class="lvg rv">
-      <div class="lvg-head">
-        <h3 class="lvg-title">第 8–9 关<span>综合与运用</span></h3>
-      </div>
-      <div class="lvg-media two">
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-8.png" alt="第 8 关画面"></div>
-          <figcaption>L8 · 综合运用 · 四条阈值五个色块</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-9.png" alt="第 9 关画面"></div>
-          <figcaption>L9 · 删太阳 · 阈值拖出轴外</figcaption>
-        </figure>
-      </div>
-      <div class="lv-txt">
-        <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p><b>第八关</b>：一幅五色的风景图，四条阈值、五个色块，全部自行设置，是前七关所有机制的综合。</p>
-          <p><b>第九关</b>：图像与第八关相同，但左侧目标图中没有太阳。</p>
-        </div>
-        <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>第八关没有引入新知识，是前七关机制的综合。图像更大、颜色更多，因此这一关减少了其他方面的难度：候选色块的顺序与答案一致，只有阈值的开局位置是错的，防止玩家直接沿用上一关的解。</p>
-          <p>第九关是前九关中第一次出现目标图无法直接复刻的情况：左图没有太阳，右图有。按上一关的经验涂完颜色后，太阳无法通过涂色去除，唯一的解法是把天空和太阳之间的阈值拖出灰度轴的最右端，使太阳所在的灰度段不再存在、归入天空色。在这套机制里，<mark>删除画面里的一个元素，就是把它所在的灰度段并进背景</mark>。</p>
-        </div>
-        <aside class="quote-note">
-          <p class="q-tag">设计细节</p>
-          <p>两个细节：那条阈值开局放在太阳可见的位置，如果开局太阳就已经消失，玩家直接通关，谜题不会发生；天空色预先涂好且不放入托盘，这一关要教的是「把阈值拖出轴外」这个操作，因此排除了「把太阳段直接涂成天空色」这条解法。</p>
-        </aside>
-      </div>
-    </div>
-
-    <!-- 第 10–13 关 -->
-    <div class="lvg flip rv">
-      <div class="lvg-head">
-        <h3 class="lvg-title">第 10–13 关<span>现实的修理任务</span></h3>
-      </div>
-      <div class="lvg-media multi">
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-10.png" alt="第 10 关画面"></div>
-          <figcaption>L10 · 被墨水污染的信</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-11.png" alt="第 11 关画面"></div>
-          <figcaption>L11 · 被树枝遮挡的人像</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-12.png" alt="第 12 关画面"></div>
-          <figcaption>L12 · 盖着日期戳的海边风景</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-13.png" alt="第 13 关画面"></div>
-          <figcaption>L13 · 褪色的人像旧照</figcaption>
-        </figure>
-      </div>
-      <div class="lv-txt">
-        <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>这四关的设计目的，是把前面几关的知识点和真实应用结合起来。我寻找的是现实中图片修复的例子：修复旧照片、去除水印、人像修图。现实中的原理当然更复杂，但抽象地理解，它们的本质与游戏里的知识是同一件事：<mark>把不合适的颜色换成想要的颜色</mark>。</p>
-          <p>这一部分最初的设计仍然是前几关的做法，把目标图像直接做好。但这样一来，一个页面上需要三张图：目标图像、待修复的图像和灰度版，破坏了游戏从第一关开始一直保持的统一感。为了维持两张图的布局，目标颜色不再作为标准答案给出，而是通过情景句暗示，让玩家自己推理修复的意图：既保住了统一的设计，也让通关多出了推理这一步。</p>
-          <p>第十关把墨渍所在的灰度段归入纸色，字迹保留下来；第十一关把树枝和背景所在的灰度段归成白色，只留下人物；第十二关在没有目标图对照的情况下，独立使用一次第九关的解法（把最亮的灰度段并进背景）去掉日期戳；第十三关的淡彩同样不是答案，它只指示每个区域原本的颜色，实际要涂的是一组更浓的颜色，判定通过后左侧切换为修复完成的照片。</p>
-        </div>
-        <div class="scene-row">
-          <div class="scene-card"><p class="scene-en">“Oh damn, the ink.”</p><p class="scene-zh">被墨水污染的信</p></div>
-          <div class="scene-card"><p class="scene-en">“Just her.”</p><p class="scene-zh">被树枝遮挡的人像照片</p></div>
-          <div class="scene-card"><p class="scene-en">“Who watermarks this?”</p><p class="scene-zh">盖有日期戳的海边风景</p></div>
-          <div class="scene-card"><p class="scene-en">“A faded old photo.”</p><p class="scene-zh">褪色的人像旧照</p></div>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ 07 总体设计 ============ -->
-  <section class="sec" id="overall">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">07</span>
-      <div>
-        <p class="sec-en">DESIGN PRINCIPLES</p>
-        <h2>总体设计</h2>
-      </div>
-    </div>
-    <div class="asym-row rv">
-      <div class="asym-text">
-        <p>这个游戏有一个更早的版本。最初我按「一关对应一种算法」的想法做了一版阈值原型，配了直方图和文字对照表；给不了解相关知识的人试玩，发现它本质上是先文字教学、再照着操作，解释本身成了新的门槛。</p>
-        <p>由此我确立了一条标准：<mark>每一关都要经得起「完全不懂的人，能不能只靠玩就通关」的检验</mark>，第一版原型没有通过这条检验，因此被推翻；后面的每一次改动也都要经过它的检验。</p>
-      </div>
-      <div class="asym-art" aria-hidden="true">
-        <img class="aa-1 px" src="素材/level-8.png" alt="">
-        <img class="aa-2 px" src="素材/level-9.png" alt="">
-        <i class="aa-chip"></i>
-        <p class="aa-cap mono">L8 风景 / L9 删太阳</p>
-      </div>
-    </div>
-    <div class="principles rv">
-      <article class="pr">
-        <p class="pr-no">01</p>
-        <h3>设计元素的统一</h3>
-        <p>灰度调整、颜色映射、阈值全部呈现在同一条灰度轴上，四种操作从第一关贯穿到最后一关；界面上始终只有两张图，右侧灰度版的含义全程不变，左侧图像的含义从前半段的目标图变为后半段的待修复的图像。</p>
-      </article>
-      <article class="pr">
-        <p class="pr-no">02</p>
-        <h3>零文字教学</h3>
-        <p>全程没有文字教程，玩法和关卡背后的原理都通过设计让玩家自己探索出来，教学信息放在初始状态里，概念的名字放在通关之后的讲解里。</p>
-      </article>
-      <article class="pr">
-        <p class="pr-no">03</p>
-        <h3>难度梯度的连贯</h3>
-        <p>难度依次增加；引入新概念时相应减少其他方面的难度来保持平衡，没有新概念引入时，就从纯数量上增加复杂度；后一关只建立在前一关已学会的东西之上，不出现没学过就要用到的机制。</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============ 08 心得 ============ -->
-  <section class="sec" id="notes">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">08</span>
-      <div>
-        <p class="sec-en">NOTES</p>
-        <h2>心得</h2>
-      </div>
-    </div>
-    <div class="notes-grid">
-      <div class="note-quote rv">
-        <blockquote>思路很难一次想完整 ——<br>可以先把自己最想清楚的那部分做出来。</blockquote>
-        <blockquote>有时候线索以约束的形式出现，<br>但约束同时也是亮点。</blockquote>
-        <blockquote>假设自己是第一次玩这个游戏，<br>会怎么想、哪里会不懂。</blockquote>
-      </div>
-      <div class="notes-body rv">
-        <p>这个项目验证了一种做设计的方式。思路很难一次想完整，可以先把自己最想清楚的那部分做出来：第八关在其余关卡存在之前就已经在我脑子里成形，向更基础的方向拆出前面的关卡，向综合的方向长出后面的关卡。做出来的内容会变成线索，在已有的东西里找规律和逻辑，再把这些逻辑应用到新的关卡上，完整的关卡结构就是这样逐渐成形的。</p>
-        <p>有时候这些线索以约束的形式出现，但约束同时也是亮点。第 10–13 关的设计就是例子：为了保持两张图的统一布局，页面上放不下目标图，这个约束促成了用情景句代替答案的方案，通关反而多出了推理这一步。设计元素的统一是我一直追求的点，但最初设计新关卡时，我并不知道该怎么保持它；随着对已有关卡的思考越来越多、理解越来越深，方法是在这个过程中逐渐明确的。</p>
-        <p>另一个贯穿始终的习惯，是站在玩家的角度思考：不能把自己的想法预设成共识，要假设自己是第一次玩这个游戏，会怎么想、哪些地方可能不理解，这些地方往往就是后续需要迭代优化的细节。</p>
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head"><span class="no">03</span><h2>联系</h2><span class="line"></span></div>
+      <div class="contact-inner">
+        <a class="big-mail" href="mailto:jesse20050324@gmail.com">jesse20050324@gmail.com</a>
+        <p>申请、合作或只是聊聊游戏设计，都欢迎直接写信给我，我会认真回复每一封。</p>
+        <div class="contact-links">
+          <a href="https://github.com/jesse20050324" target="_blank" rel="noopener">GitHub →</a>
+        </div>
       </div>
     </div>
   </section>
-
-  <!-- ============ 09 试玩 ============ -->
-  <section class="sec sec-wide" id="play">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">09</span>
-      <div>
-        <p class="sec-en">PLAY IT</p>
-        <h2>试玩</h2>
-      </div>
-    </div>
-    <p class="sec-lead">线上完整版，带主菜单、关卡选择和进度存档（保存在你自己的浏览器里）。无需安装，打开即玩。</p>
-    <div class="play-frame-wrap rv">
-      <iframe class="play-frame" src="https://jesse20050324.github.io/dip-game/game/blue/index.html" title="灰度修理铺 线上完整版" loading="lazy"></iframe>
-    </div>
-    <p class="play-alt mono">嵌入显示异常时，<a href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">点这里在新标签页打开 →</a></p>
-  </section>
-
 </main>
 
-<footer class="site-foot">
-  <p class="mono">灰度修理铺 · THE GRAY WORKSHOP — 个人作品页</p>
-  <p class="mono dim">正文取自项目文书 · 游戏本体：jesse20050324.github.io/dip-game · 网站纯静态，双击即开</p>
+<footer>
+  <div class="wrap">
+    <span>© 2026 唐浩翔 Jesse</span>
+    <span>Powered by GitHub Pages</span>
+  </div>
 </footer>
-
-<script>
-/* ============ 1. 进度条 + 导航高亮 ============ */
-(() => {
-  const bar = document.getElementById('progress');
-  const links = [...document.querySelectorAll('.site-nav a')];
-  const secs = links
-    .map(a => document.querySelector(a.getAttribute('href')))
-    .filter(Boolean);
-
-  function onScroll() {
-    const h = document.documentElement.scrollHeight - innerHeight;
-    bar.style.width = (Math.min(1, scrollY / Math.max(1, h)) * 100) + '%';
-    const mid = scrollY + innerHeight * 0.32;
-    let cur = null;
-    secs.forEach(s => { if (s.offsetTop <= mid) cur = s; });
-    links.forEach(a => a.classList.toggle('active', cur && a.getAttribute('href') === '#' + cur.id));
-  }
-  addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', onScroll);
-  onScroll();
-})();
-
-/* ============ 2. 滚动浮现 ============ */
-(() => {
-  const els = document.querySelectorAll('.rv');
-  if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
-  els.forEach(e => io.observe(e));
-})();
-
-/* ============ 3. 界面解说画布等比缩放 ============ */
-(() => {
-  const wrap = document.getElementById('guideWrap');
-  const canvas = document.getElementById('guideCanvas');
-  if (!wrap || !canvas) return;
-  function fit() {
-    const k = Math.min(1, wrap.clientWidth / 1600);
-    canvas.style.transform = `scale(${k})`;
-    wrap.style.height = (canvas.offsetHeight * k) + 'px';
-  }
-  addEventListener('resize', fit);
-  addEventListener('load', fit);
-  fit();
-})();
-
-/* ============ 4. 关卡设计：滚动锁定横屏叙事 ============ */
-(() => {
-  const wrap  = document.getElementById('levels');
-  const stage = wrap.querySelector('.rail-stage');
-  const cam   = document.getElementById('cam');
-  const tU    = document.getElementById('trackU');
-  const tL    = document.getElementById('trackL');
-  const link  = document.getElementById('link');
-  const railNote = document.getElementById('railNote');
-  const noteText = document.getElementById('noteText');
-  const noteSub  = document.getElementById('noteSub');
-  const phaseEl = document.getElementById('phase');
-  const barFill = document.getElementById('barFill');
-  const cardsU = [...tU.querySelectorAll('.st')];
-  const cardsL = [...tL.querySelectorAll('.st')];
-  const chainU = cardsU.filter(c => !c.classList.contains('hub'));
-  const chainL = cardsL.filter(c => !c.classList.contains('hub'));
-  const chainSvg = document.getElementById('chainLine');
-  const noteLayer = document.getElementById('noteLayer');
-  const noteMap = new Map();
-
-  const camShiftVH = -19;   // 阶段②镜头上移量（vh）
-  let M = null, wrapTop = 0;
-
-  function relocateNotes() {
-    cardsU.forEach(c => {
-      const n = c.querySelector('.lvnote');
-      if (!n) return;
-      if (n.parentElement !== noteLayer) noteLayer.appendChild(n);
-      n.style.left = (c.offsetLeft + c.offsetWidth / 2) + 'px';
-      noteMap.set(c, n);
-    });
-  }
-
-  function buildChainLine() {
-    const chain = [...tU.querySelectorAll('.st[data-lv]')].filter(c => +c.dataset.lv < 8);
-    if (!chain.length) return;
-    const pts = chain.map(c => ({ x: c.offsetLeft + c.offsetWidth / 2, y: 38 }));
-    const P = [{ x: pts[0].x - 150, y: 46 }, ...pts, { x: pts[pts.length - 1].x + 110, y: 42 }];
-    let d = `M ${P[0].x} ${P[0].y}`;
-    for (let i = 1; i < P.length; i++) {
-      const a = P[i - 1], b = P[i], w = i % 2 ? 7 : -7;
-      d += ` C ${(a.x + (b.x - a.x) * .4).toFixed(1)} ${a.y + w}, ${(b.x - (b.x - a.x) * .4).toFixed(1)} ${b.y - w}, ${b.x} ${b.y}`;
-    }
-    const W = Math.ceil(P[P.length - 1].x + 40);
-    const svgH = chainSvg.offsetHeight || 155;
-    chainSvg.setAttribute('viewBox', `0 0 ${W} ${svgH}`);
-    chainSvg.setAttribute('width', W);
-    chainSvg.innerHTML = `<path d="${d}"/>` + pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4.5"/>`).join('');
-  }
-
-  function measure() {
-    const vw = innerWidth;
-    const vh = stage.clientHeight;                 // 舞台高 = 视口 - 导航
-    const jx = Math.round(vw * .5);
-    const head = wrap.querySelector('.rail-head');
-    const headBottom = head.offsetTop + head.offsetHeight;
-    const compact = vh < 900;
-    document.documentElement.classList.toggle('compact', compact);
-    const STACK = compact ? 133 : 158;
-    let stW = 252, cardH = 0, hubH = 0, tuTop = 0, tlTop = 0;
-    for (let i = 0; i < 20; i++) {
-      document.documentElement.style.setProperty('--st-w', stW + 'px');
-      cardH = tU.querySelector('.st:not(.hub)').offsetHeight;
-      hubH = tU.querySelector('.hub').offsetHeight;
-      tuTop = Math.max(headBottom + 22 + STACK, Math.round(vh * .28));
-      tlTop = tuTop + Math.max(cardH, hubH) + 34;
-      if (tlTop + cardH <= vh - 10 || stW <= 168) break;
-      stW -= 8;
-    }
-    tU.style.top = tuTop + 'px';
-    tL.style.top = tlTop + 'px';
-
-    const hubU = tU.querySelector('.hub');
-    const hubL = tL.querySelector('.hub');
-    const lastU = [...tU.querySelectorAll('.st')].pop();
-    const last  = tL.querySelector('.finale');
-    const cU = hubU.offsetLeft + hubU.offsetWidth / 2;
-    const cL = hubL.offsetLeft + hubL.offsetWidth / 2;
-    const cF = lastU.offsetLeft + lastU.offsetWidth / 2;
-    const cE = last.offsetLeft + last.offsetWidth / 2;
-    M = {
-      vh, jx, tuTop, tlTop,
-      segU: cF - cU,
-      segV: Math.round(vh * .45),
-      segL: (jx - cL) - (jx - cE),
-      u0: jx - cU, u1: jx - cF, l0: jx - cL, l1: jx - cE,
-      camY: Math.round(vh * camShiftVH / 100),
-      liftY: Math.round(vh * .11),
-    };
-    M.total = M.segU + M.segV + M.segL;
-    wrap.style.height = (vh + M.total) + 'px';
-
-    link.style.left = jx + 'px';
-    const linkTop = tuTop + hubU.offsetHeight;
-    link.style.top  = linkTop + 'px';
-    link.style.height = Math.max(24, tlTop - linkTop) + 'px';
-
-    wrapTop = wrap.getBoundingClientRect().top + scrollY;
-    buildChainLine();
-    relocateNotes();
-  }
-
-  function centerScale(cards, trackX) {
-    const fx = innerWidth / 2;
-    const plateau = innerWidth * .085;
-    const range   = innerWidth * .115;
-    cards.forEach(c => {
-      const cx = trackX + c.offsetLeft + c.offsetWidth / 2;
-      const d = Math.abs(cx - fx);
-      const k = d <= plateau ? 1 : Math.max(0, 1 - (d - plateau) / range);
-      const s = 1 + .15 * k;
-      c.style.transform = k > 0 ? `scale(${s.toFixed(3)})` : '';
-      const note = noteMap.get(c);
-      if (note) note.style.opacity = (.3 + .7 * k).toFixed(2);
-    });
-  }
-
-  function highlight(cards, on) {
-    let best = null, bd = 1e9;
-    const fx = innerWidth * .5;
-    cards.forEach(c => {
-      const r = c.getBoundingClientRect();
-      if (r.right < 0 || r.left > innerWidth) return;
-      const d = Math.abs(r.left + r.width / 2 - fx);
-      if (d < bd) { bd = d; best = c; }
-    });
-    cards.forEach(c => c.classList.toggle('live', on && c === best));
-  }
-
-  let lastY = -1, noteState = '';
-  function setNote(state) {
-    if (noteState === state) return;
-    noteState = state;
-    if (state === 'u') {
-      railNote.style.top = '60vh';
-      noteText.textContent = '← 倒推：要支撑第 8 关，先要教会什么？';
-      noteSub.textContent  = '每个概念拆成一关 —— 玩家先学会零件，再见到整机';
-    } else if (state === 'l') {
-      railNote.style.top = Math.round(M.tuTop - 56) + 'px';
-      noteText.textContent = '延伸：这套机制在现实里修理什么？ →';
-      noteSub.textContent  = '从「教概念」转向真实任务，修复目标由玩家自己推理';
-    }
-  }
-
-  function frame() {
-    if (!M) { requestAnimationFrame(frame); return; }
-    if (Math.abs(scrollY - lastY) >= .5 || lastY < 0) {
-      lastY = scrollY;
-      const s = Math.max(0, Math.min(scrollY - wrapTop, M.total));
-      const { segU, segV, segL } = M;
-      if (s < segU) {
-        tU.style.transform = `translateX(${M.u0 - s}px)`;
-        tU.style.opacity = 1;
-        cam.style.transform = 'translateY(0)';
-        tL.style.transform = `translateX(${M.l0}px)`;
-        tL.classList.add('ghost');
-        tL.style.opacity = '';
-        link.style.opacity = Math.max(0, 1 - s / (segU * .18));
-        railNote.style.opacity = 0;
-        phaseEl.textContent = '① 倒推 · 拆出第 1–7 关';
-        centerScale(chainU, M.u0 - s);
-        highlight(cardsU, true); highlight(cardsL, false);
-      } else if (s < segU + segV) {
-        const t = (s - segU) / segV;
-        const rise = -M.camY * t;
-        tU.style.transform = `translateX(${M.u1}px)`;
-        tU.style.opacity = Math.max(0, 1 - rise / 90);
-        cam.style.transform = `translateY(${-rise}px)`;
-        tL.classList.remove('ghost');
-        tL.style.transform = `translateX(${M.l0}px)`;
-        tL.style.opacity = .55 + .45 * t;
-        link.style.opacity = 0;
-        railNote.style.opacity = 0;
-        phaseEl.textContent = '② 转向延伸段';
-        highlight(cardsU, false); highlight(cardsL, false);
-      } else {
-        const k = s - segU - segV;
-        const lift = M.liftY * Math.min(1, k / (segL * .18));
-        tL.classList.remove('ghost');
-        tL.style.transform = `translateX(${M.l0 - k}px) translateY(${(-lift).toFixed(1)}px)`;
-        tL.style.opacity = 1;
-        cam.style.transform = `translateY(${M.camY}px)`;
-        tU.style.opacity = 0;
-        link.style.opacity = 0;
-        setNote('l');
-        railNote.style.opacity = Math.min(1, k / (segL * .1));
-        phaseEl.textContent = '③ 延伸 L8 → L13';
-        centerScale(chainL, M.l0 - k);
-        highlight(cardsL, true); highlight(cardsU, false);
-      }
-      barFill.style.width = (s / M.total * 100) + '%';
-    }
-    requestAnimationFrame(frame);
-  }
-
-  addEventListener('resize', () => { M = null; lastY = -1; measure(); });
-  addEventListener('load', measure);
-  measure();
-  requestAnimationFrame(frame);
-})();
-</script>
 
 </body>
 </html>
