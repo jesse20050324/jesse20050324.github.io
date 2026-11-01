@@ -10,7 +10,7 @@
   灰度修理铺 · 完整作品站（合并版）
   ============================================================
   结构：导航栏 / 首屏 / 01 灵感 / 02 概述 / 03 操作 / 04 界面解说 /
-        05 关卡设计（横屏锁定叙事）/ 06 逐关解析 / 07 总体设计 / 08 心得 / 09 试玩
+        05 关卡设计（先讲起因，再进横屏锁定倒推叙事）/ 06 逐关解析 / 07 心得 / 08 试玩
   视觉：雾蓝工坊（游戏同源色板）+ 白线网格底 + 空心数字小标题
   素材：素材/*.png（160×160 关卡图，需 image-rendering: pixelated）
   ============================================================
@@ -135,7 +135,6 @@ mark, .mark {
   text-shadow: 0 6px 0 #f1f7fb, 0 11px 0 rgba(18,33,51,.2);
   margin-bottom: 18px;
 }
-.hero .sub { font-weight: 600; color: var(--accent-deep); margin-bottom: 24px; font-size: clamp(16px,.9vw,18.5px); }
 .hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; list-style: none; }
 .hero .facts li {
   display: flex; align-items: baseline; gap: 8px;
@@ -175,6 +174,26 @@ mark, .mark {
   background: #e8b84a; border: 3px solid var(--ink); border-radius: 10px;
   box-shadow: 0 4px 0 var(--shadow); z-index: 4;
 }
+/* 首屏试玩入口：实心墨蓝按钮 + 红虚线描边（与 03 取景框同一支标注线） */
+.hero-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: -2px 0 26px; }
+.btn-play {
+  position: relative; display: inline-flex; align-items: center; gap: 11px;
+  padding: 13px 24px 13px 20px;
+  background: var(--ink); color: var(--paper); text-decoration: none;
+  border: 2px solid var(--ink); border-radius: 11px;
+  box-shadow: 0 5px 0 var(--shadow);
+  font-size: 16px; font-weight: 900; letter-spacing: .12em;
+  rotate: -.8deg;
+  transition: translate .3s var(--spring), rotate .3s var(--spring),
+              box-shadow .3s var(--out), background .3s ease;
+}
+.btn-play::before {
+  content: ""; position: absolute; inset: -7px; border-radius: 16px;
+  border: 2px dashed rgba(196,80,60,.5); pointer-events: none;
+}
+.btn-play .tri { flex: none; }
+.btn-play:hover { translate: 0 -4px; rotate: 0deg; box-shadow: 0 9px 0 var(--shadow); background: #0b1725; }
+.btn-play:active { translate: 0 -1px; box-shadow: 0 3px 0 var(--shadow); }
 
 /* ========== 章节骨架 ========== */
 main { position: relative; }
@@ -248,7 +267,7 @@ p { color: var(--ink-soft); }
   position: relative;
   display: grid; grid-template-columns: repeat(4,minmax(0,1fr));
   gap: clamp(20px,2.2vw,34px);
-  margin: 30px 0 8px;
+  margin: 34px 0 8px;
 }
 .ops-rail::before {
   content: ""; position: absolute; left: 4%; right: 4%; top: 37%;
@@ -299,7 +318,6 @@ p { color: var(--ink-soft); }
 .op-mark.below::after { top: auto; bottom: -20px; }
 .op h3 { font-size: 15.5px; font-weight: 900; letter-spacing: .05em; margin-bottom: 5px; }
 .op p { font-size: 12.5px; line-height: 1.75; color: var(--muted); }
-.op-foot { margin-top: 16px; font-size: 12.5px; color: var(--muted); }
 
 /* ========== 04 界面解说：1600×1200 说明画布 ========== */
 .guide-wrap { position: relative; width: 100%; margin: 26px auto 0; }
@@ -332,9 +350,14 @@ p { color: var(--ink-soft); }
 .gc-card b { display: block; font-size: 29px; font-weight: 900; line-height: 1.25; margin: 6px 0 8px; letter-spacing: .01em; }
 .gc-card p { font-size: 17px; line-height: 1.7; color: #4a5a6b; }
 .gc-arrows { position: absolute; inset: 0; width: 1600px; height: 1000px; pointer-events: none; }
-.gc-arrows path.lead { fill: none; stroke: #3f6170; stroke-width: 3; stroke-dasharray: 11 8; stroke-linecap: round; }
-.gc-arrows circle { fill: #b0574a; }
-.gc-arrows path.tip { fill: #3f6170; }
+/* 引线：与 03 标注框、05 手写批注同一支陶土红；加白色柔光，压深色实机截图也分得清 */
+.gc-arrows path.lead {
+  fill: none; stroke: #c4503c; stroke-width: 3.4;
+  stroke-dasharray: 11 8; stroke-linecap: round;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,.9)) drop-shadow(0 0 5px rgba(255,255,255,.55));
+}
+.gc-arrows circle { fill: #c4503c; }
+.gc-arrows path.tip { fill: #c4503c; }
 /* 窄屏兜底：画布改为上下堆叠，不再整体缩放 */
 @media (max-width: 900px) {
   .guide-canvas {
@@ -351,14 +374,18 @@ p { color: var(--ink-soft); }
 /* ========== 05 关卡设计：横屏锁定叙事 ========== */
 .rail-wrap { position: relative; width: 100%; background: var(--paper); margin-top: clamp(60px,8vh,100px); scroll-margin-top: var(--navh); }
 .rail-stage { position: sticky; top: var(--navh); height: calc(100vh - var(--navh)); overflow: hidden; }
+/* 设计层：JS 把它设成固定的"设计尺寸"，再整体 scale 到舞台大小。
+   这样卡片、批注、图注的比例在 1280 与 1920 上是同一套，不会为了塞进矮屏把卡宽一路压到 150px。 */
+.rail-fit { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
 #cam { position: absolute; inset: 0; will-change: transform; }
-.rail-head { position: absolute; left: 6vw; top: 4vh; z-index: 5; display: flex; align-items: flex-start; gap: 18px; }
-.rail-head .sec-ghost { position: static; font-size: clamp(42px,4vw,58px); line-height: .86; margin-top: 1px; }
-.rail-head h2 { font-size: clamp(28px,2.4vw,40px); font-weight: 900; letter-spacing: .02em; line-height: 1.15; }
-.rail-head .rail-sub { margin-top: 9px; font-size: 13px; color: var(--muted); letter-spacing: .04em; }
+.rail-head { position: absolute; left: 6vw; top: 2.6vh; z-index: 5; }
+.rail-head > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 18px; }
+.rail-head .sec-en { flex: 0 0 100%; font-size: 10px; letter-spacing: .34em; margin-bottom: 3px; }
+.rail-head h2 { font-size: 31px; font-weight: 900; letter-spacing: .02em; line-height: 1.1; }
+.rail-head .rail-sub { margin: 0; font-size: 12.5px; color: var(--muted); letter-spacing: .04em; }
 .rail-head .rail-sub em { font-style: normal; color: var(--red); }
-.track { position: absolute; left: 0; display: flex; align-items: flex-start; gap: 34px; will-change: transform; }
-#trackU { z-index: 3; gap: 58px; }
+.track { position: absolute; left: 0; display: flex; align-items: flex-start; gap: 46px; will-change: transform; }
+#trackU { z-index: 3; gap: 62px; }
 #trackU .st { z-index: 1; }
 #trackL { z-index: 2; transition: opacity .25s linear; }
 #trackL.ghost {
@@ -379,17 +406,20 @@ p { color: var(--ink-soft); }
 }
 .st .st-thumb img { width: 100%; height: 100%; }
 .st figcaption { padding: 10px 4px 2px; }
+/* 图注保持单行：一旦折行，卡片变窄反而更高，measure() 的缩放循环会一路缩到底 */
+.st b, .st i { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .st b { display: block; font-size: 15px; font-weight: 900; letter-spacing: .04em; }
 .st i { display: block; font-style: normal; margin-top: 5px; font-size: 12px; color: var(--muted); letter-spacing: .05em; }
 #trackU .st:not(.hub) .st-thumb img { filter: grayscale(1) contrast(.92); }
 .st.live { box-shadow: 0 6px 0 var(--shadow), 0 0 0 3px var(--accent); }
 .st.live b { color: var(--accent-deep); }
 .st.hub {
-  width: calc(var(--st-w, 252px) + 40px);
+  /* 起点卡不再靠加宽撑大——加宽会抬高整条带的布局高度，把普通卡压小。
+     改为底部中心为原点的视觉放大：不占布局高度，向上溢出一半，正好落在批注区空档。 */
+  transform: scale(1.18); transform-origin: 50% 100%;
   border: 3px solid var(--red);
   box-shadow: 0 6px 0 var(--shadow), 0 0 0 5px var(--paper), 0 0 0 8px var(--red);
 }
-#trackU .st.hub { width: calc(var(--st-w, 252px) + 80px); }
 .st.hub .st-thumb img { filter: none !important; }
 .st.hub .tag {
   position: absolute; top: -16px; right: -14px;
@@ -399,10 +429,10 @@ p { color: var(--ink-soft); }
   box-shadow: 0 3px 0 var(--shadow); rotate: 3deg;
 }
 .st.hub b { color: var(--red); }
-#chainLine { position: absolute; left: 0; top: -155px; height: 155px; overflow: visible; pointer-events: none; z-index: 0; }
+/* 批注带高度与 JS 里的 NOTE_H 必须一致（124）：上注 -124，下注 -78，链条线 -100 */
+#chainLine { position: absolute; left: 0; top: -100px; height: 100px; overflow: visible; pointer-events: none; z-index: 0; }
 #chainLine path { stroke: var(--red); stroke-width: 3; stroke-dasharray: 12 9; stroke-linecap: round; fill: none; opacity: .85; }
 #chainLine circle { fill: var(--red); }
-html.compact #chainLine { top: -130px; height: 130px; }
 #noteLayer { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: visible; }
 .lvnote {
   position: absolute; left: 0; transform: translateX(-50%);
@@ -410,10 +440,8 @@ html.compact #chainLine { top: -130px; height: 130px; }
   font-family: var(--hand); font-size: 19px; line-height: 1.4;
   color: var(--red); letter-spacing: .02em;
 }
-.lvnote.up { top: -155px; }
-.lvnote.dn { top: -97px; }
-html.compact .lvnote.up { top: -131px; }
-html.compact .lvnote.dn { top: -73px; }
+.lvnote.up { top: -124px; }
+.lvnote.dn { top: -78px; }
 /* 下带收尾：手写结论，与上带的「前因/问句」同族 */
 .st.finale {
   width: 340px; background: transparent; border: 0; box-shadow: none;
@@ -428,6 +456,7 @@ html.compact .lvnote.dn { top: -73px; }
 .st.finale b {
   display: block; font-family: var(--hand); font-size: 33px; line-height: 1.5;
   color: var(--red); letter-spacing: .04em;
+  white-space: normal; overflow: visible; text-overflow: clip;
 }
 .st.finale .fin-line { display: block; margin: 4px 0 12px; color: rgba(196,80,60,.5); }
 .st.finale i { display: block; font-style: normal; font-size: 12px; color: var(--muted); letter-spacing: .1em; }
@@ -540,30 +569,38 @@ html.compact .lvnote.dn { top: -73px; }
 .scene-en { font-family: var(--mono); font-size: 12px; color: var(--red); }
 .scene-zh { font-family: var(--hand); font-size: 13.5px; color: var(--muted); margin-top: 2px; }
 
-/* ========== 07 总体设计 ========== */
-.principles { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 26px 0 10px; }
-.pr {
-  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
-  box-shadow: 0 6px 0 var(--shadow); padding: 20px 20px 18px;
+/* ========== 07 心得 ========== */
+/* 三条原则压成短句，作为心得的收口（原 07 总体设计不再单独成节） */
+.creed-lead {
+  margin: 2px 0 16px;
+  font-size: clamp(15px,1vw,17px); font-weight: 800;
+  color: var(--ink); letter-spacing: .02em;
 }
-.pr:nth-child(1) { rotate: -.8deg; }
-.pr:nth-child(2) { rotate: .7deg; }
-.pr:nth-child(3) { rotate: -.5deg; }
-.pr .pr-no { font-family: var(--mono); font-size: 11px; color: var(--red); letter-spacing: .22em; }
-.pr h3 { font-size: 16.5px; font-weight: 900; margin: 8px 0; letter-spacing: .03em; }
-.pr p { font-size: 13.5px; line-height: 1.85; }
-
-/* ========== 08 心得 ========== */
-.notes-grid { display: grid; grid-template-columns: minmax(0,.92fr) minmax(0,1.08fr); gap: clamp(24px,3.4vw,52px); align-items: start; }
-.note-quote blockquote {
-  font-family: var(--hand); font-size: clamp(19px,1.7vw,24px); line-height: 1.75;
-  color: var(--red); margin-bottom: 22px; padding-left: 18px;
+.creed {
+  display: grid; grid-template-columns: repeat(3,minmax(0,1fr));
+  border-top: 2px solid var(--ink); margin: 0 0 30px;
+}
+.creed > article { padding: 18px 26px 6px 0; border-right: 2px dashed rgba(18,33,51,.14); }
+.creed > article:last-child { border-right: 0; padding-right: 0; }
+.creed .cr-no { font-family: var(--mono); font-size: 11px; letter-spacing: .24em; color: var(--red); }
+.creed h3 { font-size: clamp(19px,1.4vw,23px); font-weight: 900; letter-spacing: .03em; margin: 7px 0 7px; }
+.creed p { font-size: 13.5px; line-height: 1.85; }
+/* 三句手写要点与三段正文逐行配对：左红字、右正文，首行基线对齐 */
+.note-rows { border-top: 2px dashed rgba(18,33,51,.14); margin-top: 4px; }
+.note-row {
+  display: grid; grid-template-columns: minmax(0,.94fr) minmax(0,1.06fr);
+  gap: clamp(24px,3.4vw,52px); align-items: baseline;
+  padding: 26px 0; border-bottom: 2px dashed rgba(18,33,51,.14);
+}
+.note-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.note-row blockquote {
+  font-family: var(--hand); font-size: clamp(19px,1.7vw,23px); line-height: 1.72;
+  color: var(--red); padding-left: 18px;
   border-left: 3px dashed rgba(196,80,60,.5);
 }
-.notes-body p { font-size: clamp(15px,.98vw,16.5px); line-height: 2; }
-.notes-body p + p { margin-top: 1em; }
+.note-row p { font-size: clamp(15px,.98vw,16.5px); line-height: 2; }
 
-/* ========== 09 试玩 ========== */
+/* ========== 08 试玩 ========== */
 .play-frame-wrap {
   position: relative; border: 2px solid var(--ink); border-radius: 14px;
   overflow: hidden; background: #0d1620;
@@ -600,8 +637,10 @@ html.compact .lvnote.dn { top: -73px; }
   .asym-art { min-height: 360px; }
   .lvg, .lvg.flip { grid-template-columns: 1fr; }
   .lvg.flip .lvg-media { order: 0; }
-  .principles { grid-template-columns: 1fr; }
-  .notes-grid { grid-template-columns: 1fr; }
+  .creed { grid-template-columns: 1fr; }
+  .creed > article { padding: 16px 0 14px; border-right: 0; border-bottom: 2px dashed rgba(18,33,51,.14); }
+  .creed > article:last-child { border-bottom: 0; }
+  .note-row { grid-template-columns: 1fr; gap: 10px; align-items: start; }
 }
 @media (max-width: 820px) {
   .head-inner { padding: 0 14px; }
@@ -610,6 +649,8 @@ html.compact .lvnote.dn { top: -73px; }
   .hero .card-side1, .hero .card-side2 { display: none; }
   .ops-rail { grid-template-columns: 1fr; }
   .lvg-media.two, .lvg-media.multi, .scene-row { grid-template-columns: 1fr; }
+  /* 窄屏下阶段指示会压到标题上，收掉 */
+  .rail-hud { display: none; }
 }
 </style>
 </head>
@@ -626,7 +667,6 @@ html.compact .lvnote.dn { top: -73px; }
       <a href="#interface">界面解说</a>
       <a href="#levels">关卡设计</a>
       <a href="#levels-detail">逐关解析</a>
-      <a href="#overall">总体设计</a>
       <a href="#notes">心得</a>
       <a href="#play" class="nav-play">试玩 →</a>
     </nav>
@@ -640,18 +680,23 @@ html.compact .lvnote.dn { top: -73px; }
     <div class="b-grid">
       <div>
         <h1 class="title rv" style="--d:.05s">灰度修理铺</h1>
-        <p class="sub rv" style="--d:.12s">把数字图像处理，做成一个修图的游戏</p>
-        <ul class="facts rv" style="--d:.2s">
+        <ul class="facts rv" style="--d:.12s">
           <li><b>平台</b>HTML 5</li>
-          <li><b>开发周期</b>1 个月</li>
+          <li><b>开发周期</b>2 个月</li>
           <li><b>类型</b>个人独立项目</li>
         </ul>
-        <div class="overview rv" style="--d:.3s">
+        <div class="overview rv" style="--d:.2s">
           <h2>项目速览</h2>
           <p>一款「修图」解谜游戏：你是一间灰度修理铺的师傅，接到的委托全是被抹掉颜色的照片。你只有四种操作——点像素、拖滑块、拖色块、拖阈值——要用它们把灰度照片一步步修回原来的样子。13 个关卡，从认出灰度，一路走到综合运用。</p>
           <p>它最特别的地方，是全程没有一行教程文字：玩法规则完全藏在关卡结构里，由玩家自己试出来——零文字教学，本身就是这款教育游戏的教学设计。</p>
         </div>
-        <ul class="nums rv" style="--d:.4s">
+        <div class="hero-cta rv" style="--d:.3s">
+          <a class="btn-play" href="#play">
+            <svg class="tri" viewBox="0 0 8 9" width="16" height="18" aria-hidden="true"><path d="M2 1h1v1h1v1h1v1h1v1h-1v1h-1v1h-1v1h-1z" fill="currentColor" shape-rendering="crispEdges"/></svg>
+            <span>开始试玩</span>
+          </a>
+        </div>
+        <ul class="nums rv" style="--d:.38s">
           <li><b>13</b><span>关卡</span></li>
           <li><b>4</b><span>种操作</span></li>
           <li class="zero"><b>0</b><span>行文字教程</span></li>
@@ -704,8 +749,8 @@ html.compact .lvnote.dn { top: -73px; }
     </div>
     <div class="asym-row flip rv">
       <div class="asym-text">
-        <p>灰度修理铺（The Gray Workshop）是一个网页游戏，一共 13 关，共用同一套界面：左侧一张目标图（玩家要把操作图修成的那张图），右侧一张操作图，屏幕下方是上下对齐的两条轴。</p>
-        <p><mark>操作图是目标图的灰度版</mark>，也就是去掉颜色、只保留明暗的版本。上面一条是灰度轴，从黑到白的渐变，每个像素的灰度都能在这条轴上找到对应的位置。下面一条是映射条，在对应位置标出灰度轴每一段会变成的颜色；图里的一个像素落在哪一段，就会显示成那一段的颜色。</p>
+        <p>灰度修理铺（The Gray Workshop）是一个网页游戏，一共 13 关。<mark>通关条件分两个阶段</mark>：前九关的判定标准是两张图逐像素一致，通过时图框绿闪、进入下一关，未通过则红闪；第十关起，左侧换成待修复的原图，配一句英文情景（例如 “A faded old photo.”，一张褪色的旧照片），目标由玩家根据情景自己推断，判定通过后左侧才显示修好的那张。</p>
+        <p>除了通关后的简单讲解和情景句，关卡里没有针对玩法的任何教学文字或教程；<mark>每一关只出现这一关需要的操作</mark>，规则由玩家在尝试的过程中自己发现。</p>
       </div>
       <div class="asym-art" aria-hidden="true">
         <img class="aa-1 px" src="素材/level-3.png" alt="">
@@ -714,8 +759,6 @@ html.compact .lvnote.dn { top: -73px; }
         <p class="aa-cap mono">L3 四色映射 / L5 双色阈值</p>
       </div>
     </div>
-    <p class="sec-lead">通关条件分两个阶段。前九关判定标准是两张图逐像素一致，通过时图框绿闪、进入下一关，未通过则红闪。第十关起，左侧换成待修复的原图，配一句英文情景（例如 “A faded old photo.”，一张褪色的旧照片）；目标由玩家根据情景自己推断，判定通过后左侧才显示修好的那张。</p>
-    <p class="sec-lead">除了通关后的简单讲解和情景句，关卡里没有针对玩法的任何教学文字或教程；<mark>每一关只出现这一关需要的操作，规则由玩家在尝试的过程中自己发现</mark>。</p>
   </section>
 
   <!-- ============ 03 操作：四种操作 × 游戏操控元素 ============ -->
@@ -727,8 +770,6 @@ html.compact .lvnote.dn { top: -73px; }
         <h2>玩家能做的，只有四种操作</h2>
       </div>
     </div>
-    <p class="sec-lead">整个游戏只有下面这四件工具。它们全部长在同一条灰度轴上——从第一关到最后一关，界面没有变过，变的只是你要用哪几件、用得多准。</p>
-
     <div class="ops-rail">
       <article class="op rv" style="--d:.02s">
         <span class="op-no">01</span>
@@ -770,7 +811,6 @@ html.compact .lvnote.dn { top: -73px; }
         <p>把颜色放进映射条的某一段，这段灰度里的所有像素就一起变成这个颜色。</p>
       </article>
     </div>
-    <p class="op-foot">这四件工具对应的是数字图像处理里四个真实概念：像素、灰度值、阈值、灰度映射。游戏只是把它们做成可以拖的东西。</p>
   </section>
 
   <!-- ============ 04 界面解说 ============ -->
@@ -782,7 +822,6 @@ html.compact .lvnote.dn { top: -73px; }
         <h2>界面解说</h2>
       </div>
     </div>
-    <p class="sec-lead">下面这张图直接取自线上实机，选的是第 8 关：前几关用不到的元素（映射条、阈值把手、候选色块）在这一关全部出现。标号指出界面的六个组成部分。想亲手拖动这些把手，到页面底部的「试玩」区。</p>
 
     <div class="guide-wrap" id="guideWrap">
       <div class="guide-canvas" id="guideCanvas">
@@ -837,7 +876,7 @@ html.compact .lvnote.dn { top: -73px; }
         <svg class="gc-arrows" viewBox="0 0 1600 1000" aria-hidden="true">
           <defs>
             <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0 0 L10 5 L0 10 Z" fill="#3f6170"/>
+              <path d="M0 0 L10 5 L0 10 Z" fill="#c4503c"/>
             </marker>
           </defs>
           <path class="lead" marker-end="url(#tip)" d="M344 230 C 430 236, 520 336, 592 394"/>
@@ -852,15 +891,39 @@ html.compact .lvnote.dn { top: -73px; }
       </div>
     </div>
   </section>
-  <!-- ============ 05 关卡设计：横屏锁定叙事 ============ -->
-  <section class="rail-wrap" id="levels">
+  <!-- ============ 05 关卡设计：起因 + 横屏锁定倒推叙事 ============ -->
+  <section class="sec" id="levels">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">05</span>
+      <div>
+        <p class="sec-en">LEVEL DESIGN</p>
+        <h2>关卡设计</h2>
+      </div>
+    </div>
+    <div class="asym-row rv">
+      <div class="asym-text">
+        <p>这个游戏有一个更早的版本。最初我按「一关对应一种算法」的想法做了一版阈值原型，配了直方图和文字对照表；给不了解相关知识的人试玩，发现它本质上是先文字教学、再照着操作，解释本身成了新的门槛。</p>
+        <p>由此我确立了一条标准：<mark>每一关都要经得起「完全不懂的人，能不能只靠玩就通关」的检验</mark>。第一版原型没有通过这条检验，因此被推翻；后面的每一次改动，也都要经过它的检验。</p>
+        <p>标准定下来之后，做法就反过来了：不再一关一关往下想，而是先挑一个已经想清楚的第 8 关，往回推 —— <b>要撑起这一关，玩家得先会什么？</b>缺一个概念，就补一关。</p>
+      </div>
+      <div class="asym-art" aria-hidden="true">
+        <img class="aa-1 px" src="素材/level-8.png" alt="">
+        <img class="aa-2 px" src="素材/level-9.png" alt="">
+        <i class="aa-chip"></i>
+        <p class="aa-cap mono">L8 风景 / L9 删太阳</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 倒推图：横屏锁定叙事 -->
+  <section class="rail-wrap" id="levels-rail">
     <div class="rail-stage">
+     <div class="rail-fit" id="railFit">
       <header class="rail-head">
-        <span class="sec-ghost mono" aria-hidden="true">05</span>
         <div>
-          <p class="sec-en">LEVEL DESIGN · LEVELS 01–13</p>
-          <h2>关卡设计</h2>
-          <p class="rail-sub">13 关的由来 —— 先<em>倒推</em>，再<em>延伸</em>：上行拆出前置概念，下行走向现实修理</p>
+          <p class="sec-en">DERIVATION · LEVELS 01–13</p>
+          <h2>从一个构想，倒推出 13 关</h2>
+          <p class="rail-sub">上行<em>倒推</em>拆出前置概念，下行<em>延伸</em>走向现实修理</p>
         </div>
       </header>
 
@@ -870,7 +933,7 @@ html.compact .lvnote.dn { top: -73px; }
           <figure class="st hub" data-lv="8">
             <span class="tag">起点</span>
             <span class="st-thumb"><img class="px" src="素材/level-8.png" alt=""></span>
-            <figcaption><b>第 8 关 · 综合运用</b><i>四条阈值 · 五个色块 · 全部自主设置</i></figcaption>
+            <figcaption><b>第 8 关 · 综合运用</b><i>四条阈值 · 五个色块</i></figcaption>
           </figure>
 
           <div class="ask">
@@ -913,7 +976,7 @@ html.compact .lvnote.dn { top: -73px; }
             <figcaption><b>第 6 关 · 两条阈值</b><i>颜色预先涂好</i></figcaption>
           </figure>
           <figure class="st" data-lv="7">
-            <span class="lvnote up">四条阈值 + 全自主配色</span>
+            <span class="lvnote up">两条阈值 + 全自主配色</span>
             <span class="st-thumb"><img class="px" src="素材/level-7.png" alt=""></span>
             <figcaption><b>第 7 关 · 全自主</b><i>阈值 + 涂色自主</i></figcaption>
           </figure>
@@ -929,11 +992,11 @@ html.compact .lvnote.dn { top: -73px; }
           <figure class="st hub" data-lv="8">
             <span class="tag">起点</span>
             <span class="st-thumb"><img class="px" src="素材/level-8.png" alt=""></span>
-            <figcaption><b>第 8 关 · 综合运用</b><i>同一个第 8 关，向下延伸</i></figcaption>
+            <figcaption><b>第 8 关 · 综合运用</b><i>同一个第 8 关</i></figcaption>
           </figure>
           <figure class="st" data-lv="9">
             <span class="st-thumb"><img class="px" src="素材/level-9.png" alt=""></span>
-            <figcaption><b>第 9 关 · 删太阳</b><i>阈值拖出轴外 · 太阳并入天空</i></figcaption>
+            <figcaption><b>第 9 关 · 删太阳</b><i>阈值拖出轴外</i></figcaption>
           </figure>
           <figure class="st" data-lv="10">
             <span class="st-thumb"><img class="px" src="素材/level-10.png" alt=""></span>
@@ -973,6 +1036,7 @@ html.compact .lvnote.dn { top: -73px; }
         <span class="phase" id="phase">① 倒推 L8 → L1</span>
         <span class="bar"><b id="barFill"></b></span>
       </div>
+     </div>
     </div>
   </section>
 
@@ -1006,8 +1070,8 @@ html.compact .lvnote.dn { top: -73px; }
         </div>
         <div class="lv-card is-note">
           <p class="lbl">设计思路</p>
-          <p>这一关的位置是从最终目标倒推出来的。最初想直接实现的是后来第八关的形式：一张图、多条阈值、一组颜色自由配置，但朋友试玩过原型后，我发现他没法理解这个界面，说明关卡预设了大量前置概念。</p>
-          <p>因此改为从零推演：一个不了解这些知识的人要理解第八关，中间需要先理解哪些概念、按什么顺序。推演的第一步是灰度本身，最简单的呈现形式是一张只含一个像素的图像，这就是第一关：右图只有一个方块，玩家唯一的操作是拖动滑块，在拖动过程中体会灰度从黑到白的连续变化。</p>
+          <p>这一关是从「同学试完不明白」这里开始的：最初想直接做成的，就是后来第八关的形式 —— 一张图、多条阈值、一组颜色全部自由配置，他看不懂这个界面。那次试玩定下了一条标准：<mark>完全不懂的人，只靠玩也要能通关</mark>。</p>
+          <p>第一关是这条标准往回推的第一步：先让人看见灰度本身。最简单的呈现是一张只含一个像素的图，唯一能做的动作是拖动滑块，灰度在拖动里从黑走到白。</p>
         </div>
         <aside class="iter">
           <p class="iter-head"><span class="iter-tag">迭代</span><em>试玩之后改掉的地方</em></p>
@@ -1068,13 +1132,9 @@ html.compact .lvnote.dn { top: -73px; }
         </div>
         <div class="lv-card is-note">
           <p class="lbl">设计思路</p>
-          <p>第三关的存在解决一个理解断层。前两关中，灰度轴上的滑块位置对应单个像素的灰度值；而阈值是轴上的分界线，切分的是一段灰度范围，同一个位置概念在这里含义发生了变化。直接进入阈值关，玩家会沿用前两关的理解来操作，无法对应这一关的目标。因此第三关将阈值预先固定，玩家只需要处理「一段灰度对应一种颜色」这一个关系。</p>
-          <p>第四关把第 1–2 关的灰度调整和第 3 关的颜色映射合并到同一关。右下角两个黄色像素的灰度被设成与背景相同，在灰度版里不可见；选择「不可见」而不是「颜色错误」，是因为颜色错误会让玩家认为是拖放位置不对、在映射条上反复调整，而设为不可见时，玩家能较快判断问题不在映射，转而去调整它的灰度。玩家在此会遇到一条贯穿全程的规则：<mark>灰度相同的像素颜色必然相同</mark>，要让这两个像素单独变黄，只能先修改它们的灰度。</p>
+          <p><b>第三关</b>只处理「一段灰度对应一种颜色」这一个关系：阈值预先固定，玩家只需要把颜色放对。</p>
+          <p><b>第四关</b>把灰度调整和颜色映射合到一起。两个黄色像素的灰度与背景相同，在灰度版里看不见，所以只能先改灰度 —— 灰度相同的像素，颜色必然相同。</p>
         </div>
-        <aside class="quote-note">
-          <p class="q-tag">设计细节</p>
-          <p>开局预先涂好背景所在的灰度段，第一次见到映射条的玩家有一个已完成的样本可以参照。点像素从这一关起会在灰度轴上显示标记，指示该像素的灰度位置：判断像素的灰度不是游戏的核心，这个标记避免了不必要的比对负担，之后每关通用。</p>
-        </aside>
       </div>
     </div>
 
@@ -1138,13 +1198,9 @@ html.compact .lvnote.dn { top: -73px; }
         </div>
         <div class="lv-card is-note">
           <p class="lbl">设计思路</p>
-          <p>第八关没有引入新知识，是前七关机制的综合。图像更大、颜色更多，因此这一关减少了其他方面的难度：候选色块的顺序与答案一致，只有阈值的开局位置是错的，防止玩家直接沿用上一关的解。</p>
-          <p>第九关是前九关中第一次出现目标图无法直接复刻的情况：左图没有太阳，右图有。按上一关的经验涂完颜色后，太阳无法通过涂色去除，唯一的解法是把天空和太阳之间的阈值拖出灰度轴的最右端，使太阳所在的灰度段不再存在、归入天空色。在这套机制里，<mark>删除画面里的一个元素，就是把它所在的灰度段并进背景</mark>。</p>
+          <p>第八关是综合关：前七关的机制全部上桌，图更大、颜色更多；为了不让它变成纯体力活，其他方面的难度相应压低 —— 候选色块的顺序与答案一致，只有阈值的开局位置是错的。</p>
+          <p>第九关第一次出现目标图没法直接复刻的情况：左图没有太阳，右图有。按上一关的经验涂完颜色，太阳也去不掉 —— 唯一的解法是把天空和太阳之间的阈值拖出灰度轴最右端，让太阳所在的灰度段消失、并进天空色。</p>
         </div>
-        <aside class="quote-note">
-          <p class="q-tag">设计细节</p>
-          <p>两个细节：那条阈值开局放在太阳可见的位置，如果开局太阳就已经消失，玩家直接通关，谜题不会发生；天空色预先涂好且不放入托盘，这一关要教的是「把阈值拖出轴外」这个操作，因此排除了「把太阳段直接涂成天空色」这条解法。</p>
-        </aside>
       </div>
     </div>
 
@@ -1176,7 +1232,6 @@ html.compact .lvnote.dn { top: -73px; }
           <p class="lbl">设计思路</p>
           <p>这四关的设计目的，是把前面几关的知识点和真实应用结合起来。我寻找的是现实中图片修复的例子：修复旧照片、去除水印、人像修图。现实中的原理当然更复杂，但抽象地理解，它们的本质与游戏里的知识是同一件事：<mark>把不合适的颜色换成想要的颜色</mark>。</p>
           <p>这一部分最初的设计仍然是前几关的做法，把目标图像直接做好。但这样一来，一个页面上需要三张图：目标图像、待修复的图像和灰度版，破坏了游戏从第一关开始一直保持的统一感。为了维持两张图的布局，目标颜色不再作为标准答案给出，而是通过情景句暗示，让玩家自己推理修复的意图：既保住了统一的设计，也让通关多出了推理这一步。</p>
-          <p>第十关把墨渍所在的灰度段归入纸色，字迹保留下来；第十一关把树枝和背景所在的灰度段归成白色，只留下人物；第十二关在没有目标图对照的情况下，独立使用一次第九关的解法（把最亮的灰度段并进背景）去掉日期戳；第十三关的淡彩同样不是答案，它只指示每个区域原本的颜色，实际要涂的是一组更浓的颜色，判定通过后左侧切换为修复完成的照片。</p>
         </div>
         <div class="scene-row">
           <div class="scene-card"><p class="scene-en">“Oh damn, the ink.”</p><p class="scene-zh">被墨水污染的信</p></div>
@@ -1188,79 +1243,60 @@ html.compact .lvnote.dn { top: -73px; }
     </div>
   </section>
 
-  <!-- ============ 07 总体设计 ============ -->
-  <section class="sec" id="overall">
-    <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">07</span>
-      <div>
-        <p class="sec-en">DESIGN PRINCIPLES</p>
-        <h2>总体设计</h2>
-      </div>
-    </div>
-    <div class="asym-row rv">
-      <div class="asym-text">
-        <p>这个游戏有一个更早的版本。最初我按「一关对应一种算法」的想法做了一版阈值原型，配了直方图和文字对照表；给不了解相关知识的人试玩，发现它本质上是先文字教学、再照着操作，解释本身成了新的门槛。</p>
-        <p>由此我确立了一条标准：<mark>每一关都要经得起「完全不懂的人，能不能只靠玩就通关」的检验</mark>，第一版原型没有通过这条检验，因此被推翻；后面的每一次改动也都要经过它的检验。</p>
-      </div>
-      <div class="asym-art" aria-hidden="true">
-        <img class="aa-1 px" src="素材/level-8.png" alt="">
-        <img class="aa-2 px" src="素材/level-9.png" alt="">
-        <i class="aa-chip"></i>
-        <p class="aa-cap mono">L8 风景 / L9 删太阳</p>
-      </div>
-    </div>
-    <div class="principles rv">
-      <article class="pr">
-        <p class="pr-no">01</p>
-        <h3>设计元素的统一</h3>
-        <p>灰度调整、颜色映射、阈值全部呈现在同一条灰度轴上，四种操作从第一关贯穿到最后一关；界面上始终只有两张图，右侧灰度版的含义全程不变，左侧图像的含义从前半段的目标图变为后半段的待修复的图像。</p>
-      </article>
-      <article class="pr">
-        <p class="pr-no">02</p>
-        <h3>零文字教学</h3>
-        <p>全程没有文字教程，玩法和关卡背后的原理都通过设计让玩家自己探索出来，教学信息放在初始状态里，概念的名字放在通关之后的讲解里。</p>
-      </article>
-      <article class="pr">
-        <p class="pr-no">03</p>
-        <h3>难度梯度的连贯</h3>
-        <p>难度依次增加；引入新概念时相应减少其他方面的难度来保持平衡，没有新概念引入时，就从纯数量上增加复杂度；后一关只建立在前一关已学会的东西之上，不出现没学过就要用到的机制。</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============ 08 心得 ============ -->
+  <!-- ============ 07 心得：三条原则 + 做下来的体会 ============ -->
   <section class="sec" id="notes">
     <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">08</span>
+      <span class="sec-ghost mono" aria-hidden="true">07</span>
       <div>
         <p class="sec-en">NOTES</p>
         <h2>心得</h2>
       </div>
     </div>
-    <div class="notes-grid">
-      <div class="note-quote rv">
+
+    <p class="creed-lead rv">这套关卡设计始终在追求几个点：</p>
+    <div class="creed rv">
+      <article>
+        <p class="cr-no">01</p>
+        <h3>设计元素的统一</h3>
+        <p>灰度调整、颜色映射、阈值全部呈现在同一条灰度轴上，四种操作从第一关贯穿到最后一关；界面上始终只有两张图，右侧灰度版的含义全程不变，左侧图像的含义从前半段的目标图变为后半段的待修复的图像。</p>
+      </article>
+      <article>
+        <p class="cr-no">02</p>
+        <h3>零文字教学</h3>
+        <p>全程没有文字教程，玩法和关卡背后的原理都通过设计让玩家自己探索出来，教学信息放在初始状态里，概念的名字放在通关之后的讲解里。</p>
+      </article>
+      <article>
+        <p class="cr-no">03</p>
+        <h3>难度梯度的连贯</h3>
+        <p>难度依次增加；引入新概念时相应减少其他方面的难度来保持平衡，没有新概念引入时，就从纯数量上增加复杂度；后一关只建立在前一关已学会的东西之上，不出现没学过就要用到的机制。</p>
+      </article>
+    </div>
+
+    <div class="note-rows">
+      <div class="note-row rv">
         <blockquote>思路很难一次想完整 ——<br>可以先把自己最想清楚的那部分做出来。</blockquote>
-        <blockquote>有时候线索以约束的形式出现，<br>但约束同时也是亮点。</blockquote>
-        <blockquote>假设自己是第一次玩这个游戏，<br>会怎么想、哪里会不懂。</blockquote>
-      </div>
-      <div class="notes-body rv">
         <p>这个项目验证了一种做设计的方式。思路很难一次想完整，可以先把自己最想清楚的那部分做出来：第八关在其余关卡存在之前就已经在我脑子里成形，向更基础的方向拆出前面的关卡，向综合的方向长出后面的关卡。做出来的内容会变成线索，在已有的东西里找规律和逻辑，再把这些逻辑应用到新的关卡上，完整的关卡结构就是这样逐渐成形的。</p>
+      </div>
+      <div class="note-row rv">
+        <blockquote>有时候线索以约束的形式出现，<br>但约束同时也是亮点。</blockquote>
         <p>有时候这些线索以约束的形式出现，但约束同时也是亮点。第 10–13 关的设计就是例子：为了保持两张图的统一布局，页面上放不下目标图，这个约束促成了用情景句代替答案的方案，通关反而多出了推理这一步。设计元素的统一是我一直追求的点，但最初设计新关卡时，我并不知道该怎么保持它；随着对已有关卡的思考越来越多、理解越来越深，方法是在这个过程中逐渐明确的。</p>
+      </div>
+      <div class="note-row rv">
+        <blockquote>假设自己是第一次玩这个游戏，<br>会怎么想、哪里会不懂。</blockquote>
         <p>另一个贯穿始终的习惯，是站在玩家的角度思考：不能把自己的想法预设成共识，要假设自己是第一次玩这个游戏，会怎么想、哪些地方可能不理解，这些地方往往就是后续需要迭代优化的细节。</p>
       </div>
     </div>
   </section>
 
-  <!-- ============ 09 试玩 ============ -->
+  <!-- ============ 08 试玩 ============ -->
   <section class="sec sec-wide" id="play">
     <div class="sec-head">
-      <span class="sec-ghost mono" aria-hidden="true">09</span>
+      <span class="sec-ghost mono" aria-hidden="true">08</span>
       <div>
         <p class="sec-en">PLAY IT</p>
         <h2>试玩</h2>
       </div>
     </div>
-    <p class="sec-lead">线上完整版，带主菜单、关卡选择和进度存档（保存在你自己的浏览器里）。无需安装，打开即玩。</p>
     <div class="play-frame-wrap rv">
       <iframe class="play-frame" src="https://jesse20050324.github.io/dip-game/game/blue/index.html" title="灰度修理铺 线上完整版" loading="lazy"></iframe>
     </div>
@@ -1323,8 +1359,9 @@ html.compact .lvnote.dn { top: -73px; }
 
 /* ============ 4. 关卡设计：滚动锁定横屏叙事 ============ */
 (() => {
-  const wrap  = document.getElementById('levels');
+  const wrap  = document.getElementById('levels-rail');
   const stage = wrap.querySelector('.rail-stage');
+  const fit   = document.getElementById('railFit');
   const cam   = document.getElementById('cam');
   const tU    = document.getElementById('trackU');
   const tL    = document.getElementById('trackL');
@@ -1346,11 +1383,17 @@ html.compact .lvnote.dn { top: -73px; }
   let M = null, wrapTop = 0;
 
   function relocateNotes() {
+    // 批注第一次就被搬到 noteLayer，之后卡片里已经查不到它 —— 必须回落到 noteMap，
+    // 否则 measure() 二次收敛（卡宽变化）时批注会停在旧位置上。
+    // 舞台整体 scale 之后，屏幕坐标要除回缩放比才是设计坐标。
+    const k = M ? M.scale : 1;
+    const layerLeft = noteLayer.getBoundingClientRect().left;
     cardsU.forEach(c => {
-      const n = c.querySelector('.lvnote');
+      const n = c.querySelector('.lvnote') || noteMap.get(c);
       if (!n) return;
       if (n.parentElement !== noteLayer) noteLayer.appendChild(n);
-      n.style.left = (c.offsetLeft + c.offsetWidth / 2) + 'px';
+      const r = c.getBoundingClientRect();
+      n.style.left = ((r.left - layerLeft) / k + r.width / k / 2) + 'px';
       noteMap.set(c, n);
     });
   }
@@ -1358,39 +1401,52 @@ html.compact .lvnote.dn { top: -73px; }
   function buildChainLine() {
     const chain = [...tU.querySelectorAll('.st[data-lv]')].filter(c => +c.dataset.lv < 8);
     if (!chain.length) return;
-    const pts = chain.map(c => ({ x: c.offsetLeft + c.offsetWidth / 2, y: 38 }));
-    const P = [{ x: pts[0].x - 150, y: 46 }, ...pts, { x: pts[pts.length - 1].x + 110, y: 42 }];
+    const pts = chain.map(c => ({ x: c.offsetLeft + c.offsetWidth / 2, y: 56 }));
+    const P = [{ x: pts[0].x - 150, y: 64 }, ...pts, { x: pts[pts.length - 1].x + 110, y: 60 }];
     let d = `M ${P[0].x} ${P[0].y}`;
     for (let i = 1; i < P.length; i++) {
       const a = P[i - 1], b = P[i], w = i % 2 ? 7 : -7;
       d += ` C ${(a.x + (b.x - a.x) * .4).toFixed(1)} ${a.y + w}, ${(b.x - (b.x - a.x) * .4).toFixed(1)} ${b.y - w}, ${b.x} ${b.y}`;
     }
     const W = Math.ceil(P[P.length - 1].x + 40);
-    const svgH = chainSvg.offsetHeight || 155;
+    const svgH = chainSvg.offsetHeight || 100;
     chainSvg.setAttribute('viewBox', `0 0 ${W} ${svgH}`);
     chainSvg.setAttribute('width', W);
     chainSvg.innerHTML = `<path d="${d}"/>` + pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4.5"/>`).join('');
   }
 
   function measure() {
-    const vw = innerWidth;
-    const vh = stage.clientHeight;                 // 舞台高 = 视口 - 导航
-    const jx = Math.round(vw * .5);
+    /* 设计层固定 1016px 高（≈ 1080 屏扣掉导航），屏矮就整体等比缩放 —— 
+       不再靠压窄卡宽来塞进两行：压窄会把图注挤成省略号，卡片也小到看不清。 */
+    const stageH = stage.clientHeight;
+    const stageW = stage.clientWidth;
+    const Hv = Math.max(stageH, 1016);
+    const s  = stageH / Hv;
+    const Wv = stageW / s;
+    fit.style.width  = Wv + 'px';
+    fit.style.height = Hv + 'px';
+    fit.style.transform = 'scale(' + s.toFixed(4) + ')';
+
+    const jv   = Wv * .5;                          // 设计坐标里的画面中心 = 屏幕中心
     const head = wrap.querySelector('.rail-head');
     const headBottom = head.offsetTop + head.offsetHeight;
-    const compact = vh < 900;
-    document.documentElement.classList.toggle('compact', compact);
-    const STACK = compact ? 133 : 158;
-    let stW = 252, cardH = 0, hubH = 0, tuTop = 0, tlTop = 0;
+    const NOTE_H = 124;                            // 与 .lvnote.up / #chainLine 的偏移一致
+    const GAP    = 44;                             // 两带垂直间距（水平间距见 .track 的 gap）
+    let stW = Math.min(360, Math.max(236, Math.round(Wv * .19)));
+    let cardH = 0, hubH = 0, tuTop = 0, tlTop = 0;
     for (let i = 0; i < 20; i++) {
       document.documentElement.style.setProperty('--st-w', stW + 'px');
       cardH = tU.querySelector('.st:not(.hub)').offsetHeight;
-      hubH = tU.querySelector('.hub').offsetHeight;
-      tuTop = Math.max(headBottom + 22 + STACK, Math.round(vh * .28));
-      tlTop = tuTop + Math.max(cardH, hubH) + 34;
-      if (tlTop + cardH <= vh - 10 || stW <= 168) break;
-      stW -= 8;
+      hubH  = tU.querySelector('.hub').offsetHeight;
+      tuTop = Math.max(headBottom + 14 + NOTE_H, Math.round(Hv * .20));
+      tlTop = tuTop + Math.max(cardH, hubH) + GAP;
+      if (tlTop + cardH <= Hv - 18 || stW <= 200) break;
+      stW -= 6;
     }
+    /* 高屏会把两带挤在上半部：多出来的空白对半分给上下 */
+    const slack = Hv - 18 - (tlTop + cardH);
+    if (slack > 0) { tuTop += Math.round(slack * .5); tlTop += Math.round(slack * .5); }
+
     tU.style.top = tuTop + 'px';
     tL.style.top = tlTop + 'px';
 
@@ -1403,37 +1459,47 @@ html.compact .lvnote.dn { top: -73px; }
     const cF = lastU.offsetLeft + lastU.offsetWidth / 2;
     const cE = last.offsetLeft + last.offsetWidth / 2;
     M = {
-      vh, jx, tuTop, tlTop,
+      vh: Hv, vw: Wv, jx: jv, scale: s, tuTop, tlTop,
       segU: cF - cU,
-      segV: Math.round(vh * .45),
-      segL: (jx - cL) - (jx - cE),
-      u0: jx - cU, u1: jx - cF, l0: jx - cL, l1: jx - cE,
-      camY: Math.round(vh * camShiftVH / 100),
-      liftY: Math.round(vh * .11),
+      segV: Math.round(Hv * .45),
+      segL: (jv - cL) - (jv - cE),
+      u0: jv - cU, u1: jv - cF, l0: jv - cL, l1: jv - cE,
+      camY: Math.round(Hv * camShiftVH / 100),
+      liftY: Math.round(Hv * .11),
     };
     M.total = M.segU + M.segV + M.segL;
-    wrap.style.height = (vh + M.total) + 'px';
+    wrap.style.height = (stageH + M.total * s) + 'px';
 
-    link.style.left = jx + 'px';
-    const linkTop = tuTop + hubU.offsetHeight;
+    link.style.left = jv + 'px';
+    /* 起点卡外面还有一圈红环，虚线从中环下方起，标签才不会被卡片压住 */
+    const linkTop = tuTop + hubU.offsetHeight + 13;
     link.style.top  = linkTop + 'px';
-    link.style.height = Math.max(24, tlTop - linkTop) + 'px';
+    link.style.height = Math.max(24, tlTop - linkTop - 2) + 'px';
 
     wrapTop = wrap.getBoundingClientRect().top + scrollY;
     buildChainLine();
     relocateNotes();
+    /* 循环里反复改 --st-w，首次读取可能拿到未被采用的中间布局；
+       隔一帧再校准一次（后台标签的 rAF 会被节流，所以用定时器兜底） */
+    setTimeout(() => {
+      buildChainLine();
+      relocateNotes();
+    }, 50);
   }
 
   function centerScale(cards, trackX) {
-    const fx = innerWidth / 2;
-    const plateau = innerWidth * .085;
-    const range   = innerWidth * .115;
+    const fx = M.jx;
+    const plateau = M.vw * .085;
+    const range   = M.vw * .115;
     cards.forEach(c => {
       const cx = trackX + c.offsetLeft + c.offsetWidth / 2;
       const d = Math.abs(cx - fx);
       const k = d <= plateau ? 1 : Math.max(0, 1 - (d - plateau) / range);
       const s = 1 + .15 * k;
-      c.style.transform = k > 0 ? `scale(${s.toFixed(3)})` : '';
+      // 起点/枢纽卡本身已用 CSS scale(1.18) 放大，这里不再叠加，避免放大后压到另一条带
+      if (!c.classList.contains('hub')) {
+        c.style.transform = k > 0 ? `scale(${s.toFixed(3)})` : '';
+      }
       const note = noteMap.get(c);
       if (note) note.style.opacity = (.3 + .7 * k).toFixed(2);
     });
@@ -1456,11 +1522,13 @@ html.compact .lvnote.dn { top: -73px; }
     if (noteState === state) return;
     noteState = state;
     if (state === 'u') {
-      railNote.style.top = '60vh';
+      /* 与上带批注同一条带，此时上带批注已随卡片淡出，不会打架 */
+      railNote.style.top = Math.round(M.tuTop - 124) + 'px';
       noteText.textContent = '← 倒推：要支撑第 8 关，先要教会什么？';
       noteSub.textContent  = '每个概念拆成一关 —— 玩家先学会零件，再见到整机';
     } else if (state === 'l') {
-      railNote.style.top = Math.round(M.tuTop - 56) + 'px';
+      /* 阶段③ 上带已全部透明，这条提示放在上带卡位所在的空档里，离下带卡片 300px 以上 */
+      railNote.style.top = Math.round(M.tuTop - 124) + 'px';
       noteText.textContent = '延伸：这套机制在现实里修理什么？ →';
       noteSub.textContent  = '从「教概念」转向真实任务，修复目标由玩家自己推理';
     }
@@ -1470,7 +1538,9 @@ html.compact .lvnote.dn { top: -73px; }
     if (!M) { requestAnimationFrame(frame); return; }
     if (Math.abs(scrollY - lastY) >= .5 || lastY < 0) {
       lastY = scrollY;
-      const s = Math.max(0, Math.min(scrollY - wrapTop, M.total));
+      /* 滚动量是屏幕 px，位移算的是设计 px —— 除回缩放比，滚动速度才和手势 1:1 */
+      const sc = Math.max(0, Math.min(scrollY - wrapTop, M.total * M.scale));
+      const s = sc / M.scale;
       const { segU, segV, segL } = M;
       if (s < segU) {
         tU.style.transform = `translateX(${M.u0 - s}px)`;
