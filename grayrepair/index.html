@@ -200,7 +200,8 @@ main { position: relative; }
 .sec {
   position: relative;
   max-width: 1140px;
-  margin: clamp(72px,9vh,120px) auto 0;
+  /* 章节间距下限要盖住空心数字的上探（54px）+ 呼吸，矮视口/大缩放下才不会顶进上一节的内容 */
+  margin: clamp(104px,11vh,140px) auto 0;
   padding: 0 26px;
   scroll-margin-top: calc(var(--navh) + 20px);
 }
@@ -211,7 +212,7 @@ main { position: relative; }
   margin-bottom: 26px;
 }
 .sec-ghost {
-  position: absolute; top: -78px; left: -12px;
+  position: absolute; top: -54px; left: -12px;
   font-size: clamp(2.9rem,5.2vw,4.8rem); font-weight: 800; line-height: 1;
   color: transparent;
   -webkit-text-stroke: 2px rgba(196,80,60,.26);
@@ -384,8 +385,8 @@ p { color: var(--ink-soft); }
 .rail-head h2 { font-size: 31px; font-weight: 900; letter-spacing: .02em; line-height: 1.1; }
 .rail-head .rail-sub { margin: 0; font-size: 12.5px; color: var(--muted); letter-spacing: .04em; }
 .rail-head .rail-sub em { font-style: normal; color: var(--red); }
-.track { position: absolute; left: 0; display: flex; align-items: flex-start; gap: 46px; will-change: transform; }
-#trackU { z-index: 3; gap: 62px; }
+.track { position: absolute; left: 0; display: flex; align-items: flex-start; gap: var(--rail-gap-l, 96px); will-change: transform; }
+#trackU { z-index: 3; gap: var(--rail-gap-u, 78px); }
 #trackU .st { z-index: 1; }
 #trackL { z-index: 2; transition: opacity .25s linear; }
 #trackL.ghost {
@@ -429,8 +430,8 @@ p { color: var(--ink-soft); }
   box-shadow: 0 3px 0 var(--shadow); rotate: 3deg;
 }
 .st.hub b { color: var(--red); }
-/* 批注带高度与 JS 里的 NOTE_H 必须一致（124）：上注 -124，下注 -78，链条线 -100 */
-#chainLine { position: absolute; left: 0; top: -100px; height: 100px; overflow: visible; pointer-events: none; z-index: 0; }
+/* 批注带的三个偏移由 JS 写入的 CSS 变量驱动（默认值与 railConfig() 一致），调参面板改的就是它们 */
+#chainLine { position: absolute; left: 0; top: calc(-1 * var(--rail-chain, 132px)); height: var(--rail-chain, 132px); overflow: visible; pointer-events: none; z-index: 0; }
 #chainLine path { stroke: var(--red); stroke-width: 3; stroke-dasharray: 12 9; stroke-linecap: round; fill: none; opacity: .85; }
 #chainLine circle { fill: var(--red); }
 #noteLayer { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: visible; }
@@ -440,8 +441,8 @@ p { color: var(--ink-soft); }
   font-family: var(--hand); font-size: 19px; line-height: 1.4;
   color: var(--red); letter-spacing: .02em;
 }
-.lvnote.up { top: -124px; }
-.lvnote.dn { top: -78px; }
+.lvnote.up { top: calc(-1 * var(--rail-note-h, 150px)); }
+.lvnote.dn { top: calc(-1 * var(--rail-dn, 104px)); }
 /* 下带收尾：手写结论，与上带的「前因/问句」同族 */
 .st.finale {
   width: 340px; background: transparent; border: 0; box-shadow: none;
@@ -907,10 +908,10 @@ p { color: var(--ink-soft); }
         <p>标准定下来之后，做法就反过来了：不再一关一关往下想，而是先挑一个已经想清楚的第 8 关，往回推 —— <b>要撑起这一关，玩家得先会什么？</b>缺一个概念，就补一关。</p>
       </div>
       <div class="asym-art" aria-hidden="true">
-        <img class="aa-1 px" src="素材/level-8.png" alt="">
-        <img class="aa-2 px" src="素材/level-9.png" alt="">
+        <img class="aa-1 px" src="素材/level-11.png" alt="">
+        <img class="aa-2 px" src="素材/level-8.png" alt="">
         <i class="aa-chip"></i>
-        <p class="aa-cap mono">L8 风景 / L9 删太阳</p>
+        <p class="aa-cap mono">L11 · Just her. / L8 · 蒙德里安风景</p>
       </div>
     </div>
   </section>
@@ -1258,17 +1259,17 @@ p { color: var(--ink-soft); }
       <article>
         <p class="cr-no">01</p>
         <h3>设计元素的统一</h3>
-        <p>灰度调整、颜色映射、阈值全部呈现在同一条灰度轴上，四种操作从第一关贯穿到最后一关；界面上始终只有两张图，右侧灰度版的含义全程不变，左侧图像的含义从前半段的目标图变为后半段的待修复的图像。</p>
+        <p>灰度、阈值、映射都呈现在同一条灰度轴上，四种操作从第一关用到最后一关，界面上始终只有两张图。</p>
       </article>
       <article>
         <p class="cr-no">02</p>
         <h3>零文字教学</h3>
-        <p>全程没有文字教程，玩法和关卡背后的原理都通过设计让玩家自己探索出来，教学信息放在初始状态里，概念的名字放在通关之后的讲解里。</p>
+        <p>全程没有文字教程：规则就放在关卡的初始状态里，由玩家自己试出来；概念的名字留到通关之后的讲解里。</p>
       </article>
       <article>
         <p class="cr-no">03</p>
         <h3>难度梯度的连贯</h3>
-        <p>难度依次增加；引入新概念时相应减少其他方面的难度来保持平衡，没有新概念引入时，就从纯数量上增加复杂度；后一关只建立在前一关已学会的东西之上，不出现没学过就要用到的机制。</p>
+        <p>难度依次增加：引入新概念时，相应降低其他方面的难度来保持平衡；后一关只建立在前一关已经学会的东西上。</p>
       </article>
     </div>
 
@@ -1401,8 +1402,8 @@ p { color: var(--ink-soft); }
   function buildChainLine() {
     const chain = [...tU.querySelectorAll('.st[data-lv]')].filter(c => +c.dataset.lv < 8);
     if (!chain.length) return;
-    const pts = chain.map(c => ({ x: c.offsetLeft + c.offsetWidth / 2, y: 56 }));
-    const P = [{ x: pts[0].x - 150, y: 64 }, ...pts, { x: pts[pts.length - 1].x + 110, y: 60 }];
+    const pts = chain.map(c => ({ x: c.offsetLeft + c.offsetWidth / 2, y: 20 }));
+    const P = [{ x: pts[0].x - 150, y: 28 }, ...pts, { x: pts[pts.length - 1].x + 110, y: 24 }];
     let d = `M ${P[0].x} ${P[0].y}`;
     for (let i = 1; i < P.length; i++) {
       const a = P[i - 1], b = P[i], w = i % 2 ? 7 : -7;
@@ -1413,6 +1414,23 @@ p { color: var(--ink-soft); }
     chainSvg.setAttribute('viewBox', `0 0 ${W} ${svgH}`);
     chainSvg.setAttribute('width', W);
     chainSvg.innerHTML = `<path d="${d}"/>` + pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4.5"/>`).join('');
+  }
+
+  /* 可调参数：默认值 + localStorage 覆盖（?tune=1 的调参面板写这里）。
+     CSS 里的 --rail-* 变量也在这里统一写入，保证样式和布局用同一套数。 */
+  const RAIL_DEF = {
+    noteH: 150,   // 上批注离卡片顶的距离（批注带高）
+    dn:    104,   // 下批注离卡片顶的距离
+    gapV:  48,    // 上下两带的垂直间距
+    gapU:  78,    // 上带卡片水平间距
+    gapL:  96,    // 下带卡片水平间距
+    amp:   .15,   // 居中卡片的放大幅度
+    maxW:  360,   // 卡片宽度上限
+    headPad: 30,  // 标题底到批注带的留白
+  };
+  function railConfig() {
+    try { return Object.assign({}, RAIL_DEF, JSON.parse(localStorage.getItem('grayrepair-rail-tune') || '{}')); }
+    catch (e) { return Object.assign({}, RAIL_DEF); }
   }
 
   function measure() {
@@ -1430,16 +1448,21 @@ p { color: var(--ink-soft); }
     const jv   = Wv * .5;                          // 设计坐标里的画面中心 = 屏幕中心
     const head = wrap.querySelector('.rail-head');
     const headBottom = head.offsetTop + head.offsetHeight;
-    const NOTE_H = 124;                            // 与 .lvnote.up / #chainLine 的偏移一致
-    const GAP    = 44;                             // 两带垂直间距（水平间距见 .track 的 gap）
-    let stW = Math.min(360, Math.max(236, Math.round(Wv * .19)));
+    const R = railConfig();
+    const st = document.documentElement.style;
+    st.setProperty('--rail-note-h', R.noteH + 'px');
+    st.setProperty('--rail-dn', R.dn + 'px');
+    st.setProperty('--rail-chain', (R.dn + 28) + 'px');   // 链条线画在下批注上方 8px
+    st.setProperty('--rail-gap-u', R.gapU + 'px');
+    st.setProperty('--rail-gap-l', R.gapL + 'px');
+    let stW = Math.min(R.maxW, Math.max(236, Math.round(Wv * .19)));
     let cardH = 0, hubH = 0, tuTop = 0, tlTop = 0;
     for (let i = 0; i < 20; i++) {
       document.documentElement.style.setProperty('--st-w', stW + 'px');
       cardH = tU.querySelector('.st:not(.hub)').offsetHeight;
       hubH  = tU.querySelector('.hub').offsetHeight;
-      tuTop = Math.max(headBottom + 14 + NOTE_H, Math.round(Hv * .20));
-      tlTop = tuTop + Math.max(cardH, hubH) + GAP;
+      tuTop = Math.max(headBottom + R.headPad + R.noteH, Math.round(Hv * .20));
+      tlTop = tuTop + Math.max(cardH, hubH) + R.gapV;
       if (tlTop + cardH <= Hv - 18 || stW <= 200) break;
       stW -= 6;
     }
@@ -1459,7 +1482,7 @@ p { color: var(--ink-soft); }
     const cF = lastU.offsetLeft + lastU.offsetWidth / 2;
     const cE = last.offsetLeft + last.offsetWidth / 2;
     M = {
-      vh: Hv, vw: Wv, jx: jv, scale: s, tuTop, tlTop,
+      vh: Hv, vw: Wv, jx: jv, scale: s, tuTop, tlTop, amp: R.amp, noteH: R.noteH,
       segU: cF - cU,
       segV: Math.round(Hv * .45),
       segL: (jv - cL) - (jv - cE),
@@ -1495,7 +1518,7 @@ p { color: var(--ink-soft); }
       const cx = trackX + c.offsetLeft + c.offsetWidth / 2;
       const d = Math.abs(cx - fx);
       const k = d <= plateau ? 1 : Math.max(0, 1 - (d - plateau) / range);
-      const s = 1 + .15 * k;
+      const s = 1 + (M.amp || .15) * k;
       // 起点/枢纽卡本身已用 CSS scale(1.18) 放大，这里不再叠加，避免放大后压到另一条带
       if (!c.classList.contains('hub')) {
         c.style.transform = k > 0 ? `scale(${s.toFixed(3)})` : '';
@@ -1523,12 +1546,12 @@ p { color: var(--ink-soft); }
     noteState = state;
     if (state === 'u') {
       /* 与上带批注同一条带，此时上带批注已随卡片淡出，不会打架 */
-      railNote.style.top = Math.round(M.tuTop - 124) + 'px';
+      railNote.style.top = Math.round(M.tuTop - M.noteH) + 'px';
       noteText.textContent = '← 倒推：要支撑第 8 关，先要教会什么？';
       noteSub.textContent  = '每个概念拆成一关 —— 玩家先学会零件，再见到整机';
     } else if (state === 'l') {
       /* 阶段③ 上带已全部透明，这条提示放在上带卡位所在的空档里，离下带卡片 300px 以上 */
-      railNote.style.top = Math.round(M.tuTop - 124) + 'px';
+      railNote.style.top = Math.round(M.tuTop - M.noteH) + 'px';
       noteText.textContent = '延伸：这套机制在现实里修理什么？ →';
       noteSub.textContent  = '从「教概念」转向真实任务，修复目标由玩家自己推理';
     }
@@ -1591,6 +1614,55 @@ p { color: var(--ink-soft); }
   addEventListener('load', measure);
   measure();
   requestAnimationFrame(frame);
+})();
+
+/* ============ 5. 倒推段调参面板（网址后加 ?tune=1 打开） ============ */
+(() => {
+  if (!/[?&]tune=1|#tune/.test(location.href)) return;
+  const KEY = 'grayrepair-rail-tune';
+  const DEF = { noteH:150, dn:104, gapV:48, gapU:78, gapL:96, amp:.15, maxW:360, headPad:30 };
+  const NAME = {
+    noteH:'批注带高（上批注↔卡片）', dn:'下批注↔卡片', gapV:'上下两带垂直间距',
+    gapU:'上带卡片间距', gapL:'下带卡片间距', amp:'居中放大幅度', maxW:'卡宽上限', headPad:'标题下留白',
+  };
+  const RANGE = { noteH:[90,220], dn:[56,180], gapV:[20,110], gapU:[40,150], gapL:[40,180], amp:[0,.3], maxW:[240,440], headPad:[8,80] };
+  let cur;
+  try { cur = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e) { cur = Object.assign({}, DEF); }
+
+  const box = document.createElement('div');
+  box.style.cssText = 'position:fixed;right:14px;bottom:14px;z-index:99999;background:#fff;border:2px solid #122133;border-radius:12px;'
+    + 'box-shadow:0 6px 0 rgba(18,33,51,.28);padding:12px 14px;width:308px;font:12px/1.6 system-ui,sans-serif;color:#122133;';
+  box.innerHTML = '<div style="font-weight:800;letter-spacing:.08em;margin-bottom:6px">倒推段调参 <span style="font-weight:400;color:#888">（改动即时生效并保存）</span></div>'
+    + '<div id="tuneRows"></div>'
+    + '<div style="display:flex;gap:8px;margin-top:8px">'
+    + '<button id="tuneReset" style="flex:1;padding:6px 0;border:2px solid #122133;background:#fff;border-radius:8px;font-weight:700;cursor:pointer">重置默认</button>'
+    + '<button id="tuneCopy" style="flex:1;padding:6px 0;border:2px solid #122133;background:#122133;color:#f1f7fb;border-radius:8px;font-weight:700;cursor:pointer">复制参数发我</button>'
+    + '</div><textarea id="tuneOut" readonly style="width:100%;box-sizing:border-box;margin-top:8px;height:52px;font:11px/1.4 ui-monospace,monospace;border:1px solid #ccd7e0;border-radius:6px;padding:5px"></textarea>';
+  document.body.appendChild(box);
+
+  const rows = box.querySelector('#tuneRows');
+  Object.keys(DEF).forEach(k => {
+    const [lo, hi] = RANGE[k], step = (hi - lo) > 4 ? 1 : .01;
+    const row = document.createElement('label');
+    row.style.cssText = 'display:grid;grid-template-columns:150px 1fr 44px;gap:6px;align-items:center;margin:3px 0';
+    row.innerHTML = `<span>${NAME[k]}</span><input type="range" min="${lo}" max="${hi}" step="${step}" value="${cur[k]}"><b style="text-align:right;font-variant-numeric:tabular-nums">${cur[k]}</b>`;
+    const input = row.querySelector('input'), val = row.querySelector('b');
+    input.addEventListener('input', () => {
+      cur[k] = +input.value; val.textContent = input.value;
+      localStorage.setItem(KEY, JSON.stringify(cur));
+      dispatchEvent(new Event('resize'));          // 横屏段监听 resize，会重新取参布局
+    });
+    rows.appendChild(row);
+  });
+
+  box.querySelector('#tuneReset').addEventListener('click', () => {
+    localStorage.removeItem(KEY); location.reload();
+  });
+  box.querySelector('#tuneCopy').addEventListener('click', async () => {
+    const txt = JSON.stringify(cur);
+    box.querySelector('#tuneOut').value = txt;
+    try { await navigator.clipboard.writeText(txt); } catch(e) {}
+  });
 })();
 </script>
 
