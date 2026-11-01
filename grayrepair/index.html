@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>灰度修理铺 · The Gray Workshop — 作品页</title>
-<meta name="description" content="灰度修理铺：一个用通关过程教懂数字图像处理基础概念的网页游戏。13 关，零文字教学。">
+<title>The Gray Workshop — Game Design Portfolio</title>
+<meta name="description" content="The Gray Workshop: a web game that teaches the basics of digital image processing through play. 13 levels, no text tutorials.">
 <!--
   ============================================================
   灰度修理铺 · 完整作品站（合并版）
@@ -32,9 +32,10 @@
   --grid: rgba(255,255,255,.2);
   --grid-strong: rgba(255,255,255,.36);
   --warm: #fdfcf9;
-  --sans: "MiSans", "HarmonyOS Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --head: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
   --mono: "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace;
-  --hand: "Kaiti SC", "KaiTi", "STKaiti", cursive;
+  --hand: "Segoe Print", "Ink Free", "Comic Sans MS", "Marker Felt", cursive;
   --spring: cubic-bezier(.34,1.45,.5,1);
   --out: cubic-bezier(.22,.8,.28,1);
   --navh: 64px;
@@ -56,6 +57,7 @@ body {
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 130px 130px, 130px 130px, 26px 26px, 26px 26px;
 }
+h1, h2, h3 { font-family: var(--head); }
 img { display: block; }
 .px { image-rendering: pixelated; }
 .mono { font-family: var(--mono); }
@@ -663,16 +665,16 @@ p { color: var(--ink-soft); }
 <header class="site-head">
   <i class="progress" id="progress" aria-hidden="true"></i>
   <div class="head-inner">
-    <a class="brand" href="#top"><span class="brand-dot" aria-hidden="true"></span>灰度修理铺</a>
-    <nav class="site-nav" aria-label="页面目录">
-      <a href="#inspiration">灵感</a>
-      <a href="#overview">概述</a>
-      <a href="#ops">操作</a>
-      <a href="#interface">界面解说</a>
-      <a href="#levels">关卡设计</a>
-      <a href="#levels-detail">逐关解析</a>
-      <a href="#notes">心得</a>
-      <a href="#play" class="nav-play">试玩 →</a>
+    <a class="brand" href="#top"><span class="brand-dot" aria-hidden="true"></span>The Gray Workshop</a>
+    <nav class="site-nav" aria-label="Page menu">
+      <a href="#inspiration">Inspiration</a>
+      <a href="#overview">Overview</a>
+      <a href="#ops">Controls</a>
+      <a href="#interface">Interface</a>
+      <a href="#levels">Level Design</a>
+      <a href="#levels-detail">Levels</a>
+      <a href="#notes">Notes</a>
+      <a href="#play" class="nav-play">Play →</a>
     </nav>
   </div>
 </header>
@@ -683,36 +685,36 @@ p { color: var(--ink-soft); }
   <section class="hero" id="hero">
     <div class="b-grid">
       <div>
-        <h1 class="title rv" style="--d:.05s">灰度修理铺</h1>
+        <h1 class="title rv" style="--d:.05s">The Gray Workshop</h1>
         <ul class="facts rv" style="--d:.12s">
-          <li><b>平台</b>HTML 5</li>
-          <li><b>开发周期</b>2 个月</li>
-          <li><b>类型</b>个人独立项目</li>
+          <li><b>Platform</b>HTML 5</li>
+          <li><b>Dev cycle</b>2 months</li>
+          <li><b>Type</b>Personal project</li>
         </ul>
         <div class="overview rv" style="--d:.2s">
-          <h2>项目速览</h2>
-          <p>一款「修图」解谜游戏：你是一间灰度修理铺的师傅，接到的委托全是被抹掉颜色的照片。你只有四种操作——点像素、拖滑块、拖色块、拖阈值——要用它们把灰度照片一步步修回原来的样子。13 个关卡，从认出灰度到综合运用。</p>
-          <p>它最特别的地方，是全程没有一行教程文字：玩法规则完全藏在关卡结构里，由玩家自己试出来。</p>
+          <h2>Project at a glance</h2>
+          <p>A photo-restoration puzzle game: you run a small grayscale repair shop, and every job that comes in is a photo with its colors stripped away. You get exactly four moves—tap pixels, drag sliders, drag color chips, drag thresholds—and use them to bring each photo back, step by step. Thirteen levels, from recognizing gray to putting it all together.</p>
+          <p>What makes it unusual: there is not a single line of tutorial text anywhere. The rules live inside the level design, and players work them out by playing.</p>
         </div>
         <div class="hero-cta rv" style="--d:.3s">
           <a class="btn-play" href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">
             <svg class="tri" viewBox="0 0 8 9" width="16" height="18" aria-hidden="true"><path d="M2 1h1v1h1v1h1v1h1v1h-1v1h-1v1h-1v1h-1z" fill="currentColor" shape-rendering="crispEdges"/></svg>
-            <span>开始试玩</span>
+            <span>Play the game</span>
           </a>
         </div>
         <ul class="nums rv" style="--d:.38s">
-          <li><b>13</b><span>关卡</span></li>
-          <li><b>4</b><span>种操作</span></li>
-          <li class="zero"><b>0</b><span>行文字教程</span></li>
+          <li><b>13</b><span>Levels</span></li>
+          <li><b>4</b><span>Moves</span></li>
+          <li class="zero"><b>0</b><span>Text tutorials</span></li>
         </ul>
       </div>
       <div class="b-stack rv" style="--d:.3s">
         <span class="sun"></span>
-        <figure class="card card-side1"><img class="px" src="素材/level-7.png" alt=""><figcaption>第 7 关</figcaption></figure>
-        <figure class="card card-side2"><img class="px" src="素材/level-4.png" alt=""><figcaption>第 4 关</figcaption></figure>
+        <figure class="card card-side1"><img class="px" src="素材/level-7.png" alt=""><figcaption>Level 7</figcaption></figure>
+        <figure class="card card-side2"><img class="px" src="素材/level-4.png" alt=""><figcaption>Level 4</figcaption></figure>
         <figure class="card card-main">
-          <img class="px" src="素材/game-level8.png" alt="第 8 关实机画面">
-          <figcaption>第 8 关「综合运用」· 实机画面</figcaption>
+          <img class="px" src="素材/game-level8.png" alt="Level 8, live gameplay">
+          <figcaption>Level 8 · live gameplay</figcaption>
         </figure>
       </div>
     </div>
@@ -724,20 +726,20 @@ p { color: var(--ink-soft); }
       <span class="sec-ghost mono" aria-hidden="true">01</span>
       <div>
         <p class="sec-en">INSPIRATION</p>
-        <h2>灵感</h2>
+        <h2>Inspiration</h2>
       </div>
     </div>
     <div class="asym-row rv">
       <div class="asym-text">
-        <p>我上学期在学数字图像处理。因为平时喜欢拍照和剪视频，调性、曝光、灰度这些概念我接触得早，这门课学得也轻松。但我的舍友一直觉得这门课很难：公式能背下来，却不明白那些数字在描述图里的什么。这些知识本身并不抽象，图像放大到像素层面就是一块块小格子，<mark>灰度就是这些格子的明暗程度</mark>。</p>
-        <p>学不懂的原因，可能不在知识本身的难度，而在接触方式：这些概念一直以公式和讲义的形式出现，没有亲手操作、直接看到效果的机会。所以我把其中最基础的概念做成了一个游戏，让玩家在通关的过程中自己理解这些概念。</p>
-        <p>这个游戏做给两种人：不了解相关知识的人，和正在学这门课、概念还没建立起来的同学。</p>
+        <p>I took digital image processing last semester. I photograph and cut videos in my spare time, so concepts like tone, exposure and gray value were familiar, and the course felt easy. My roommate kept finding it hard, though: he could recite the formulas but could not tell what the numbers described in an actual image. None of this is abstract — zoom an image all the way in and it is a grid of small cells, <mark>and gray value is simply how bright or dark each cell is</mark>.</p>
+        <p>The trouble probably is not the knowledge itself but how it is met: these concepts only ever appear as formulas and lecture notes, with no chance to work with them and see the effect directly. So I turned the most basic ones into a game, and let players build an understanding by clearing levels.</p>
+        <p>The game is made for two kinds of people: those with no background in the subject, and students taking the course who have not yet formed the concepts.</p>
       </div>
       <div class="asym-art" aria-hidden="true">
         <img class="aa-1 px" src="素材/level-6.png" alt="">
         <img class="aa-2 px" src="素材/level-2.png" alt="">
         <i class="aa-chip"></i>
-        <p class="aa-cap mono">L6 雾中月牙 / L2 5×5 像素</p>
+        <p class="aa-cap mono">L6 fog crescent / L2 5×5 pixels</p>
       </div>
     </div>
   </section>
@@ -748,19 +750,19 @@ p { color: var(--ink-soft); }
       <span class="sec-ghost mono" aria-hidden="true">02</span>
       <div>
         <p class="sec-en">OVERVIEW</p>
-        <h2>概述</h2>
+        <h2>Overview</h2>
       </div>
     </div>
     <div class="asym-row flip rv">
       <div class="asym-text">
-        <p>灰度修理铺（The Gray Workshop）是一个网页游戏，一共 13 关。<mark>通关条件分两个阶段</mark>：前九关的判定标准是两张图逐像素一致，通过时图框绿闪、进入下一关，未通过则红闪；第十关起，左侧换成待修复的原图，配一句英文情景（例如 “A faded old photo.”，一张褪色的旧照片），目标由玩家根据情景自己推断，判定通过后左侧才显示修好的那张。</p>
-        <p>除了通关后的简单讲解和情景句，关卡里没有针对玩法的任何教学文字或教程；<mark>每一关只出现这一关需要的操作</mark>，规则由玩家在尝试的过程中自己发现。</p>
+        <p>The Gray Workshop is a web game with thirteen levels. <mark>Clearing it works in two phases</mark>: in the first nine, the check is pixel-for-pixel equality between the two images — pass and the frame flashes green into the next level, fail and it flashes red. From level 10 on, the left side shows the damaged original with a one-line prompt (such as “A faded old photo.”), the goal is the player’s to infer, and the restored picture appears on the left only after the check passes.</p>
+        <p>Apart from a short note after clearing a level and the prompt line, no level carries any instructional text. <mark>Each level brings in only the moves it needs</mark>, and the rules are discovered through playing.</p>
       </div>
       <div class="asym-art" aria-hidden="true">
         <img class="aa-1 px" src="素材/level-3.png" alt="">
         <img class="aa-2 px" src="素材/level-5.png" alt="">
         <i class="aa-chip"></i>
-        <p class="aa-cap mono">L3 四色映射 / L5 双色阈值</p>
+        <p class="aa-cap mono">L3 four-color mapping / L5 two-color threshold</p>
       </div>
     </div>
   </section>
@@ -771,48 +773,48 @@ p { color: var(--ink-soft); }
       <span class="sec-ghost mono" aria-hidden="true">03</span>
       <div>
         <p class="sec-en">FOUR MOVES</p>
-        <h2>玩家能做的，只有四种操作</h2>
+        <h2>Four moves, nothing else</h2>
       </div>
     </div>
     <div class="ops-rail">
       <article class="op rv" style="--d:.02s">
         <span class="op-no">01</span>
         <div class="op-deck is-pix">
-          <img src="素材/op-1-pixel.png" alt="游戏第 2 关：左右两张 5×5 的像素图，中间一格的灰度明显不对">
-          <i class="op-mark below" style="left:42.6%; top:60%; width:14.8%; height:20%" data-label="点这一格"></i>
+          <img src="素材/op-1-pixel.png" alt="Level 2: two 5×5 pixel images, one cell clearly off in gray">
+          <i class="op-mark below" style="left:42.6%; top:60%; width:14.8%; height:20%" data-label="This cell"></i>
         </div>
-        <h3>点像素</h3>
-        <p>在操作图里选一个格子。第三关起，选中时轴上会亮起一个小标记，标出它的灰度位置。</p>
+        <h3>Tap a pixel</h3>
+        <p>Pick a cell in the working image. From level 3 on, a marker lights up on the axis showing that pixel’s gray position.</p>
       </article>
 
       <article class="op rv" style="--d:.1s">
         <span class="op-no">02</span>
         <div class="op-deck">
-          <img src="素材/op-2-axis.png" alt="游戏界面下方的灰度轴、斜纹映射条与候选色块">
-          <i class="op-mark" style="left:2%; top:43.5%; width:96%; height:13%" data-label="黑 → 白"></i>
+          <img src="素材/op-2-axis.png" alt="The gray axis, hatched mapping bar and color chips below the game screen">
+          <i class="op-mark" style="left:2%; top:43.5%; width:96%; height:13%" data-label="Black → White"></i>
         </div>
-        <h3>拖滑块</h3>
-        <p>改变选中像素的灰度值。黑到白一格一格地试，拖回来、再拖过去，明暗就变了。</p>
+        <h3>Drag the slider</h3>
+        <p>Changes the selected pixel’s gray value. Work black toward white a step at a time; drag back and forth and the shade follows.</p>
       </article>
 
       <article class="op rv" style="--d:.18s">
         <span class="op-no">03</span>
         <div class="op-deck">
-          <img src="素材/op-3-threshold.png" alt="灰度轴上的一条阈值线，下端是深色圆角手柄">
-          <i class="op-mark" style="left:43.5%; top:49%; width:13%; height:18%" data-label="拖这个手柄"></i>
+          <img src="素材/op-3-threshold.png" alt="A threshold line on the gray axis with a round handle at its foot">
+          <i class="op-mark" style="left:43.5%; top:49%; width:13%; height:18%" data-label="This handle"></i>
         </div>
-        <h3>拖阈值</h3>
-        <p>拖动轴上的分界线，决定轴在哪里分开、每段归哪边。把手能拖到轴的两端之外，把一段灰度整个并进相邻段。</p>
+        <h3>Drag a threshold</h3>
+        <p>Move the divider on the axis to decide where it splits and which side each stretch falls on. The handle can go past either end, folding one gray stretch into its neighbor.</p>
       </article>
 
       <article class="op rv" style="--d:.26s">
         <span class="op-no">04</span>
         <div class="op-deck">
-          <img src="素材/op-4-chip.png" alt="一排候选色块，上方是斜纹映射条">
-          <i class="op-mark below" style="left:35%; top:41%; width:26%; height:27%" data-label="拖进映射条"></i>
+          <img src="素材/op-4-chip.png" alt="A row of color chips above the hatched mapping bar">
+          <i class="op-mark below" style="left:35%; top:41%; width:26%; height:27%" data-label="Drop it here"></i>
         </div>
-        <h3>拖色块</h3>
-        <p>把颜色放进映射条的某一段，这段灰度里的所有像素就一起变成这个颜色。</p>
+        <h3>Drag a color chip</h3>
+        <p>Drop a color into one stretch of the mapping bar, and every pixel in that gray range turns that color at once.</p>
       </article>
     </div>
   </section>
@@ -823,7 +825,7 @@ p { color: var(--ink-soft); }
       <span class="sec-ghost mono" aria-hidden="true">04</span>
       <div>
         <p class="sec-en">INTERFACE GUIDE</p>
-        <h2>界面解说</h2>
+        <h2>Interface guide</h2>
       </div>
     </div>
 
@@ -833,47 +835,47 @@ p { color: var(--ink-soft); }
         <i class="gc-wash w2"></i>
 
         <figure class="gc-shot">
-          <img src="素材/game-level8.png" alt="第 8 关实机界面：左侧彩色目标图，右侧灰度操作图，下方灰度轴、映射条、候选色块">
+          <img src="素材/game-level8.png" alt="Level 8 live screen: color target on the left, grayscale working image on the right, gray axis, mapping bar and color chips below">
         </figure>
 
         <!-- 标注卡：左列 -->
         <div class="gc-card" style="left:40px; top:116px">
           <i class="chip" style="background:#D9C08F"></i>
           <span class="no">01</span>
-          <b>目标图</b>
-          <p>展示本关的修复目标。调整右图，使两张图达到逐像素一致。</p>
+          <b>Target image</b>
+          <p>Shows the goal for this level. Adjust the right image until the two match pixel for pixel.</p>
         </div>
         <div class="gc-card" style="left:40px; top:386px">
           <i class="chip" style="background:#7E9FB3"></i>
           <span class="no">02</span>
-          <b>灰度轴</b>
-          <p>黑到白表示灰度值。选中像素后，轴上标记其位置；拖滑块调整该像素明暗。</p>
+          <b>Gray axis</b>
+          <p>Black to white, one stop per gray value. Select a pixel and its position is marked on the axis; drag the slider to adjust its shade.</p>
         </div>
         <div class="gc-card" style="left:40px; top:656px">
           <i class="chip" style="background:#D3B25C"></i>
           <span class="no">03</span>
-          <b>映射条</b>
-          <p>与灰度轴对应。把颜色放入某一段，该灰度范围内的像素会统一显示为这个颜色。</p>
+          <b>Mapping bar</b>
+          <p>Aligned with the gray axis. Put a color into a stretch, and every pixel in that gray range displays as that color.</p>
         </div>
 
         <!-- 标注卡：右列 -->
         <div class="gc-card" style="left:1260px; top:116px">
           <i class="chip" style="background:#C98B6B"></i>
           <span class="no">04</span>
-          <b>操作图</b>
-          <p>目标图的灰度版，也是主要编辑区域。点击像素可选中，调整会实时显示在这里。</p>
+          <b>Working image</b>
+          <p>The grayscale twin of the target, and the main editing area. Click a pixel to select it; changes show up here as you make them.</p>
         </div>
         <div class="gc-card" style="left:1260px; top:386px">
           <i class="chip" style="background:#8FA985"></i>
           <span class="no">05</span>
-          <b>阈值</b>
-          <p>竖线和圆形手柄是阈值。拖动分界线可重新划分灰度范围，每段再对应一种颜色。</p>
+          <b>Threshold</b>
+          <p>The vertical line and its round handle. Drag the divider to redraw the gray ranges; each stretch then takes one color.</p>
         </div>
         <div class="gc-card" style="left:1260px; top:656px">
           <i class="chip" style="background:#A98BA8"></i>
           <span class="no">06</span>
-          <b>候选色块</b>
-          <p>提供可选择的颜色。把色块拖入映射条，为对应的灰度段指定颜色。</p>
+          <b>Color chips</b>
+          <p>The colors to choose from. Drag a chip into the mapping bar to assign it to a gray stretch.</p>
         </div>
 
         <!-- 引线：墨蓝虚线 + 红点起点 + 实心三角终点 -->
@@ -901,20 +903,20 @@ p { color: var(--ink-soft); }
       <span class="sec-ghost mono" aria-hidden="true">05</span>
       <div>
         <p class="sec-en">LEVEL DESIGN</p>
-        <h2>关卡设计</h2>
+        <h2>Level design</h2>
       </div>
     </div>
     <div class="asym-row rv">
       <div class="asym-text">
-        <p>这个游戏有一个更早的版本。最初我按「一关对应一种算法」的想法做了一版阈值原型，配了直方图和文字对照表；给不了解相关知识的人试玩，发现它本质上是先文字教学、再照着操作，玩家没有机会主动地去理解和应用背后的原理。</p>
-        <p>由此我确立了一条标准：<mark>每一关都要经得起「完全不懂的人，能不能只靠玩就通关」的检验</mark>。</p>
-        <p>标准定下来之后，做法就反过来了：不再一关一关往下想，而是先挑一个已经想清楚的第 8 关，往回推。<b>要撑起这一关，玩家得先会什么？</b>缺一个概念，就补一关。</p>
+        <p>The game had an earlier version. I first built a threshold prototype around the idea of one algorithm per level, with a histogram and a lookup table alongside. Watching someone without the background play it, I saw it was essentially read-then-follow — text first, operation second, with no chance to engage the principle behind it.</p>
+        <p>So I set one standard: <mark>every level has to pass the test of a complete beginner finishing it by playing alone</mark>.</p>
+        <p>With the standard fixed, the direction reversed: instead of building level after level forward, I took the one level already clear in my head, level 8, and worked backward. <b>What does a player need before this level?</b> Every missing concept became a level of its own.</p>
       </div>
       <div class="asym-art" aria-hidden="true">
         <img class="aa-1 px" src="素材/level-11-tight.png" alt="">
         <img class="aa-2 px" src="素材/level-4.png" alt="">
         <i class="aa-chip"></i>
-        <p class="aa-cap mono">L11 · Just her. / L4 · 蒙德里安</p>
+        <p class="aa-cap mono">L11 · Just her. / L4 · Mondrian</p>
       </div>
     </div>
   </section>
@@ -926,7 +928,7 @@ p { color: var(--ink-soft); }
       <header class="rail-head">
         <div>
           <p class="sec-en">DERIVATION · LEVELS 01–13</p>
-          <h2>关卡设计</h2>
+          <h2>Level design</h2>
         </div>
       </header>
 
@@ -934,14 +936,14 @@ p { color: var(--ink-soft); }
         <!-- 上带：思考链（L8 起点 → 前因/提问 → L1–L7 升序补齐前置概念） -->
         <div class="track" id="trackU">
           <figure class="st hub" data-lv="8">
-            <span class="tag">起点</span>
+            <span class="tag">Start</span>
             <span class="st-thumb"><img class="px" src="素材/level-8.png" alt=""></span>
-            <figcaption><b>第 8 关 · 综合运用</b><i>四条阈值 · 五个色块</i></figcaption>
+            <figcaption><b>Level 8 · Synthesis</b><i>Four thresholds · Five chips</i></figcaption>
           </figure>
 
           <div class="ask">
-            <p class="why"><b>前因</b>同学试玩第 8 关原型，看不懂界面</p>
-            <q>要做出第 8 关，<br>玩家得先会什么？</q>
+            <p class="why"><b>Trigger</b> A classmate played the level 8 prototype and couldn’t read the screen</p>
+            <q>What does a player<br>need before level 8?</q>
             <svg viewBox="0 0 240 70" width="225" height="66" fill="none" aria-hidden="true">
               <path d="M8 36 C 52 24, 96 48, 142 37 S 204 30, 220 36" stroke="#c4503c" stroke-width="5" stroke-linecap="round"/>
               <path d="M202 19 L228 36 L200 51 Z" fill="#c4503c"/>
@@ -949,42 +951,42 @@ p { color: var(--ink-soft); }
           </div>
 
           <figure class="st" data-lv="1">
-            <span class="lvnote up">至少要明白什么是灰度</span>
+            <span class="lvnote up">First, what gray even is</span>
             <span class="st-thumb"><img class="px" src="素材/level-1.png" alt=""></span>
-            <figcaption><b>第 1 关 · 引入灰度</b><i>单像素 · 拖滑块</i></figcaption>
+            <figcaption><b>Level 1 · Meeting gray</b><i>Single pixel · Slider</i></figcaption>
           </figure>
           <figure class="st" data-lv="2">
-            <span class="lvnote dn">多个像素，拼成图像</span>
+            <span class="lvnote dn">Many pixels make an image</span>
             <span class="st-thumb"><img class="px" src="素材/level-2.png" alt=""></span>
-            <figcaption><b>第 2 关 · 引入像素</b><i>图像由像素组成</i></figcaption>
+            <figcaption><b>Level 2 · Meeting pixels</b><i>Images are made of pixels</i></figcaption>
           </figure>
           <figure class="st" data-lv="3">
-            <span class="lvnote up">灰度能映射成颜色</span>
+            <span class="lvnote up">Gray can map to color</span>
             <span class="st-thumb"><img class="px" src="素材/level-3.png" alt=""></span>
-            <figcaption><b>第 3 关 · 颜色映射</b><i>灰度段对应颜色</i></figcaption>
+            <figcaption><b>Level 3 · Color mapping</b><i>Gray stretches map to colors</i></figcaption>
           </figure>
           <figure class="st" data-lv="4">
-            <span class="lvnote dn">前三关的操作，合到一起</span>
+            <span class="lvnote dn">The first three moves, combined</span>
             <span class="st-thumb"><img class="px" src="素材/level-4.png" alt=""></span>
-            <figcaption><b>第 4 关 · 操作合并</b><i>灰度 × 映射合并</i></figcaption>
+            <figcaption><b>Level 4 · Moves combined</b><i>Gray × mapping together</i></figcaption>
           </figure>
           <figure class="st" data-lv="5">
-            <span class="lvnote up">认识灰度阈值</span>
+            <span class="lvnote up">Getting to know thresholds</span>
             <span class="st-thumb"><img class="px" src="素材/level-5.png" alt=""></span>
-            <figcaption><b>第 5 关 · 引入阈值</b><i>第一次拖阈值</i></figcaption>
+            <figcaption><b>Level 5 · Meeting thresholds</b><i>First threshold drag</i></figcaption>
           </figure>
           <figure class="st" data-lv="6">
-            <span class="lvnote dn">两条阈值，难度加一档</span>
+            <span class="lvnote dn">Two thresholds, one step harder</span>
             <span class="st-thumb"><img class="px" src="素材/level-6.png" alt=""></span>
-            <figcaption><b>第 6 关 · 两条阈值</b><i>颜色预先涂好</i></figcaption>
+            <figcaption><b>Level 6 · Two thresholds</b><i>Colors pre-painted</i></figcaption>
           </figure>
           <figure class="st" data-lv="7">
-            <span class="lvnote up">两条阈值 + 全自主配色</span>
+            <span class="lvnote up">Two thresholds + free coloring</span>
             <span class="st-thumb"><img class="px" src="素材/level-7.png" alt=""></span>
-            <figcaption><b>第 7 关 · 全自主</b><i>阈值 + 涂色自主</i></figcaption>
+            <figcaption><b>Level 7 · Fully hands-on</b><i>Thresholds + free painting</i></figcaption>
           </figure>
 
-          <p class="tail">从认出灰度到全自主，<br>第 8 关需要的概念到这里补齐了</p>
+          <p class="tail">From recognizing gray to playing it all yourself,<br>level 8 has every concept it needs</p>
 
           <svg id="chainLine" aria-hidden="true"></svg>
           <div id="noteLayer" aria-hidden="true"></div>
@@ -993,52 +995,52 @@ p { color: var(--ink-soft); }
         <!-- 下带：L8–L13（自然顺序，镜头从轴心向右延伸） -->
         <div class="track" id="trackL">
           <figure class="st hub" data-lv="8">
-            <span class="tag">起点</span>
+            <span class="tag">Start</span>
             <span class="st-thumb"><img class="px" src="素材/level-8.png" alt=""></span>
-            <figcaption><b>第 8 关 · 综合运用</b><i>同一个第 8 关</i></figcaption>
+            <figcaption><b>Level 8 · Synthesis</b><i>The same level 8</i></figcaption>
           </figure>
           <figure class="st" data-lv="9">
             <span class="st-thumb"><img class="px" src="素材/level-9.png" alt=""></span>
-            <figcaption><b>第 9 关 · 删太阳</b><i>阈值拖出轴外</i></figcaption>
+            <figcaption><b>Level 9 · Delete the sun</b><i>Threshold off the axis</i></figcaption>
           </figure>
           <figure class="st" data-lv="10">
             <span class="st-thumb"><img class="px" src="素材/level-10.png" alt=""></span>
-            <figcaption><b>第 10 关 · 去墨渍</b><i>墨水段并入纸色</i></figcaption>
+            <figcaption><b>Level 10 · Remove ink</b><i>Ink folded into paper</i></figcaption>
           </figure>
           <figure class="st" data-lv="11">
             <span class="st-thumb"><img class="px" src="素材/level-11.png" alt=""></span>
-            <figcaption><b>第 11 关 · 去树枝</b><i>只留下人物</i></figcaption>
+            <figcaption><b>Level 11 · Remove branch</b><i>Keep only the person</i></figcaption>
           </figure>
           <figure class="st" data-lv="12">
             <span class="st-thumb"><img class="px" src="素材/level-12.png" alt=""></span>
-            <figcaption><b>第 12 关 · 去日期戳</b><i>复用第 9 关解法</i></figcaption>
+            <figcaption><b>Level 12 · Remove stamp</b><i>Reuses the level 9 fix</i></figcaption>
           </figure>
           <figure class="st" data-lv="13">
             <span class="st-thumb"><img class="px" src="素材/level-13.png" alt=""></span>
-            <figcaption><b>第 13 关 · 修旧照</b><i>涂更浓的颜色</i></figcaption>
+            <figcaption><b>Level 13 · Restore photo</b><i>Paint deeper colors</i></figcaption>
           </figure>
           <figure class="st finale">
-            <span class="fin-seal">结论</span>
-            <b>从一个构想，<br>倒推出 13 关</b>
+            <span class="fin-seal">Result</span>
+            <b>One idea,<br>worked back into 13 levels</b>
             <svg class="fin-line" viewBox="0 0 240 14" width="240" height="14" fill="none" aria-hidden="true">
               <path d="M4 9 C 52 3, 108 12, 168 6 S 224 4, 236 8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
             </svg>
-            <i>1–7 前置概念 · 8 枢纽 · 9–13 现实应用</i>
+            <i>1–7 prerequisites · 8 pivot · 9–13 real repairs</i>
           </figure>
         </div>
 
-        <div id="link"><span>轴心 · 同一个第 8 关</span></div>
+        <div id="link"><span>Pivot · the same level 8</span></div>
       </div>
 
       <!-- 阶段③ 的固定长箭头：字在箭头上下，箭头不随卡片滚动，只做淡入淡出 -->
       <div class="ext-note" id="extNote" aria-hidden="true">
-        <p class="ext-main">延伸：这套机制在现实里修理什么？</p>
+        <p class="ext-main">Further: what can this mechanism repair in real life?</p>
         <svg id="extArrow" aria-hidden="true"></svg>
-        <p class="ext-sub">从「教概念」转向真实任务，修复目标由玩家自己推理</p>
+        <p class="ext-sub">From teaching concepts to real tasks; the repair goal is the player’s to infer</p>
       </div>
 
       <div class="rail-hud">
-        <span class="phase" id="phase">① 倒推 L8 → L1</span>
+        <span class="phase" id="phase">① Working back L8 → L1</span>
         <span class="bar"><b id="barFill"></b></span>
       </div>
      </div>
@@ -1051,37 +1053,37 @@ p { color: var(--ink-soft); }
       <span class="sec-ghost mono" aria-hidden="true">06</span>
       <div>
         <p class="sec-en">LEVEL BY LEVEL</p>
-        <h2>逐关解析</h2>
+        <h2>Level by level</h2>
       </div>
     </div>
-    <p class="sec-lead">每一关只引入一个新的操作或概念。下面按关卡组说明它教什么、为什么这样设计，以及试玩之后改掉的那些地方。</p>
+    <p class="sec-lead">Each level introduces exactly one new move or concept. Below, group by group: what it teaches, why it is built this way, and what playtesting changed.</p>
 
     <!-- 第 1 关 -->
     <div class="lvg rv">
       <div class="lvg-head">
-        <h3 class="lvg-title">第 1 关<span>引入灰度</span></h3>
+        <h3 class="lvg-title">Level 1<span>Meeting gray</span></h3>
       </div>
       <div class="lvg-media">
         <!-- 动态图位：容器规格统一，后续把 img 换成通关过程 GIF 即可 -->
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-1.png" alt="第 1 关画面"></div>
-          <figcaption>L1 · 单像素 · 拖滑块</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-1.png" alt="Level 1 screen"></div>
+          <figcaption>L1 · single pixel · slider</figcaption>
         </figure>
       </div>
       <div class="lv-txt">
         <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p>左右各一个方块，初始灰度不同，下方一个滑块。拖动滑块改变右侧方块的灰度，松手时判定，与左侧一致即通关。</p>
+          <p class="lbl">Gameplay</p>
+          <p>One square on each side, starting at different grays, one slider below. Drag the slider to change the right square’s gray; on release the two are compared, and matching the left clears the level.</p>
         </div>
         <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>这一关是从「同学试完不明白」这里开始的。最初想直接做成的，就是后来第八关的形式：一张图、多条阈值、一组颜色全部自由配置，他看不懂这个界面。那次试玩定下了一条标准：<mark>完全不懂的人，只靠玩也要能通关</mark>。</p>
-          <p>第一关是这条标准往回推的第一步：用最简单的图让人先看到什么是灰度。整张图只有一个像素，玩家能做的只有拖动滑块，拖动时右侧方块的明暗跟着滑块的位置变化。</p>
+          <p class="lbl">Design notes</p>
+          <p>This level came out of that classmate’s confusion. What I first wanted to build was the later level 8: one image, several thresholds, a full set of free colors — and he could not read the screen. That playtest set a standard: <mark>a complete beginner has to be able to finish it by playing alone</mark>.</p>
+          <p>Level 1 is the first step working back from that standard: the simplest image that lets a person see what gray is. The whole image is one pixel, the only thing to do is drag the slider, and the right square’s shade follows the handle.</p>
         </div>
         <aside class="iter">
-          <p class="iter-head"><span class="iter-tag">迭代</span><em>试玩之后改掉的地方</em></p>
-          <p>这一关最初带有「接近提示」：拖到接近正确灰度时界面会亮。试玩中发现，玩家会拖着滑块扫过整根轴、等提示出现就松手，通关过程不包含任何比较和判断。</p>
-          <p class="chg">因此改为松手时判定，判定失败则滑块弹回原位，玩家必须先比较两边的灰度，再决定调整方向。</p>
+          <p class="iter-head"><span class="iter-tag">Iteration</span><em>changed after playtesting</em></p>
+          <p>The level first shipped with a closeness hint: the screen glowed as the slider neared the right gray. Playtesting showed players sweeping the slider across the axis and releasing the moment the hint lit — clearing it involved no comparison or judgment at all.</p>
+          <p class="chg">So it became a check on release, with the slider snapping back on failure: the player has to compare the two grays first, then decide which way to go.</p>
         </aside>
       </div>
     </div>
@@ -1089,27 +1091,27 @@ p { color: var(--ink-soft); }
     <!-- 第 2 关 -->
     <div class="lvg flip rv">
       <div class="lvg-head">
-        <h3 class="lvg-title">第 2 关<span>引入像素</span></h3>
+        <h3 class="lvg-title">Level 2<span>Meeting pixels</span></h3>
       </div>
       <div class="lvg-media">
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-2.png" alt="第 2 关画面"></div>
-          <figcaption>L2 · 5×5 像素 · 逐个修正</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-2.png" alt="Level 2 screen"></div>
+          <figcaption>L2 · 5×5 pixels · fix one by one</figcaption>
         </figure>
       </div>
       <div class="lv-txt">
         <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p>左右各一张 5×5 的图像，大部分像素一致，个别像素的灰度明显不对。点击一个像素，滑块跳到该像素的灰度上；逐个修正后通关。</p>
+          <p class="lbl">Gameplay</p>
+          <p>Two 5×5 images, identical except for a few pixels whose gray is clearly wrong. Click a pixel and the slider jumps to its gray; fix them one by one to clear the level.</p>
         </div>
         <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>这一关把单个像素扩展为一张 5×5 的图像，教学点是图像由像素组成。</p>
+          <p class="lbl">Design notes</p>
+          <p>This level grows the single pixel into a 5×5 image; the lesson is that images are made of pixels.</p>
         </div>
         <aside class="iter">
-          <p class="iter-head"><span class="iter-tag">迭代</span><em>试玩之后改掉的地方</em></p>
-          <p>试玩中发现，玩家不知道像素可以点击，而是沿用第一关的经验直接拖动滑块，操作没有任何效果。</p>
-          <p class="chg">因此这一关开局预先选中一个错误的像素：选中框亮着，滑块停在它的灰度上。玩家要么注意到选中框，要么拖滑块时发现像素跟着变化，两种情况都能理解这一关的操作方式。</p>
+          <p class="iter-head"><span class="iter-tag">Iteration</span><em>changed after playtesting</em></p>
+          <p>Playtesting showed players did not realize pixels were clickable; they carried over the level 1 habit and dragged the slider, and nothing responded.</p>
+          <p class="chg">So the level opens with one wrong pixel already selected: the frame lit, the slider parked on its gray. Either the player notices the frame, or notices the pixel changing as they drag; either path teaches the move.</p>
         </aside>
       </div>
     </div>
@@ -1117,28 +1119,28 @@ p { color: var(--ink-soft); }
     <!-- 第 3–4 关 -->
     <div class="lvg rv">
       <div class="lvg-head">
-        <h3 class="lvg-title">第 3–4 关<span>引入颜色映射</span></h3>
+        <h3 class="lvg-title">Levels 3–4<span>Color mapping</span></h3>
       </div>
       <div class="lvg-media two">
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-3.png" alt="第 3 关画面"></div>
-          <figcaption>L3 · 四色映射 · 阈值预固定</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-3.png" alt="Level 3 screen"></div>
+          <figcaption>L3 · four-color mapping · thresholds fixed</figcaption>
         </figure>
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-4.png" alt="第 4 关画面"></div>
-          <figcaption>L4 · 蒙德里安 · 灰度 × 映射合并</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-4.png" alt="Level 4 screen"></div>
+          <figcaption>L4 · Mondrian · gray × mapping together</figcaption>
         </figure>
       </div>
       <div class="lv-txt">
         <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p><b>第三关</b>：左侧一幅四色抽象画，右侧为其灰度版；灰度轴预先分段，把色块拖到对应段上，图像中该灰度段的像素全部映射为拖入的颜色，涂对全部灰度段即通关。</p>
-          <p><b>第四关</b>：图换成蒙德里安的画，灰度调整和颜色映射同时可操作；右下角的两个黄色像素，需要同时应用灰度调整和映射颜色才能复原。</p>
+          <p class="lbl">Gameplay</p>
+          <p><b>Level 3</b>: a four-color abstract piece on the left, its grayscale twin on the right. The axis is pre-divided; drag each chip onto its stretch, every pixel in that gray range takes the color, and the level clears when every stretch is right.</p>
+          <p><b>Level 4</b>: the picture becomes a Mondrian, with gray adjustment and color mapping live at the same time; the two yellow pixels in the lower right need both to come back.</p>
         </div>
         <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p><b>第三关</b>只处理「一段灰度对应一种颜色」这一个关系：阈值预先固定，玩家只需要把颜色放对。</p>
-          <p><b>第四关</b>把灰度调整和颜色映射合到一起。两个黄色像素的灰度与背景相同，在灰度版里看不见，所以只能先改灰度：灰度相同的像素，颜色必然相同。</p>
+          <p class="lbl">Design notes</p>
+          <p><b>Level 3</b> deals in a single relationship, one gray stretch to one color: thresholds are fixed, and the player only places colors.</p>
+          <p><b>Level 4</b> puts gray adjustment and color mapping on the same table. The two yellow pixels share the background’s gray and are invisible in the grayscale view, so gray has to change first: pixels with the same gray must share a color.</p>
         </div>
       </div>
     </div>
@@ -1146,36 +1148,36 @@ p { color: var(--ink-soft); }
     <!-- 第 5–7 关 -->
     <div class="lvg flip rv">
       <div class="lvg-head">
-        <h3 class="lvg-title">第 5–7 关<span>阈值的递进</span></h3>
+        <h3 class="lvg-title">Levels 5–7<span>Thresholds, one step at a time</span></h3>
       </div>
       <div class="lvg-media multi">
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-5.png" alt="第 5 关画面"></div>
-          <figcaption>L5 · 双色阈值 · 第一次拖</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-5.png" alt="Level 5 screen"></div>
+          <figcaption>L5 · two-color threshold · first drag</figcaption>
         </figure>
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-6.png" alt="第 6 关画面"></div>
-          <figcaption>L6 · 雾中月牙 · 两条阈值</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-6.png" alt="Level 6 screen"></div>
+          <figcaption>L6 · fog crescent · two thresholds</figcaption>
         </figure>
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-7.png" alt="第 7 关画面"></div>
-          <figcaption>L7 · 雾中爱心 · 全自主配色</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-7.png" alt="Level 7 screen"></div>
+          <figcaption>L7 · fog heart · free coloring</figcaption>
         </figure>
       </div>
       <div class="lv-txt">
         <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p><b>第五关</b>：右图是嵌套的方块图案，左图是双色目标；一条阈值、两个候选色块，玩家自行放置色块并拖动阈值。</p>
-          <p><b>第六关</b>：雾中的月牙，颜色预先涂好，两条阈值开局位于灰度轴两端，需要把月牙所在的灰度层从雾和背景之间分离出来，雾与背景显示为同一颜色。</p>
-          <p><b>第七关</b>：雾中的爱心，机制与第六关相同，颜色不预涂，涂色与阈值均由玩家完成。</p>
+          <p class="lbl">Gameplay</p>
+          <p><b>Level 5</b>: nested squares on the right, a two-color target on the left; one threshold, two chips, both placed and dragged by the player.</p>
+          <p><b>Level 6</b>: a crescent in fog, colors pre-painted, both thresholds starting at the ends of the axis. The crescent’s gray layer has to be split out from between the fog and the background, which then show as one color.</p>
+          <p><b>Level 7</b>: a heart in fog, same mechanics as level 6, but nothing pre-painted; the player does the coloring and the thresholds.</p>
         </div>
         <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>这三关的递进只围绕阈值展开：第五关玩家第一次拖动阈值，同时颜色只有两种，操作范围最小；第六关增加到两条阈值，颜色预先涂好，以平衡新增加的操作难度；第七关阈值数量不变，把涂色也交还给玩家。</p>
+          <p class="lbl">Design notes</p>
+          <p>The progression here is all thresholds: level 5 is the first drag, with only two colors keeping the workload small; level 6 adds a second threshold and pre-paints the colors to balance it; level 7 keeps the threshold count and hands the painting back to the player.</p>
         </div>
         <aside class="quote-note">
-          <p class="q-tag">设计细节</p>
-          <p>第五关的两个候选色块，左右位置与正确答案相反，防止玩家按顺序摆放直接通关、跳过对「阈值两侧各归一种颜色」的理解；摆反会得到一张颜色互换的图，需要玩家识别并交换。</p>
+          <p class="q-tag">Design detail</p>
+          <p>In level 5 the two chips sit in the reverse of the correct order, so the player cannot clear it by placing them left to right and skip the idea that each side of the threshold takes one color; placed wrong, the result is a color-swapped image that has to be spotted and exchanged.</p>
         </aside>
       </div>
     </div>
@@ -1183,28 +1185,28 @@ p { color: var(--ink-soft); }
     <!-- 第 8–9 关 -->
     <div class="lvg rv">
       <div class="lvg-head">
-        <h3 class="lvg-title">第 8–9 关<span>综合与运用</span></h3>
+        <h3 class="lvg-title">Levels 8–9<span>Combine and apply</span></h3>
       </div>
       <div class="lvg-media two">
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-8.png" alt="第 8 关画面"></div>
-          <figcaption>L8 · 综合运用 · 四条阈值五个色块</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-8.png" alt="Level 8 screen"></div>
+          <figcaption>L8 · putting it together · four thresholds, five chips</figcaption>
         </figure>
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-9.png" alt="第 9 关画面"></div>
-          <figcaption>L9 · 删太阳 · 阈值拖出轴外</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-9.png" alt="Level 9 screen"></div>
+          <figcaption>L9 · delete the sun · threshold off the axis</figcaption>
         </figure>
       </div>
       <div class="lv-txt">
         <div class="lv-card">
-          <p class="lbl">玩法</p>
-          <p><b>第八关</b>：一幅五色的风景图，四条阈值、五个色块，全部自行设置，是前七关所有机制的综合。</p>
-          <p><b>第九关</b>：画面与第八关相同，但左侧目标图中没有太阳。涂色和阈值仍由玩家自行设置，需要自己想办法把太阳从画面里去掉。</p>
+          <p class="lbl">Gameplay</p>
+          <p><b>Level 8</b>: a five-color landscape, four thresholds, five chips, all set by the player — everything from the first seven levels in one image.</p>
+          <p><b>Level 9</b>: the same scene as level 8, but the target on the left has no sun. Coloring and thresholds are still the player’s to set, and getting the sun out of the picture is up to them.</p>
         </div>
         <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>第八关是综合关：用到前七关的全部机制，图更大、颜色更多；为了不让它变成纯体力活，其他方面的难度相应压低，候选色块的顺序与答案一致，只有阈值的开局位置是错的。</p>
-          <p>第九关第一次出现目标图无法直接复刻的情况。按上一关的方法涂完颜色后，太阳仍然留在画面里，唯一的解法是把天空和太阳之间的阈值拖出灰度轴最右端，让太阳所在的灰度段消失、并进天空色。</p>
+          <p class="lbl">Design notes</p>
+          <p>Level 8 is the synthesis: every mechanic from levels 1–7, on a bigger image with more colors. To keep it from becoming pure labor, everything else eases up — the chips are already in answer order, and only the thresholds start in the wrong place.</p>
+          <p>Level 9 is the first time the target cannot simply be copied. Painted the level 8 way, the sun stays in the picture; the only fix is to drag the sky–sun threshold past the far right end of the axis, so the sun’s gray stretch disappears into the sky color.</p>
         </div>
       </div>
     </div>
@@ -1212,37 +1214,37 @@ p { color: var(--ink-soft); }
     <!-- 第 10–13 关 -->
     <div class="lvg flip rv">
       <div class="lvg-head">
-        <h3 class="lvg-title">第 10–13 关<span>现实的修理任务</span></h3>
+        <h3 class="lvg-title">Levels 10–13<span>Real repair jobs</span></h3>
       </div>
       <div class="lvg-media multi">
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-10.png" alt="第 10 关画面"></div>
-          <figcaption>L10 · 被墨水污染的信</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-10.png" alt="Level 10 screen"></div>
+          <figcaption>L10 · an ink-stained letter</figcaption>
         </figure>
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-11.png" alt="第 11 关画面"></div>
-          <figcaption>L11 · 被树枝遮挡的人像</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-11.png" alt="Level 11 screen"></div>
+          <figcaption>L11 · a portrait blocked by branches</figcaption>
         </figure>
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-12.png" alt="第 12 关画面"></div>
-          <figcaption>L12 · 盖着日期戳的海边风景</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-12.png" alt="Level 12 screen"></div>
+          <figcaption>L12 · a seascape stamped with a date</figcaption>
         </figure>
         <figure class="shot">
-          <div class="shot-img"><img class="px" src="素材/level-13.png" alt="第 13 关画面"></div>
-          <figcaption>L13 · 褪色的人像旧照</figcaption>
+          <div class="shot-img"><img class="px" src="素材/level-13.png" alt="Level 13 screen"></div>
+          <figcaption>L13 · a faded portrait</figcaption>
         </figure>
       </div>
       <div class="lv-txt">
         <div class="lv-card is-note">
-          <p class="lbl">设计思路</p>
-          <p>这四关的设计目的，是把前面几关的知识点和真实应用结合起来。我寻找的是现实中图片修复的例子：修复旧照片、去除水印、人像修图。现实中的原理当然更复杂，但抽象地理解，它们的本质与游戏里的知识是同一件事：<mark>把不合适的颜色换成想要的颜色</mark>。</p>
-          <p>这一部分最初仍打算沿用前几关的做法，把目标图像直接做好。但这样一来，一个页面上需要三张图：目标图像、待修复的图像和灰度版，破坏了游戏从第一关开始一直保持的统一感。为了维持两张图的布局，目标颜色不再作为标准答案给出，而是通过情景句暗示，让玩家自己推理修复的意图：既保住了统一的设计，也让通关多出了推理这一步。</p>
+          <p class="lbl">Design notes</p>
+          <p>These four levels tie the earlier concepts to real uses. I looked for real cases of photo repair: restoring old prints, removing watermarks, retouching portraits. The real techniques are more complicated, but abstractly they come down to what the game teaches: <mark>replacing the wrong colors with the ones you want</mark>.</p>
+          <p>These levels were first drafted like the earlier ones, with the target image built in full. That would have meant three images on screen — target, damaged original, grayscale — breaking the two-image layout the game had kept since level 1. To keep the layout, the target colors are no longer given as an answer; a prompt line hints at them instead, and the repair intent is the player’s to infer. The design stays unified, and clearing a level gains one extra step of inference.</p>
         </div>
         <div class="scene-row">
-          <div class="scene-card"><p class="scene-en">“Oh damn, the ink.”</p><p class="scene-zh">被墨水污染的信</p></div>
-          <div class="scene-card"><p class="scene-en">“Just her.”</p><p class="scene-zh">被树枝遮挡的人像照片</p></div>
-          <div class="scene-card"><p class="scene-en">“Who watermarks this?”</p><p class="scene-zh">盖有日期戳的海边风景</p></div>
-          <div class="scene-card"><p class="scene-en">“A faded old photo.”</p><p class="scene-zh">褪色的人像旧照</p></div>
+          <div class="scene-card"><p class="scene-en">“Oh damn, the ink.”</p><p class="scene-zh">An ink-stained letter</p></div>
+          <div class="scene-card"><p class="scene-en">“Just her.”</p><p class="scene-zh">A portrait blocked by branches</p></div>
+          <div class="scene-card"><p class="scene-en">“Who watermarks this?”</p><p class="scene-zh">A seascape with a date stamp</p></div>
+          <div class="scene-card"><p class="scene-en">“A faded old photo.”</p><p class="scene-zh">A faded portrait</p></div>
         </div>
       </div>
     </div>
@@ -1254,41 +1256,41 @@ p { color: var(--ink-soft); }
       <span class="sec-ghost mono" aria-hidden="true">07</span>
       <div>
         <p class="sec-en">NOTES</p>
-        <h2>心得</h2>
+        <h2>Notes</h2>
       </div>
     </div>
 
-    <p class="creed-lead rv">这套关卡设计始终在追求几个点：</p>
+    <p class="creed-lead rv">The level design kept aiming at a few things:</p>
     <div class="creed rv">
       <article>
         <p class="cr-no">01</p>
-        <h3>设计元素的统一</h3>
-        <p>灰度、阈值、映射都呈现在同一条灰度轴上，四种操作从第一关用到最后一关，界面上始终只有两张图。</p>
+        <h3>Unified elements</h3>
+        <p>Gray, thresholds and mapping all live on the same axis; the four moves run from the first level to the last; the screen never holds more than two images.</p>
       </article>
       <article>
         <p class="cr-no">02</p>
-        <h3>零文字教学</h3>
-        <p>全程没有文字教程：规则就放在关卡的初始状态里，由玩家自己试出来；概念的名字留到通关之后的讲解里。</p>
+        <h3>No text tutorials</h3>
+        <p>No text tutorials anywhere: the rules sit in each level’s initial state, waiting to be found by playing; the names of the concepts come in the note after clearing.</p>
       </article>
       <article>
         <p class="cr-no">03</p>
-        <h3>难度梯度的连贯</h3>
-        <p>难度依次增加：引入新概念时，相应降低其他方面的难度来保持平衡；后一关只建立在前一关已经学会的东西上。</p>
+        <h3>A steady difficulty curve</h3>
+        <p>Difficulty rises step by step: when a new concept arrives, something else eases up to keep the balance; each level builds only on what the one before it taught.</p>
       </article>
     </div>
 
     <div class="note-rows">
       <div class="note-row rv">
-        <blockquote>思路很难一次想完整，<br>可以先把自己最想清楚的那部分做出来。</blockquote>
-        <p>这个项目验证了一种做设计的方式：第八关在其余关卡存在之前就已经在我脑子里成形，向更基础的方向拆出前面的关卡，向综合的方向长出后面的关卡。做出来的内容会变成线索，在已有的东西里找规律和逻辑，再把这些逻辑应用到新的关卡上，完整的关卡结构就是这样逐渐成形的。</p>
+        <blockquote>Designs rarely come complete in one pass,<br>so build the part you already see clearly first.</blockquote>
+        <p>The project confirmed a way of working: level 8 took shape in my head before any other level did. The earlier levels were split off toward the fundamentals, the later ones grew toward synthesis. What gets built becomes a clue; patterns and logic found in what exists get applied to the next level, and the full structure takes shape that way.</p>
       </div>
       <div class="note-row rv">
-        <blockquote>有时候线索以约束的形式出现，<br>但约束同时也是亮点。</blockquote>
-        <p>第 10–13 关的设计就是例子：为了保持两张图的统一布局，页面上放不下目标图，这个约束促成了用情景句代替答案的方案，通关反而多出了推理这一步。设计元素的统一是我一直追求的点，但最初设计新关卡时，我并不知道该怎么保持它；随着对已有关卡的思考越来越多、理解越来越深，方法是在这个过程中逐渐明确的。</p>
+        <blockquote>Sometimes clues arrive as constraints,<br>and the constraint is also the highlight.</blockquote>
+        <p>Levels 10–13 are the example: keeping the two-image layout left no room for a target image, and that constraint produced the prompt line in place of an answer, adding a step of inference to every clear. Unity of elements was something I chased from the start, but at first I did not know how to hold onto it; the method became clear only as I kept thinking through the levels I already had.</p>
       </div>
       <div class="note-row rv">
-        <blockquote>假设自己是第一次玩这个游戏，<br>会怎么想、哪里会不懂。</blockquote>
-        <p>另一个贯穿始终的习惯，是站在玩家的角度思考：不能把自己的想法预设成共识，凡是我觉得理所当然的地方，都当作玩家可能不理解的地方再检查一遍，这些往往就是后续需要迭代优化的细节。</p>
+        <blockquote>Assume you are playing the game for the first time:<br>what would you think, where would you get stuck?</blockquote>
+        <p>One habit ran through the whole project: thinking from the player’s side. Never assume your own reading is shared. Anywhere something felt obvious to me, I re-checked it as a place a player might get stuck, and those spots were exactly what later iterations fixed.</p>
       </div>
     </div>
   </section>
@@ -1299,20 +1301,20 @@ p { color: var(--ink-soft); }
       <span class="sec-ghost mono" aria-hidden="true">08</span>
       <div>
         <p class="sec-en">PLAY IT</p>
-        <h2>试玩</h2>
+        <h2>Play</h2>
       </div>
     </div>
     <div class="play-frame-wrap rv">
-      <iframe class="play-frame" src="https://jesse20050324.github.io/dip-game/game/blue/index.html" title="灰度修理铺 线上完整版" loading="lazy"></iframe>
+      <iframe class="play-frame" src="https://jesse20050324.github.io/dip-game/game/blue/index.html" title="The Gray Workshop — full game" loading="lazy"></iframe>
     </div>
-    <p class="play-alt mono">嵌入显示异常时，<a href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">点这里在新标签页打开 →</a></p>
+    <p class="play-alt mono">If the embed misbehaves, <a href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">open it in a new tab →</a></p>
   </section>
 
 </main>
 
 <footer class="site-foot">
-  <p class="mono">灰度修理铺 · THE GRAY WORKSHOP — 个人作品页</p>
-  <p class="mono dim">正文取自项目文书 · 游戏本体：jesse20050324.github.io/dip-game · 网站纯静态，双击即开</p>
+  <p class="mono">THE GRAY WORKSHOP — a personal project page</p>
+  <p class="mono dim">Text adapted from the project write-up · Game: jesse20050324.github.io/dip-game · Static site, opens with a double-click</p>
 </footer>
 
 <script>
@@ -1608,7 +1610,7 @@ p { color: var(--ink-soft); }
         tL.style.opacity = '';
         link.style.opacity = Math.max(0, 1 - s / (segU * .18));
         extNote.style.opacity = 0;
-        phaseEl.textContent = '① 倒推 · 拆出第 1–7 关';
+        phaseEl.textContent = '① Working back · levels 1–7';
         centerScale(chainU, M.u0 - s);
         highlight(cardsU, true); highlight(cardsL, false);
       } else if (s < segU + segV) {
@@ -1622,7 +1624,7 @@ p { color: var(--ink-soft); }
         tL.style.opacity = .55 + .45 * t;
         link.style.opacity = 0;
         extNote.style.opacity = 0;
-        phaseEl.textContent = '② 转向延伸段';
+        phaseEl.textContent = '② Turning to extensions';
         highlight(cardsU, false); highlight(cardsL, false);
       } else {
         const k = s - segU - segV;
@@ -1634,7 +1636,7 @@ p { color: var(--ink-soft); }
         tU.style.opacity = 0;
         link.style.opacity = 0;
         extNote.style.opacity = Math.min(1, k / (segL * .12));
-        phaseEl.textContent = '③ 延伸 L8 → L13';
+        phaseEl.textContent = '③ Extending L8 → L13';
         centerScale(chainL, M.l0 - k);
         highlight(cardsL, true); highlight(cardsU, false);
       }
@@ -1701,5 +1703,103 @@ p { color: var(--ink-soft); }
 })();
 </script>
 
+
+<style>
+/* ============ 字体挑选插件（?font=1） ============ */
+#fontPanel { position: fixed; left: 16px; bottom: 16px; z-index: 9999; width: 300px;
+  background: #fff; border: 2px solid var(--ink); border-radius: 12px;
+  box-shadow: 0 6px 0 var(--shadow); padding: 13px 14px; font-family: var(--sans); }
+#fontPanel h4 { font-size: 12.5px; letter-spacing: .06em; margin-bottom: 9px; color: var(--ink); }
+#fontPanel .frow { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+#fontPanel .frow label { flex: 0 0 74px; font-size: 11.5px; color: var(--muted); }
+#fontPanel .frow select { flex: 1; font-size: 12px; padding: 4px 5px; border: 2px solid var(--ink); border-radius: 7px; background: #fff; }
+#fontPanel .fbtns { display: flex; gap: 8px; margin-top: 10px; }
+#fontPanel button { flex: 1; padding: 6px 0; border: 2px solid var(--ink); background: #fff; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; }
+#fontPanel #fontCopy { background: var(--ink); color: var(--card); }
+#fontHint { font-size: 11px; color: var(--red); margin-top: 8px; display: none; }
+</style>
+<script>
+/* ============ 6. 字体挑选插件（网址后加 ?font=1 打开） ============ */
+(() => {
+  if (!/[?#&]font=1/.test(location.href)) return;
+  const DEF = {
+    body: '"Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
+    head: '"Trebuchet MS", "Segoe UI", Verdana, sans-serif',
+    mono: '"JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace',
+    hand: '"Segoe Print", "Ink Free", "Comic Sans MS", "Marker Felt", cursive',
+  };
+  const KEY = 'grayrepair-font-tune';
+  const OPTS = {
+    body: [['Segoe UI（默认）', DEF.body], ['Arial', 'Arial, "Helvetica Neue", sans-serif'],
+           ['Verdana', 'Verdana, Geneva, sans-serif'], ['Tahoma', 'Tahoma, Geneva, sans-serif'],
+           ['Calibri', 'Calibri, "Segoe UI", sans-serif'], ['Trebuchet MS', '"Trebuchet MS", "Segoe UI", sans-serif'],
+           ['system-ui', 'system-ui, sans-serif']],
+    head: [['Trebuchet MS（默认）', DEF.head], ['Segoe UI', '"Segoe UI", system-ui, sans-serif'],
+           ['Verdana', 'Verdana, Geneva, sans-serif'], ['Tahoma', 'Tahoma, Geneva, sans-serif'],
+           ['Arial', 'Arial, "Helvetica Neue", sans-serif'], ['Calibri', 'Calibri, "Segoe UI", sans-serif']],
+    mono: [['默认 JetBrains/Cascadia（默认）', DEF.mono], ['Consolas', 'Consolas, monospace'],
+           ['Cascadia Code', '"Cascadia Code", Consolas, monospace'], ['Courier New', '"Courier New", monospace'],
+           ['Menlo', 'Menlo, Consolas, monospace']],
+    hand: [['Segoe Print（默认）', DEF.hand], ['Ink Free', '"Ink Free", "Segoe Print", cursive'],
+           ['Comic Sans MS', '"Comic Sans MS", "Segoe Print", cursive'], ['Bradley Hand', '"Bradley Hand", "Segoe Print", cursive'],
+           ['楷体（中文手写）', '"Kaiti SC", "KaiTi", "STKaiti", cursive']],
+  };
+  const NAMES = { body: '正文 Body', head: '标题 Headings', mono: '标签 Mono', hand: '手写 Hand' };
+
+  function load() {
+    try { return Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); }
+    catch (e) { return Object.assign({}, DEF); }
+  }
+  function apply(c) {
+    const st = document.documentElement.style;
+    st.setProperty('--sans', c.body);
+    st.setProperty('--head', c.head);
+    st.setProperty('--mono', c.mono);
+    st.setProperty('--hand', c.hand);
+  }
+  const cur = load();
+  apply(cur);
+
+  const box = document.createElement('div');
+  box.id = 'fontPanel';
+  box.innerHTML = '<h4>字体挑选 <span style="font-weight:400;color:#8a968d">（改完点「复制参数发我」）</span></h4>'
+    + ['body','head','mono','hand'].map(k =>
+        '<div class="frow"><label>' + NAMES[k] + '</label><select data-k="' + k + '">'
+        + OPTS[k].map(o => '<option value="' + o[1].replace(/"/g, '&quot;') + '">' + o[0] + '</option>').join('')
+        + '</select></div>').join('')
+    + '<div class="fbtns"><button id="fontReset">重置默认</button><button id="fontCopy">复制参数发我</button></div>'
+    + '<p id="fontHint">已复制，把 JSON 发给小帮即可固化为默认值</p>';
+  document.body.appendChild(box);
+
+  const sel = [...box.querySelectorAll('select')];
+  sel.forEach(sl => {
+    const k = sl.dataset.k;
+    const match = OPTS[k].find(o => o[1] === cur[k]);
+    if (match) sl.value = match[1];
+    sl.addEventListener('change', () => {
+      const c = load(); c[k] = sl.value;
+      apply(c);
+      try { localStorage.setItem(KEY, JSON.stringify(c)); } catch (e) {}
+    });
+  });
+  box.querySelector('#fontReset').addEventListener('click', () => {
+    localStorage.removeItem(KEY);
+    apply(DEF);
+    sel.forEach(sl => { sl.value = sl.options[0].value; });
+  });
+  box.querySelector('#fontCopy').addEventListener('click', () => {
+    const c = load();
+    const pick = {};
+    ['body','head','mono','hand'].forEach(k => {
+      const opts = OPTS[k];
+      const m = opts.find(o => o[1] === c[k]);
+      pick[k] = m ? m[0] : c[k];
+    });
+    navigator.clipboard.writeText(JSON.stringify(pick)).then(
+      () => { document.getElementById('fontHint').style.display = 'block'; },
+      () => { window.prompt('手动复制：', JSON.stringify(pick)); });
+  });
+})();
+</script>
 </body>
 </html>
