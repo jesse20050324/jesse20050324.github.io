@@ -483,10 +483,10 @@ p { color: var(--ink-soft); }
   padding: 5px 10px; border-radius: 7px; box-shadow: 0 3px 0 var(--shadow);
 }
 /* 阶段③ 长箭头：固定悬在抬升后的下带上方，不随卡片滚动；主字在箭头上、副字在下 */
-.ext-note { position: absolute; z-index: 5; left: 6vw; width: min(64vw, 1080px); opacity: 0; pointer-events: none; }
-.ext-note .ext-main { font-family: var(--hand); font-weight: 700; font-size: clamp(19px,1.35vw,25px); color: var(--red); letter-spacing: .04em; line-height: 1.3; }
-.ext-note .ext-sub { font-size: 12.5px; font-weight: 600; color: var(--muted); letter-spacing: .08em; margin-top: 3px; }
-.ext-note svg { display: block; width: 100%; height: 40px; margin: 4px 0 2px; overflow: visible; color: var(--red); opacity: .8; }
+.ext-note { position: absolute; z-index: 5; left: 50%; transform: translateX(-50%); width: min(58vw, 1000px); opacity: 0; pointer-events: none; }
+.ext-note .ext-main { font-family: var(--hand); font-weight: 700; font-size: clamp(23px,1.9vw,31px); color: var(--red); letter-spacing: .04em; line-height: 1.3; }
+.ext-note .ext-sub { font-size: 14.5px; font-weight: 600; color: var(--muted); letter-spacing: .08em; margin-top: 4px; }
+.ext-note svg { display: block; width: 100%; height: 54px; margin: 6px 0 4px; overflow: visible; color: var(--red); opacity: .85; }
 .rail-hud { position: absolute; z-index: 6; right: 6vw; top: 5vh; display: flex; align-items: center; gap: 12px; }
 .rail-hud .phase {
   background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
@@ -584,6 +584,7 @@ p { color: var(--ink-soft); }
   border-top: 2px solid var(--ink); margin: 0 0 30px;
 }
 .creed > article { padding: 18px 26px 6px 0; border-right: 2px dashed rgba(18,33,51,.14); }
+.creed > article + article { padding-left: 26px; }
 .creed > article:last-child { border-right: 0; padding-right: 0; }
 .creed .cr-no { font-family: var(--mono); font-size: 11px; letter-spacing: .24em; color: var(--red); }
 .creed h3 { font-size: clamp(19px,1.4vw,23px); font-weight: 900; letter-spacing: .03em; margin: 7px 0 7px; }
@@ -690,11 +691,11 @@ p { color: var(--ink-soft); }
         </ul>
         <div class="overview rv" style="--d:.2s">
           <h2>项目速览</h2>
-          <p>一款「修图」解谜游戏：你是一间灰度修理铺的师傅，接到的委托全是被抹掉颜色的照片。你只有点像素、拖滑块、拖色块、拖阈值四种操作，要用它们把灰度照片一步步修回原来的样子。13 个关卡，从认出灰度到综合运用。</p>
+          <p>一款「修图」解谜游戏：你是一间灰度修理铺的师傅，接到的委托全是被抹掉颜色的照片。你只有四种操作——点像素、拖滑块、拖色块、拖阈值——要用它们把灰度照片一步步修回原来的样子。13 个关卡，从认出灰度到综合运用。</p>
           <p>它最特别的地方，是全程没有一行教程文字：玩法规则完全藏在关卡结构里，由玩家自己试出来。</p>
         </div>
         <div class="hero-cta rv" style="--d:.3s">
-          <a class="btn-play" href="#play">
+          <a class="btn-play" href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">
             <svg class="tri" viewBox="0 0 8 9" width="16" height="18" aria-hidden="true"><path d="M2 1h1v1h1v1h1v1h1v1h-1v1h-1v1h-1v1h-1z" fill="currentColor" shape-rendering="crispEdges"/></svg>
             <span>开始试玩</span>
           </a>
@@ -728,7 +729,7 @@ p { color: var(--ink-soft); }
     </div>
     <div class="asym-row rv">
       <div class="asym-text">
-        <p>我上学期在学数字图像处理时，由于平时喜欢拍照和剪视频，摄影里的调性、修图时调的曝光和灰度，这些概念我接触得早，这门课学得也轻松。但我的舍友一直觉得这门课很难：公式能背下来，却不明白那些数字在描述图里的什么。这些知识本身并不抽象，图像放大到像素层面就是一块块小格子，<mark>灰度就是这些格子的明暗程度</mark>。</p>
+        <p>我上学期在学数字图像处理。因为平时喜欢拍照和剪视频，调性、曝光、灰度这些概念我接触得早，这门课学得也轻松。但我的舍友一直觉得这门课很难：公式能背下来，却不明白那些数字在描述图里的什么。这些知识本身并不抽象，图像放大到像素层面就是一块块小格子，<mark>灰度就是这些格子的明暗程度</mark>。</p>
         <p>学不懂的原因，可能不在知识本身的难度，而在接触方式：这些概念一直以公式和讲义的形式出现，没有亲手操作、直接看到效果的机会。所以我把其中最基础的概念做成了一个游戏，让玩家在通关的过程中自己理解这些概念。</p>
         <p>这个游戏做给两种人：不了解相关知识的人，和正在学这门课、概念还没建立起来的同学。</p>
       </div>
@@ -906,8 +907,8 @@ p { color: var(--ink-soft); }
     <div class="asym-row rv">
       <div class="asym-text">
         <p>这个游戏有一个更早的版本。最初我按「一关对应一种算法」的想法做了一版阈值原型，配了直方图和文字对照表；给不了解相关知识的人试玩，发现它本质上是先文字教学、再照着操作，玩家没有机会主动地去理解和应用背后的原理。</p>
-        <p>由此我确立了一条标准：<mark>每一关都要经得起「完全不懂的人，能不能只靠玩就通关」的检验</mark>。第一版原型没有通过，后来推翻重做；这之后的每次改动，也都按这条标准来。</p>
-        <p>标准定下来之后，做法就反过来了：不再一关一关往下想，而是先挑一个已经想清楚的第 8 关，往回推：<b>要撑起这一关，玩家得先会什么？</b>缺一个概念，就补一关。</p>
+        <p>由此我确立了一条标准：<mark>每一关都要经得起「完全不懂的人，能不能只靠玩就通关」的检验</mark>。</p>
+        <p>标准定下来之后，做法就反过来了：不再一关一关往下想，而是先挑一个已经想清楚的第 8 关，往回推。<b>要撑起这一关，玩家得先会什么？</b>缺一个概念，就补一关。</p>
       </div>
       <div class="asym-art" aria-hidden="true">
         <img class="aa-1 px" src="素材/level-11-tight.png" alt="">
@@ -1235,7 +1236,7 @@ p { color: var(--ink-soft); }
         <div class="lv-card is-note">
           <p class="lbl">设计思路</p>
           <p>这四关的设计目的，是把前面几关的知识点和真实应用结合起来。我寻找的是现实中图片修复的例子：修复旧照片、去除水印、人像修图。现实中的原理当然更复杂，但抽象地理解，它们的本质与游戏里的知识是同一件事：<mark>把不合适的颜色换成想要的颜色</mark>。</p>
-          <p>这一部分最初的设计仍然是前几关的做法，把目标图像直接做好。但这样一来，一个页面上需要三张图：目标图像、待修复的图像和灰度版，破坏了游戏从第一关开始一直保持的统一感。为了维持两张图的布局，目标颜色不再作为标准答案给出，而是通过情景句暗示，让玩家自己推理修复的意图：既保住了统一的设计，也让通关多出了推理这一步。</p>
+          <p>这一部分最初仍打算沿用前几关的做法，把目标图像直接做好。但这样一来，一个页面上需要三张图：目标图像、待修复的图像和灰度版，破坏了游戏从第一关开始一直保持的统一感。为了维持两张图的布局，目标颜色不再作为标准答案给出，而是通过情景句暗示，让玩家自己推理修复的意图：既保住了统一的设计，也让通关多出了推理这一步。</p>
         </div>
         <div class="scene-row">
           <div class="scene-card"><p class="scene-en">“Oh damn, the ink.”</p><p class="scene-zh">被墨水污染的信</p></div>
@@ -1543,7 +1544,7 @@ p { color: var(--ink-soft); }
   function buildExtArrow() {
     const svg = document.getElementById('extArrow');
     const w = Math.max(220, Math.round(svg.getBoundingClientRect().width / (M ? M.scale : 1)));
-    const h = 40, mid = 20, tip = w - 2;
+    const h = 54, mid = 27, tip = w - 2;
     let d = `M 4 ${mid}`;
     const seg = 130;
     for (let x = 4; x < tip - 40; x += seg) {
@@ -1554,7 +1555,7 @@ p { color: var(--ink-soft); }
     svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
     svg.setAttribute('width', w);
     svg.setAttribute('height', h);
-    svg.innerHTML = `<path d="${d}" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>`
+    svg.innerHTML = `<path d="${d}" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>`
       + `<path d="M ${tip - 36} ${mid - 14} L ${tip} ${mid} L ${tip - 36} ${mid + 14} Z" fill="currentColor"/>`;
   }
 
