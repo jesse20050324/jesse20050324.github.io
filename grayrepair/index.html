@@ -383,8 +383,6 @@ p { color: var(--ink-soft); }
 .rail-head > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 18px; }
 .rail-head .sec-en { flex: 0 0 100%; font-size: 10px; letter-spacing: .34em; margin-bottom: 3px; }
 .rail-head h2 { font-size: 31px; font-weight: 900; letter-spacing: .02em; line-height: 1.1; }
-.rail-head .rail-sub { margin: 0; font-size: 12.5px; color: var(--muted); letter-spacing: .04em; }
-.rail-head .rail-sub em { font-style: normal; color: var(--red); }
 .track { position: absolute; left: 0; display: flex; align-items: flex-start; gap: var(--rail-gap-l, 96px); will-change: transform; }
 #trackU { z-index: 3; gap: var(--rail-gap-u, 78px); }
 #trackU .st { z-index: 1; }
@@ -484,9 +482,11 @@ p { color: var(--ink-soft); }
   background: var(--red); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .16em;
   padding: 5px 10px; border-radius: 7px; box-shadow: 0 3px 0 var(--shadow);
 }
-.rail-note { position: absolute; z-index: 5; left: 6vw; top: 56.5vh; max-width: 560px; opacity: 0; }
-.rail-note p { font-weight: 900; font-size: clamp(17px,1.3vw,23px); color: var(--red); letter-spacing: .05em; line-height: 1.4; }
-.rail-note small { display: block; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .08em; }
+/* 阶段③ 长箭头：固定悬在抬升后的下带上方，不随卡片滚动；主字在箭头上、副字在下 */
+.ext-note { position: absolute; z-index: 5; left: 6vw; width: min(64vw, 1080px); opacity: 0; pointer-events: none; }
+.ext-note .ext-main { font-family: var(--hand); font-weight: 700; font-size: clamp(19px,1.35vw,25px); color: var(--red); letter-spacing: .04em; line-height: 1.3; }
+.ext-note .ext-sub { font-size: 12.5px; font-weight: 600; color: var(--muted); letter-spacing: .08em; margin-top: 3px; }
+.ext-note svg { display: block; width: 100%; height: 40px; margin: 4px 0 2px; overflow: visible; color: var(--red); opacity: .8; }
 .rail-hud { position: absolute; z-index: 6; right: 6vw; top: 5vh; display: flex; align-items: center; gap: 12px; }
 .rail-hud .phase {
   background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
@@ -926,7 +926,6 @@ p { color: var(--ink-soft); }
         <div>
           <p class="sec-en">DERIVATION · LEVELS 01–13</p>
           <h2>从一个构想，倒推出 13 关</h2>
-          <p class="rail-sub">上行<em>倒推</em>拆出前置概念，下行<em>延伸</em>走向现实修理</p>
         </div>
       </header>
 
@@ -1030,9 +1029,11 @@ p { color: var(--ink-soft); }
         <div id="link"><span>轴心 · 同一个第 8 关</span></div>
       </div>
 
-      <div class="rail-note" id="railNote">
-        <p id="noteText">← 倒推：要支撑第 8 关，先要教会什么？</p>
-        <small id="noteSub">每个概念拆成一关 —— 玩家先学会零件，再见到整机</small>
+      <!-- 阶段③ 的固定长箭头：字在箭头上下，箭头不随卡片滚动，只做淡入淡出 -->
+      <div class="ext-note" id="extNote" aria-hidden="true">
+        <p class="ext-main">延伸：这套机制在现实里修理什么？</p>
+        <svg id="extArrow" aria-hidden="true"></svg>
+        <p class="ext-sub">从「教概念」转向真实任务，修复目标由玩家自己推理</p>
       </div>
 
       <div class="rail-hud">
@@ -1369,9 +1370,7 @@ p { color: var(--ink-soft); }
   const tU    = document.getElementById('trackU');
   const tL    = document.getElementById('trackL');
   const link  = document.getElementById('link');
-  const railNote = document.getElementById('railNote');
-  const noteText = document.getElementById('noteText');
-  const noteSub  = document.getElementById('noteSub');
+  const extNote = document.getElementById('extNote');
   const phaseEl = document.getElementById('phase');
   const barFill = document.getElementById('barFill');
   const cardsU = [...tU.querySelectorAll('.st')];
@@ -1422,17 +1421,17 @@ p { color: var(--ink-soft); }
      批注组（上批注+链条线+下批注）是一个整体，noteH = 下批注底到「放大后卡片顶」的距离，
      组内相对位置固定，改一个数整组平移。锚定放大后的卡片顶，居中放大幅度再大也不会贴上。 */
   const RAIL_DEF = {
-    noteH: 26,    // 批注组底（下批注）↔ 放大后的卡片顶
-    dnGap: 26,    // 虚线 ↔ 下批注顶
-    upGap: 26,    // 虚线 ↔ 上批注底
-    upSize: 19,   // 上批注字号
-    dnSize: 15,   // 下批注字号
-    gapV:  40,    // 上下两带的垂直间距
-    gapU:  133,   // 上带卡片水平间距
-    gapL:  113,   // 下带卡片水平间距
-    amp:   .2,    // 居中卡片的放大幅度
+    noteH: 27,    // 批注组底（下批注）↔ 放大后的卡片顶
+    dnGap: 22,    // 虚线 ↔ 下批注顶
+    upGap: 40,    // 虚线 ↔ 上批注底
+    upSize: 25,   // 上批注字号
+    dnSize: 22,   // 下批注字号
+    gapV:  20,    // 上下两带的垂直间距
+    gapU:  93,    // 上带卡片水平间距
+    gapL:  131,   // 下带卡片水平间距
+    amp:   .3,    // 居中卡片的放大幅度
     maxW:  440,   // 卡片宽度上限
-    headPad: 80,  // 标题底到批注组顶的留白
+    headPad: 56,  // 标题底到批注组顶的留白
   };
   function railConfig() {
     try {
@@ -1459,7 +1458,6 @@ p { color: var(--ink-soft); }
     const headBottom = head.offsetTop + head.offsetHeight;
     const R = railConfig();
     const st = document.documentElement.style;
-    st.setProperty('--rail-note', R.noteH + 'px');
     st.setProperty('--rail-gap-u', R.gapU + 'px');
     st.setProperty('--rail-gap-l', R.gapL + 'px');
     let stW = Math.min(R.maxW, Math.max(236, Math.round(Wv * .19)));
@@ -1504,6 +1502,7 @@ p { color: var(--ink-soft); }
     const cE = last.offsetLeft + last.offsetWidth / 2;
     M = {
       vh: Hv, vw: Wv, jx: jv, scale: s, tuTop, tlTop, amp: R.amp, bandTop,
+      rise: R.amp * cardH * .92,
       segU: cF - cU,
       segV: Math.round(Hv * .45),
       segL: (jv - cL) - (jv - cE),
@@ -1518,17 +1517,45 @@ p { color: var(--ink-soft); }
     /* 起点卡外面还有一圈红环，虚线从中环下方起，标签才不会被卡片压住 */
     const linkTop = tuTop + hubU.offsetHeight + 13;
     link.style.top  = linkTop + 'px';
-    link.style.height = Math.max(24, tlTop - linkTop - 2) + 'px';
+    link.style.height = Math.max(6, tlTop - linkTop - 3) + 'px';   /* gapV 调小时轴线收缩，不再伸进卡片 */
 
     wrapTop = wrap.getBoundingClientRect().top + scrollY;
     buildChainLine();
     relocateNotes();
+    buildExtArrow();
+    /* 长箭头固定悬在「抬升后的下带」上方：不进 cam，不随滚动平移，只在这里定位一次。
+       锚点要再减 rise —— 居中卡片放大后顶部还会抬高，箭头得让过它 */
+    const band3Top = tlTop + M.camY - M.liftY - M.rise; // 阶段③ 下带顶（含放大卡，设计坐标）
+    extNote.style.top = Math.max(headBottom + 16,
+      Math.round(band3Top - extNote.offsetHeight - 30)) + 'px';
+    /* gapV 太小时「轴心」胶囊放不下，只留虚线轴 */
+    link.querySelector('span').style.display = R.gapV < 34 ? 'none' : '';
     /* 循环里反复改 --st-w，首次读取可能拿到未被采用的中间布局；
        隔一帧再校准一次（后台标签的 rAF 会被节流，所以用定时器兜底） */
     setTimeout(() => {
       buildChainLine();
       relocateNotes();
+      buildExtArrow();
     }, 50);
+  }
+
+  /* 长箭头：按实际宽度画一条带手绘起伏的线 + 实心箭头 */
+  function buildExtArrow() {
+    const svg = document.getElementById('extArrow');
+    const w = Math.max(220, Math.round(svg.getBoundingClientRect().width / (M ? M.scale : 1)));
+    const h = 40, mid = 20, tip = w - 2;
+    let d = `M 4 ${mid}`;
+    const seg = 130;
+    for (let x = 4; x < tip - 40; x += seg) {
+      const w1 = (Math.round(x / seg) % 2 ? -6 : 6);
+      const nx = Math.min(x + seg, tip - 40);
+      d += ` C ${(x + seg * .33).toFixed(1)} ${mid - w1}, ${(x + seg * .67).toFixed(1)} ${mid + w1}, ${nx} ${mid}`;
+    }
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.setAttribute('width', w);
+    svg.setAttribute('height', h);
+    svg.innerHTML = `<path d="${d}" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>`
+      + `<path d="M ${tip - 36} ${mid - 14} L ${tip} ${mid} L ${tip - 36} ${mid + 14} Z" fill="currentColor"/>`;
   }
 
   function centerScale(cards, trackX) {
@@ -1561,22 +1588,7 @@ p { color: var(--ink-soft); }
     cards.forEach(c => c.classList.toggle('live', on && c === best));
   }
 
-  let lastY = -1, noteState = '';
-  function setNote(state) {
-    if (noteState === state) return;
-    noteState = state;
-    if (state === 'u') {
-      /* 与上带批注同一条带，此时上带批注已随卡片淡出，不会打架 */
-      railNote.style.top = Math.round(M.tuTop - M.bandTop) + 'px';
-      noteText.textContent = '← 倒推：要支撑第 8 关，先要教会什么？';
-      noteSub.textContent  = '每个概念拆成一关 —— 玩家先学会零件，再见到整机';
-    } else if (state === 'l') {
-      /* 阶段③ 上带已全部透明，这条提示放在上带卡位所在的空档里，离下带卡片 300px 以上 */
-      railNote.style.top = Math.round(M.tuTop - M.bandTop) + 'px';
-      noteText.textContent = '延伸：这套机制在现实里修理什么？ →';
-      noteSub.textContent  = '从「教概念」转向真实任务，修复目标由玩家自己推理';
-    }
-  }
+  let lastY = -1;
 
   function frame() {
     if (!M) { requestAnimationFrame(frame); return; }
@@ -1594,7 +1606,7 @@ p { color: var(--ink-soft); }
         tL.classList.add('ghost');
         tL.style.opacity = '';
         link.style.opacity = Math.max(0, 1 - s / (segU * .18));
-        railNote.style.opacity = 0;
+        extNote.style.opacity = 0;
         phaseEl.textContent = '① 倒推 · 拆出第 1–7 关';
         centerScale(chainU, M.u0 - s);
         highlight(cardsU, true); highlight(cardsL, false);
@@ -1608,7 +1620,7 @@ p { color: var(--ink-soft); }
         tL.style.transform = `translateX(${M.l0}px)`;
         tL.style.opacity = .55 + .45 * t;
         link.style.opacity = 0;
-        railNote.style.opacity = 0;
+        extNote.style.opacity = 0;
         phaseEl.textContent = '② 转向延伸段';
         highlight(cardsU, false); highlight(cardsL, false);
       } else {
@@ -1620,8 +1632,7 @@ p { color: var(--ink-soft); }
         cam.style.transform = `translateY(${M.camY}px)`;
         tU.style.opacity = 0;
         link.style.opacity = 0;
-        setNote('l');
-        railNote.style.opacity = Math.min(1, k / (segL * .1));
+        extNote.style.opacity = Math.min(1, k / (segL * .12));
         phaseEl.textContent = '③ 延伸 L8 → L13';
         centerScale(chainL, M.l0 - k);
         highlight(cardsL, true); highlight(cardsU, false);
@@ -1641,7 +1652,7 @@ p { color: var(--ink-soft); }
 (() => {
   if (!/[?&]tune=1|#tune/.test(location.href)) return;
   const KEY = 'grayrepair-rail-tune';
-  const DEF = { noteH:26, dnGap:26, upGap:26, upSize:19, dnSize:15, gapV:40, gapU:133, gapL:113, amp:.2, maxW:440, headPad:80 };
+  const DEF = { noteH:27, dnGap:22, upGap:40, upSize:25, dnSize:22, gapV:20, gapU:93, gapL:131, amp:.3, maxW:440, headPad:56 };
   const NAME = {
     noteH:'批注组↔卡片（整体）', dnGap:'虚线↔下批注', upGap:'虚线↔上批注',
     upSize:'上批注字号', dnSize:'下批注字号',
