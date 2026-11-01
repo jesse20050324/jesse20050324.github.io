@@ -432,9 +432,9 @@ p { color: var(--ink-soft); }
 .st.hub b { color: var(--red); }
 /* 批注组是一个整体：上批注、链条线、下批注的相对位置固定，
    三个 --rail-* 都由 JS 按组锚点算好写入（锚点 = 放大后的卡片顶），改 noteH 一个数整组平移 */
-#chainLine { position: absolute; left: 0; top: calc(-1 * var(--rail-chain, 113px)); height: 30px; overflow: visible; pointer-events: none; z-index: 0; }
-#chainLine path { stroke: var(--red); stroke-width: 3; stroke-dasharray: 12 9; stroke-linecap: round; fill: none; opacity: .85; }
-#chainLine circle { fill: var(--red); }
+#chainLine { position: absolute; left: 0; top: calc(-1 * var(--rail-chain, 134px)); height: 30px; overflow: visible; pointer-events: none; z-index: 0; }
+#chainLine path { stroke: var(--red); stroke-width: 2.5; stroke-dasharray: 12 9; stroke-linecap: round; fill: none; opacity: .55; }
+#chainLine circle { fill: var(--red); opacity: .55; }
 #noteLayer { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: visible; }
 .lvnote {
   position: absolute; left: 0; transform: translateX(-50%);
@@ -442,8 +442,9 @@ p { color: var(--ink-soft); }
   font-family: var(--hand); font-size: 19px; line-height: 1.4;
   color: var(--red); letter-spacing: .02em;
 }
-.lvnote.up { top: calc(-1 * var(--rail-up, 162px)); }
-.lvnote.dn { top: calc(-1 * var(--rail-dn, 115px)); }
+.lvnote.up { top: calc(-1 * var(--rail-up, 187px)); }
+/* 下批注是次级说明：字号更小、退成灰蓝，和上批注的红字拉开层次 */
+.lvnote.dn { top: calc(-1 * var(--rail-dn, 102px)); font-size: 15px; line-height: 1.4; color: #4e6072; letter-spacing: .05em; }
 /* 下带收尾：手写结论，与上带的「前因/问句」同族 */
 .st.finale {
   width: 340px; background: transparent; border: 0; box-shadow: none;
@@ -1414,7 +1415,7 @@ p { color: var(--ink-soft); }
     const svgH = chainSvg.offsetHeight || 30;
     chainSvg.setAttribute('viewBox', `0 0 ${W} ${svgH}`);
     chainSvg.setAttribute('width', W);
-    chainSvg.innerHTML = `<path d="${d}"/>` + pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4.5"/>`).join('');
+    chainSvg.innerHTML = `<path d="${d}"/>` + pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="3.5"/>`).join('');
   }
 
   /* 可调参数：默认值 = 大哥在调参面板里选定的组合。
@@ -1422,6 +1423,8 @@ p { color: var(--ink-soft); }
      组内相对位置固定，改一个数整组平移。锚定放大后的卡片顶，居中放大幅度再大也不会贴上。 */
   const RAIL_DEF = {
     noteH: 26,    // 批注组底（下批注）↔ 放大后的卡片顶
+    dnGap: 26,    // 虚线 ↔ 下批注顶
+    upGap: 26,    // 虚线 ↔ 上批注底
     gapV:  40,    // 上下两带的垂直间距
     gapU:  133,   // 上带卡片水平间距
     gapL:  113,   // 下带卡片水平间距
@@ -1458,25 +1461,27 @@ p { color: var(--ink-soft); }
     st.setProperty('--rail-gap-u', R.gapU + 'px');
     st.setProperty('--rail-gap-l', R.gapL + 'px');
     let stW = Math.min(R.maxW, Math.max(236, Math.round(Wv * .19)));
-    let cardH = 0, hubH = 0, tuTop = 0, tlTop = 0, bandTop = 0;
+    let cardH = 0, hubH = 0, tuTop = 0, tlTop = 0, bandTop = 0, dnTopD = 0, chainSvgTop = 0;
     for (let i = 0; i < 24; i++) {
       document.documentElement.style.setProperty('--st-w', stW + 'px');
       cardH = tU.querySelector('.st:not(.hub)').offsetHeight;
       hubH  = tU.querySelector('.hub').offsetHeight;
-      /* 批注组锚定放大后的卡片顶：amp 越大卡片顶部抬得越高，整组跟着上移。
-         D = 下批注底到未放大卡片顶；组内固定：下字27 → 隙21 → 链线 → 隙20 → 上字27 */
+      /* 批注组锚定放大后的卡片顶。距离都以"离卡片顶向上"计：
+         D = 下批注底（下字 15px/1.4 ≈ 21 高）；曲线 = 下字顶 + dnGap；上字底 = 曲线 + upGap；上字占 27。
+         注意 svg 内部 y 向下 = 向卡片靠近，所以 svg 顶 = 曲线 + 12（曲线画在 svg 内 y=12 处）。 */
       const rise = R.amp * cardH * .92;
       const D = rise + R.noteH;
-      bandTop = D + 102;                      // 组顶（上批注的顶）到未放大卡片顶
+      dnTopD = D + 21;                            // 下批注顶
+      chainSvgTop = dnTopD + R.dnGap + 12;        // 虚线画在 svg 内 y=12 → svg 顶 = 曲线 + 12
+      bandTop = dnTopD + R.dnGap + R.upGap + 27;  // 上批注顶 = 曲线 + upGap + 27
       tuTop = Math.max(headBottom + R.headPad + bandTop, Math.round(Hv * .20));
       tlTop = tuTop + Math.max(cardH, hubH) + R.gapV;
       if (tlTop + cardH <= Hv - 18 || stW <= 200) break;
       stW -= 6;
     }
-    /* 批注组三个元素各自的位置（设计坐标，相对卡片顶向上） */
-    document.documentElement.style.setProperty('--rail-up', (bandTop) + 'px');
-    document.documentElement.style.setProperty('--rail-chain', (bandTop - 66) + 'px');
-    document.documentElement.style.setProperty('--rail-dn', (bandTop - 75) + 'px');
+    document.documentElement.style.setProperty('--rail-up', bandTop + 'px');
+    document.documentElement.style.setProperty('--rail-dn', dnTopD + 'px');
+    document.documentElement.style.setProperty('--rail-chain', chainSvgTop + 'px');
     /* 高屏会把两带挤在上半部：多出来的空白对半分给上下 */
     const slack = Hv - 18 - (tlTop + cardH);
     if (slack > 0) { tuTop += Math.round(slack * .5); tlTop += Math.round(slack * .5); }
@@ -1631,12 +1636,13 @@ p { color: var(--ink-soft); }
 (() => {
   if (!/[?&]tune=1|#tune/.test(location.href)) return;
   const KEY = 'grayrepair-rail-tune';
-  const DEF = { noteH:128, gapV:40, gapU:133, gapL:113, amp:.2, maxW:440, headPad:80 };
+  const DEF = { noteH:26, dnGap:26, upGap:26, gapV:40, gapU:133, gapL:113, amp:.2, maxW:440, headPad:80 };
   const NAME = {
-    noteH:'批注组↔卡片（整体）', gapV:'上下两带垂直间距',
-    gapU:'上带卡片间距', gapL:'下带卡片间距', amp:'居中放大幅度', maxW:'卡宽上限', headPad:'标题下留白',
+    noteH:'批注组↔卡片（整体）', dnGap:'虚线↔下批注', upGap:'虚线↔上批注',
+    gapV:'上下两带垂直间距', gapU:'上带卡片间距', gapL:'下带卡片间距',
+    amp:'居中放大幅度', maxW:'卡宽上限', headPad:'标题下留白',
   };
-  const RANGE = { noteH:[80,220], gapV:[20,110], gapU:[40,180], gapL:[40,200], amp:[0,.3], maxW:[240,480], headPad:[8,120] };
+  const RANGE = { noteH:[8,120], dnGap:[10,70], upGap:[10,70], gapV:[20,110], gapU:[40,180], gapL:[40,200], amp:[0,.3], maxW:[240,480], headPad:[8,120] };
   let cur;
   try { cur = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e) { cur = Object.assign({}, DEF); }
 
