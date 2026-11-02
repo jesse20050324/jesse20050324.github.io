@@ -133,11 +133,11 @@ mark, .mark {
 .hero .title {
   font-weight: 900;
   font-size: clamp(50px,5.2vw,100px);
-  letter-spacing: .02em; line-height: 1.14;
+  letter-spacing: -.015em; line-height: 1.14;
   text-shadow: 0 5px 0 #f1f7fb, 0 9px 0 rgba(18,33,51,.2);
   margin-bottom: 34px;
 }
-.hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; list-style: none; }
+.hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px 6px; list-style: none; }
 .hero .facts li {
   display: flex; align-items: baseline; gap: 8px;
   background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
@@ -145,13 +145,13 @@ mark, .mark {
   padding: 5px 10px; font-size: 11px; font-weight: 600; letter-spacing: .06em;
 }
 .hero .facts b { font-weight: 700; color: var(--accent-deep); letter-spacing: .14em; }
-.hero .overview { max-width: 500px; margin-bottom: 24px; }
+.hero .overview { max-width: 500px; margin: 0 0 24px 6px; }
 .hero .overview h2 {
   font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--muted); margin-bottom: 9px;
 }
 .hero .overview p { font-size: clamp(13.5px,.75vw,15px); line-height: 1.72; }
 .hero .overview p + p { margin-top: .6em; }
-.hero .nums { display: flex; gap: 10px; list-style: none; flex-wrap: wrap; }
+.hero .nums { display: flex; gap: 10px; list-style: none; flex-wrap: wrap; margin-left: 6px; }
 .hero .nums li {
   background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
   box-shadow: 0 3px 0 var(--shadow); padding: 8px 13px;
@@ -177,7 +177,7 @@ mark, .mark {
   box-shadow: 0 4px 0 var(--shadow); z-index: 4;
 }
 /* 首屏试玩入口：实心墨蓝按钮 + 红虚线描边（与 03 取景框同一支标注线） */
-.hero-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: -2px 0 22px; }
+.hero-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: -2px 0 22px 6px; }
 .btn-play {
   position: relative; display: inline-flex; align-items: center; gap: 11px;
   padding: 13px 24px 13px 20px;
