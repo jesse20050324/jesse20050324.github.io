@@ -118,7 +118,7 @@ mark, .mark {
 .hero {
   position: relative;
   min-height: calc(100svh - var(--navh));
-  padding: clamp(28px,5vh,64px) 6vw clamp(28px,4vh,48px);
+  padding: clamp(28px,5vh,64px) 4.5vw clamp(28px,4vh,48px) 4vw;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--paper);
   overflow: hidden;
@@ -126,42 +126,42 @@ mark, .mark {
 .hero .b-grid {
   display: grid;
   grid-template-columns: 1fr minmax(0, clamp(452px,19vw,524px));
-  gap: clamp(44px,4vw,96px);
+  gap: clamp(52px,6.5vw,150px);
   align-items: center;
-  width: 100%; max-width: 1560px; margin: 0 auto;
+  width: 100%; max-width: 1700px; margin: 0 auto;
 }
 .hero .title {
   font-weight: 900;
-  font-size: clamp(46px,4.8vw,94px);
-  letter-spacing: .02em; line-height: 1.16;
+  font-size: clamp(50px,5.2vw,100px);
+  letter-spacing: .02em; line-height: 1.14;
   text-shadow: 0 5px 0 #f1f7fb, 0 9px 0 rgba(18,33,51,.2);
-  margin-bottom: 30px;
+  margin-bottom: 34px;
 }
 .hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; list-style: none; }
 .hero .facts li {
   display: flex; align-items: baseline; gap: 8px;
   background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
-  box-shadow: 0 3px 0 var(--shadow);
-  padding: 7px 12px; font-size: 12px; font-weight: 600; letter-spacing: .06em;
+  box-shadow: 0 2px 0 var(--shadow);
+  padding: 5px 10px; font-size: 11px; font-weight: 600; letter-spacing: .06em;
 }
 .hero .facts b { font-weight: 700; color: var(--accent-deep); letter-spacing: .14em; }
-.hero .overview { max-width: 640px; margin-bottom: 22px; }
+.hero .overview { max-width: 500px; margin-bottom: 24px; }
 .hero .overview h2 {
-  font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--muted); margin-bottom: 10px;
+  font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--muted); margin-bottom: 9px;
 }
 .hero .overview p { font-size: clamp(13.5px,.75vw,15px); line-height: 1.72; }
 .hero .overview p + p { margin-top: .6em; }
-.hero .nums { display: flex; gap: 12px; list-style: none; flex-wrap: wrap; }
+.hero .nums { display: flex; gap: 10px; list-style: none; flex-wrap: wrap; }
 .hero .nums li {
   background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
-  box-shadow: 0 4px 0 var(--shadow); padding: 10px 16px;
+  box-shadow: 0 3px 0 var(--shadow); padding: 8px 13px;
 }
 .hero .nums li:nth-child(1) { rotate: -1.5deg; }
 .hero .nums li:nth-child(3) { rotate: 1.5deg; }
-.hero .nums b { display: block; font-size: clamp(30px,2.6vw,42px); font-weight: 900; line-height: 1; }
-.hero .nums span { display: block; margin-top: 5px; font-size: 12px; letter-spacing: .2em; color: var(--muted); }
+.hero .nums b { display: block; font-size: clamp(24px,1.9vw,30px); font-weight: 900; line-height: 1; }
+.hero .nums span { display: block; margin-top: 4px; font-size: 11px; letter-spacing: .2em; color: var(--muted); }
 .hero .nums .zero b { color: var(--red); }
-.hero .b-stack { position: relative; padding: 34px 14px; }
+.hero .b-stack { position: relative; padding: 34px 0 34px 14px; }
 .hero .card {
   background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
   box-shadow: 0 7px 0 var(--shadow); padding: 9px;
