@@ -1056,7 +1056,7 @@ p { color: var(--ink-soft); }
         <h2>Level by level</h2>
       </div>
     </div>
-    <p class="sec-lead">Each level introduces exactly one new move or concept. Below, group by group: what it teaches, why it is built this way, and what playtesting changed.</p>
+    <p class="sec-lead">Each level introduces at most one new move or concept. Below, group by group: what it teaches, why it is built this way, and what playtesting changed.</p>
 
     <!-- 第 1 关 -->
     <div class="lvg rv">
@@ -1140,7 +1140,7 @@ p { color: var(--ink-soft); }
         <div class="lv-card is-note">
           <p class="lbl">Design notes</p>
           <p><b>Level 3</b> deals in a single relationship, one gray stretch to one color: thresholds are fixed, and the player only places colors.</p>
-          <p><b>Level 4</b> puts gray adjustment and color mapping on the same table. The two yellow pixels share the background’s gray and are invisible in the grayscale view, so gray has to change first: pixels with the same gray must share a color.</p>
+          <p><b>Level 4</b> puts gray adjustment and color mapping on the same table. The two yellow pixels share the background’s gray and are invisible in the grayscale view. They are hidden rather than shown in a wrong color on purpose: a wrong color would send players back to the mapping bar to try over and over, while an invisible pixel points the problem away from mapping, toward its gray. Here players meet a rule that holds for the whole game: pixels with the same gray must share a color, so the only way to make these two yellow is to change their gray first.</p>
         </div>
       </div>
     </div>
