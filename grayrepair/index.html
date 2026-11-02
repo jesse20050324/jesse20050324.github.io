@@ -132,12 +132,12 @@ mark, .mark {
 }
 .hero .title {
   font-weight: 900;
-  font-size: clamp(60px,7.6vw,150px);
-  letter-spacing: .02em; line-height: 1.08;
-  text-shadow: 0 6px 0 #f1f7fb, 0 11px 0 rgba(18,33,51,.2);
-  margin-bottom: 18px;
+  font-size: clamp(46px,4.8vw,94px);
+  letter-spacing: .02em; line-height: 1.04;
+  text-shadow: 0 5px 0 #f1f7fb, 0 9px 0 rgba(18,33,51,.2);
+  margin-bottom: 12px;
 }
-.hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; list-style: none; }
+.hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; list-style: none; }
 .hero .facts li {
   display: flex; align-items: baseline; gap: 8px;
   background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
@@ -145,21 +145,21 @@ mark, .mark {
   padding: 7px 12px; font-size: 12px; font-weight: 600; letter-spacing: .06em;
 }
 .hero .facts b { font-weight: 700; color: var(--accent-deep); letter-spacing: .14em; }
-.hero .overview { max-width: 640px; margin-bottom: 26px; }
+.hero .overview { max-width: 640px; margin-bottom: 18px; }
 .hero .overview h2 {
   font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--muted); margin-bottom: 10px;
 }
-.hero .overview p { font-size: clamp(13.5px,.75vw,15.5px); line-height: 1.9; }
-.hero .overview p + p { margin-top: .8em; }
+.hero .overview p { font-size: clamp(13.5px,.75vw,15px); line-height: 1.72; }
+.hero .overview p + p { margin-top: .6em; }
 .hero .nums { display: flex; gap: 12px; list-style: none; flex-wrap: wrap; }
 .hero .nums li {
   background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
-  box-shadow: 0 4px 0 var(--shadow); padding: 14px 20px;
+  box-shadow: 0 4px 0 var(--shadow); padding: 10px 16px;
 }
 .hero .nums li:nth-child(1) { rotate: -1.5deg; }
 .hero .nums li:nth-child(3) { rotate: 1.5deg; }
-.hero .nums b { display: block; font-size: clamp(34px,3.4vw,50px); font-weight: 900; line-height: 1; }
-.hero .nums span { display: block; margin-top: 9px; font-size: 12px; letter-spacing: .2em; color: var(--muted); }
+.hero .nums b { display: block; font-size: clamp(30px,2.6vw,42px); font-weight: 900; line-height: 1; }
+.hero .nums span { display: block; margin-top: 5px; font-size: 12px; letter-spacing: .2em; color: var(--muted); }
 .hero .nums .zero b { color: var(--red); }
 .hero .b-stack { position: relative; padding: 34px 14px; }
 .hero .card {
@@ -177,7 +177,7 @@ mark, .mark {
   box-shadow: 0 4px 0 var(--shadow); z-index: 4;
 }
 /* 首屏试玩入口：实心墨蓝按钮 + 红虚线描边（与 03 取景框同一支标注线） */
-.hero-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: -2px 0 26px; }
+.hero-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: -2px 0 18px; }
 .btn-play {
   position: relative; display: inline-flex; align-items: center; gap: 11px;
   padding: 13px 24px 13px 20px;
@@ -444,7 +444,7 @@ p { color: var(--ink-soft); }
 }
 .lvnote.up { top: calc(-1 * var(--rail-up, 187px)); }
 /* 下批注是次级说明：字号更小、退成灰蓝，和上批注的红字拉开层次 */
-.lvnote.dn { top: calc(-1 * var(--rail-dn, 102px)); font-size: var(--rail-dn-size, 15px); line-height: 1.4; color: #4e6072; letter-spacing: .05em; }
+.lvnote.dn { top: calc(-1 * var(--rail-dn, 102px)); line-height: 1.4; color: #4e6072; letter-spacing: .05em; }
 /* 下带收尾：手写结论，与上带的「前因/问句」同族 */
 .st.finale {
   width: 340px; background: transparent; border: 0; box-shadow: none;
@@ -938,7 +938,7 @@ p { color: var(--ink-soft); }
           <figure class="st hub" data-lv="8">
             <span class="tag">Start</span>
             <span class="st-thumb"><img class="px" src="素材/level-8.png" alt=""></span>
-            <figcaption><b>Level 8 · Synthesis</b><i>Four thresholds · Five chips</i></figcaption>
+            <figcaption><b>L8 · Synthesis</b><i>Four thresholds · Five chips</i></figcaption>
           </figure>
 
           <div class="ask">
@@ -953,37 +953,37 @@ p { color: var(--ink-soft); }
           <figure class="st" data-lv="1">
             <span class="lvnote up">First, what gray even is</span>
             <span class="st-thumb"><img class="px" src="素材/level-1.png" alt=""></span>
-            <figcaption><b>Level 1 · Meeting gray</b><i>Single pixel · Slider</i></figcaption>
+            <figcaption><b>L1 · Meeting gray</b><i>Single pixel · Slider</i></figcaption>
           </figure>
           <figure class="st" data-lv="2">
             <span class="lvnote dn">Many pixels make an image</span>
             <span class="st-thumb"><img class="px" src="素材/level-2.png" alt=""></span>
-            <figcaption><b>Level 2 · Meeting pixels</b><i>Images are made of pixels</i></figcaption>
+            <figcaption><b>L2 · Meeting pixels</b><i>Images are made of pixels</i></figcaption>
           </figure>
           <figure class="st" data-lv="3">
             <span class="lvnote up">Gray can map to color</span>
             <span class="st-thumb"><img class="px" src="素材/level-3.png" alt=""></span>
-            <figcaption><b>Level 3 · Color mapping</b><i>Gray stretches map to colors</i></figcaption>
+            <figcaption><b>L3 · Color mapping</b><i>Gray stretches map to colors</i></figcaption>
           </figure>
           <figure class="st" data-lv="4">
             <span class="lvnote dn">The first three moves, combined</span>
             <span class="st-thumb"><img class="px" src="素材/level-4.png" alt=""></span>
-            <figcaption><b>Level 4 · Moves combined</b><i>Gray × mapping together</i></figcaption>
+            <figcaption><b>L4 · Moves combined</b><i>Gray × mapping together</i></figcaption>
           </figure>
           <figure class="st" data-lv="5">
             <span class="lvnote up">Getting to know thresholds</span>
             <span class="st-thumb"><img class="px" src="素材/level-5.png" alt=""></span>
-            <figcaption><b>Level 5 · Meeting thresholds</b><i>First threshold drag</i></figcaption>
+            <figcaption><b>L5 · Meet thresholds</b><i>First threshold drag</i></figcaption>
           </figure>
           <figure class="st" data-lv="6">
             <span class="lvnote dn">Two thresholds, one step harder</span>
             <span class="st-thumb"><img class="px" src="素材/level-6.png" alt=""></span>
-            <figcaption><b>Level 6 · Two thresholds</b><i>Colors pre-painted</i></figcaption>
+            <figcaption><b>L6 · Two thresholds</b><i>Colors pre-painted</i></figcaption>
           </figure>
           <figure class="st" data-lv="7">
             <span class="lvnote up">Two thresholds + free coloring</span>
             <span class="st-thumb"><img class="px" src="素材/level-7.png" alt=""></span>
-            <figcaption><b>Level 7 · Fully hands-on</b><i>Thresholds + free painting</i></figcaption>
+            <figcaption><b>L7 · Fully hands-on</b><i>Thresholds + free painting</i></figcaption>
           </figure>
 
           <p class="tail">From recognizing gray to playing it all yourself,<br>level 8 has every concept it needs</p>
@@ -997,27 +997,27 @@ p { color: var(--ink-soft); }
           <figure class="st hub" data-lv="8">
             <span class="tag">Start</span>
             <span class="st-thumb"><img class="px" src="素材/level-8.png" alt=""></span>
-            <figcaption><b>Level 8 · Synthesis</b><i>The same level 8</i></figcaption>
+            <figcaption><b>L8 · Synthesis</b><i>The same level 8</i></figcaption>
           </figure>
           <figure class="st" data-lv="9">
             <span class="st-thumb"><img class="px" src="素材/level-9.png" alt=""></span>
-            <figcaption><b>Level 9 · Delete the sun</b><i>Threshold off the axis</i></figcaption>
+            <figcaption><b>L9 · Delete the sun</b><i>Threshold off the axis</i></figcaption>
           </figure>
           <figure class="st" data-lv="10">
             <span class="st-thumb"><img class="px" src="素材/level-10.png" alt=""></span>
-            <figcaption><b>Level 10 · Remove ink</b><i>Ink folded into paper</i></figcaption>
+            <figcaption><b>L10 · Remove ink</b><i>Ink folded into paper</i></figcaption>
           </figure>
           <figure class="st" data-lv="11">
             <span class="st-thumb"><img class="px" src="素材/level-11.png" alt=""></span>
-            <figcaption><b>Level 11 · Remove branch</b><i>Keep only the person</i></figcaption>
+            <figcaption><b>L11 · Remove branch</b><i>Keep only the person</i></figcaption>
           </figure>
           <figure class="st" data-lv="12">
             <span class="st-thumb"><img class="px" src="素材/level-12.png" alt=""></span>
-            <figcaption><b>Level 12 · Remove stamp</b><i>Reuses the level 9 fix</i></figcaption>
+            <figcaption><b>L12 · Remove stamp</b><i>Reuses the level 9 fix</i></figcaption>
           </figure>
           <figure class="st" data-lv="13">
             <span class="st-thumb"><img class="px" src="素材/level-13.png" alt=""></span>
-            <figcaption><b>Level 13 · Restore photo</b><i>Paint deeper colors</i></figcaption>
+            <figcaption><b>L13 · Restore photo</b><i>Paint deeper colors</i></figcaption>
           </figure>
           <figure class="st finale">
             <span class="fin-seal">Result</span>
@@ -1428,7 +1428,6 @@ p { color: var(--ink-soft); }
     dnGap: 22,    // 虚线 ↔ 下批注顶
     upGap: 40,    // 虚线 ↔ 上批注底
     upSize: 25,   // 上批注字号
-    dnSize: 22,   // 下批注字号
     gapV:  20,    // 上下两带的垂直间距
     gapU:  93,    // 上带卡片水平间距
     gapL:  131,   // 下带卡片水平间距
@@ -1439,7 +1438,7 @@ p { color: var(--ink-soft); }
   function railConfig() {
     try {
       const saved = JSON.parse(localStorage.getItem('grayrepair-rail-tune') || '{}');
-      if (saved.dn !== undefined) { localStorage.removeItem('grayrepair-rail-tune'); return Object.assign({}, RAIL_DEF); } // 旧格式迁移
+      if (saved.dn !== undefined || saved.dnSize !== undefined) { localStorage.removeItem('grayrepair-rail-tune'); return Object.assign({}, RAIL_DEF); } // 旧格式迁移
       return Object.assign({}, RAIL_DEF, saved);
     } catch (e) { return Object.assign({}, RAIL_DEF); }
   }
@@ -1470,11 +1469,11 @@ p { color: var(--ink-soft); }
       cardH = tU.querySelector('.st:not(.hub)').offsetHeight;
       hubH  = tU.querySelector('.hub').offsetHeight;
       /* 批注组锚定放大后的卡片顶。距离都以"离卡片顶向上"计：
-         D = 下批注底；下字高 = dnSize*1.4；曲线 = 下字顶 + dnGap；上字底 = 曲线 + upGap；上字高 = upSize*1.4。
+         D = 下批注底；上下批注同字号，高 = upSize*1.4；曲线 = 下字顶 + dnGap；上字底 = 曲线 + upGap。
          注意 svg 内部 y 向下 = 向卡片靠近，所以 svg 顶 = 曲线 + 12（曲线画在 svg 内 y=12 处）。 */
       const rise = R.amp * cardH * .92;
       const D = rise + R.noteH;
-      const dnH = R.dnSize * 1.4, upH = R.upSize * 1.4;
+      const dnH = R.upSize * 1.4, upH = R.upSize * 1.4;   // 上下批注同字号（粗细一致）
       dnTopD = D + dnH;                           // 下批注顶
       chainSvgTop = dnTopD + R.dnGap + 12;        // 虚线画在 svg 内 y=12 → svg 顶 = 曲线 + 12
       bandTop = dnTopD + R.dnGap + R.upGap + upH; // 上批注顶 = 曲线 + upGap + 上字高
@@ -1487,7 +1486,6 @@ p { color: var(--ink-soft); }
     document.documentElement.style.setProperty('--rail-dn', dnTopD + 'px');
     document.documentElement.style.setProperty('--rail-chain', chainSvgTop + 'px');
     document.documentElement.style.setProperty('--rail-up-size', R.upSize + 'px');
-    document.documentElement.style.setProperty('--rail-dn-size', R.dnSize + 'px');
     /* 高屏会把两带挤在上半部：多出来的空白对半分给上下 */
     const slack = Hv - 18 - (tlTop + cardH);
     if (slack > 0) { tuTop += Math.round(slack * .5); tlTop += Math.round(slack * .5); }
@@ -1655,14 +1653,14 @@ p { color: var(--ink-soft); }
 (() => {
   if (!/[?&]tune=1|#tune/.test(location.href)) return;
   const KEY = 'grayrepair-rail-tune';
-  const DEF = { noteH:27, dnGap:22, upGap:40, upSize:25, dnSize:22, gapV:20, gapU:93, gapL:131, amp:.3, maxW:440, headPad:56 };
+  const DEF = { noteH:27, dnGap:22, upGap:40, upSize:25, gapV:20, gapU:93, gapL:131, amp:.3, maxW:440, headPad:56 };
   const NAME = {
     noteH:'批注组↔卡片（整体）', dnGap:'虚线↔下批注', upGap:'虚线↔上批注',
-    upSize:'上批注字号', dnSize:'下批注字号',
+    upSize:'批注字号（上下一致）',
     gapV:'上下两带垂直间距', gapU:'上带卡片间距', gapL:'下带卡片间距',
     amp:'居中放大幅度', maxW:'卡宽上限', headPad:'标题下留白',
   };
-  const RANGE = { noteH:[8,120], dnGap:[10,70], upGap:[10,70], upSize:[13,28], dnSize:[10,22], gapV:[20,110], gapU:[40,180], gapL:[40,200], amp:[0,.3], maxW:[240,480], headPad:[8,120] };
+  const RANGE = { noteH:[8,120], dnGap:[10,70], upGap:[10,70], upSize:[13,28], gapV:[20,110], gapU:[40,180], gapL:[40,200], amp:[0,.3], maxW:[240,480], headPad:[8,120] };
   let cur;
   try { cur = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e) { cur = Object.assign({}, DEF); }
 
