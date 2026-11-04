@@ -908,7 +908,7 @@ p { color: var(--ink-soft); }
     </div>
     <div class="asym-row rv">
       <div class="asym-text">
-        <p>The game had an earlier version. I first built a threshold prototype around the idea of one algorithm per level, with a histogram and a lookup table alongside. Watching someone without the background play it, I saw it was essentially read-then-follow — text first, operation second, with no chance to engage the principle behind it.</p>
+        <p>The game began with a single level: the one that later became level 8. The first prototype was exactly that level, surrounded by explanations: a histogram, a lookup table, written notes for every part. A classmate without the background tried it and got lost. The extra text did not make anything easier to learn; it gave him more to puzzle over before he could even tell what the screen wanted.</p>
         <p>So I set one standard: <mark>every level has to pass the test of a complete beginner finishing it by playing alone</mark>.</p>
         <p>With the standard fixed, the direction reversed: instead of building level after level forward, I took the one level already clear in my head, level 8, and worked backward. <b>What does a player need before this level?</b> Every missing concept became a level of its own.</p>
       </div>
@@ -1077,7 +1077,7 @@ p { color: var(--ink-soft); }
         </div>
         <div class="lv-card is-note">
           <p class="lbl">Design notes</p>
-          <p>This level came out of that classmate’s confusion. What I first wanted to build was the later level 8: one image, several thresholds, a full set of free colors — and he could not read the screen. That playtest set a standard: <mark>a complete beginner has to be able to finish it by playing alone</mark>.</p>
+          <p>This level came out of that classmate’s confusion. What I first wanted to build was the later level 8: one image, several thresholds, a full set of free colors, plus written explanations around it, and he could not read the screen. That playtest set a standard: <mark>a complete beginner has to be able to finish it by playing alone</mark>.</p>
           <p>Level 1 is the first step working back from that standard: the simplest image that lets a person see what gray is. The whole image is one pixel, the only thing to do is drag the slider, and the right square’s shade follows the handle.</p>
         </div>
         <aside class="iter">
@@ -1139,7 +1139,7 @@ p { color: var(--ink-soft); }
         </div>
         <div class="lv-card is-note">
           <p class="lbl">Design notes</p>
-          <p><b>Level 3</b> deals in a single relationship, one gray stretch to one color: thresholds are fixed, and the player only places colors.</p>
+          <p><b>Level 3</b> keeps the thresholds fixed on purpose. In the first two levels, a slider position means the value of one pixel; a threshold is a boundary that splits the whole axis into ranges, so the same position now means something different. With the boundaries already drawn, the player handles one new relationship at a time, one gray stretch to one color; dragging the boundaries comes in the next level.</p>
           <p><b>Level 4</b> puts gray adjustment and color mapping on the same table. The two yellow pixels share the background’s gray and are invisible in the grayscale view. They are hidden rather than shown in a wrong color on purpose: a wrong color would send players back to the mapping bar to try over and over, while an invisible pixel points the problem away from mapping, toward its gray. Here players meet a rule that holds for the whole game: pixels with the same gray must share a color, so the only way to make these two yellow is to change their gray first.</p>
         </div>
       </div>
