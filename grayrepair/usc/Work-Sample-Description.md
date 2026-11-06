@@ -15,7 +15,9 @@ The game is a solo project and I did all of the work myself. My work included th
 
 ## 3. Inspiration
 
-I took a digital image processing course last semester. I photograph and cut videos in my spare time, so concepts like tone, exposure and gray value were already familiar to me and the course felt easy. Many of my classmates, though — including a friend of mine — could recite the formulas and charts but could not say what the numbers describe in an actual image. The game is made for both kinds of people: those with no background in the subject, and students taking the course who have not yet formed the concepts. I wanted to turn the most basic ones, gray value, threshold and gray mapping, into things a player can move and see the effect of directly. That idea became this game.
+I took a digital image processing course last semester. I photograph and cut videos in my spare time, so concepts like tone, exposure and gray value were already familiar to me and the course felt easy. Many of my classmates, though — including a friend of mine — could recite the formulas and charts but could not say what the numbers describe in an actual image.
+
+The game is made for both kinds of people: those with no background in the subject, and students taking the course who have not yet formed the concepts. I wanted to turn the most basic ones, gray value, threshold and gray mapping, into things a player can move and see the effect of directly. That idea became this game.
 
 ## 4. Rules and objectives
 
@@ -34,7 +36,11 @@ I took a digital image processing course last semester. I photograph and cut vid
 
 The game grew out of a playtest. The first prototype was a single level, the one that later became level 8, with a lot of explanation around it: a histogram, a lookup table, written notes for every part. A friend of mine, who was taking the course but had not yet formed the concepts, tried it and got lost; the extra information did not make the level easier to learn, it gave him more things to puzzle over. So I removed all of the teaching text and put the rules into the starting state of the level instead, and set one standard for the whole project: every level has to be solvable by a complete beginner playing alone, with no text. Apart from the one-line prompt in levels 10–13 and a short post-clear note naming the concept, the game contains no instructional text; instructions never appear before or during a level.
 
-Held against that standard, the prototype itself was the next problem: as a synthesis level it presupposed every concept at once. So the direction reversed: working backward from level 8, each concept it requires became a level of its own, from a single pixel in level 1 to thresholds in levels 5 to 7. Working forward from it gave levels 9 to 13, where the same mechanics meet real repair jobs. Level 9 is the first turn: a variant of level 8 in which the answer is still on the left, but it can no longer be reached by copying pixels one by one — removing the sun from a landscape only works by dragging a threshold so far that the sun's gray stretch disappears into the sky. From level 10 on, the left image is no longer an answer: for jobs like restoring an ink-stained letter or retouching a faded portrait, the player sees only a one-line prompt. The derivation also shaped the difficulty curve: each level introduces at most one new move or concept, and builds only on what the previous levels taught. The design notes behind the levels are on the portfolio website, linked below.
+Held against that standard, the prototype itself was the next problem: as a synthesis level it presupposed every concept at once. So the direction reversed: working backward from level 8, each concept it requires became a level of its own, from a single pixel in level 1 to thresholds in levels 5 to 7. Working forward from it gave levels 9 to 13, where the same mechanics meet real repair jobs.
+
+Level 9 is the first turn: a variant of level 8 in which the answer is still on the left, but it can no longer be reached by copying pixels one by one — removing the sun from a landscape only works by dragging a threshold so far that the sun's gray stretch disappears into the sky. From level 10 on, the left image is no longer an answer: for jobs like restoring an ink-stained letter or retouching a faded portrait, the player sees only a one-line prompt.
+
+The derivation also shaped the difficulty curve: each level introduces at most one new move or concept, and builds only on what the previous levels taught. The design notes behind the levels are on the portfolio website, linked below.
 
 ## 6. Why I chose this piece
 
