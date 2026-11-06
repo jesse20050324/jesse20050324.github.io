@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Gray Workshop — Game Design Portfolio</title>
-<meta name="description" content="The Gray Workshop: a web game that teaches the basics of digital image processing through play. 13 levels, no text tutorials.">
+<meta name="description" content="The Gray Workshop: a browser-based puzzle game about photo repair that teaches the basics of digital image processing through play. 13 levels, no text tutorials.">
 <!--
   ============================================================
   灰度修理铺 · 完整作品站（合并版）
@@ -698,13 +698,13 @@ p { color: var(--ink-soft); }
       <div>
         <h1 class="title rv" style="--d:.05s">The Gray Workshop</h1>
         <ul class="facts rv" style="--d:.12s">
-          <li><b>Platform</b>HTML 5</li>
+          <li><b>Platform</b>Browser (HTML5)</li>
           <li><b>Dev cycle</b>2 months</li>
           <li><b>Type</b>Personal project</li>
         </ul>
         <div class="overview rv" style="--d:.2s">
           <h2>Project at a glance</h2>
-          <p>A photo-restoration puzzle game: you run a small grayscale repair shop, and every job that comes in is a photo with its colors stripped away. You get exactly four moves—tap pixels, drag sliders, drag color chips, drag thresholds—and use them to bring each photo back, step by step. Thirteen levels, from recognizing gray to putting it all together.</p>
+          <p>A photo-repair puzzle game: you run a small grayscale repair shop, and every job that comes in is a photo with its colors stripped away. You get exactly four moves—tap pixels, drag sliders, drag thresholds, drag color chips—and use them to bring each photo back, step by step. Thirteen levels, from recognizing gray to putting it all together.</p>
           <p>What makes it unusual: there is not a single line of tutorial text anywhere. The rules live inside the level design, and players work them out by playing.</p>
         </div>
         <div class="hero-cta rv" style="--d:.3s">
@@ -752,8 +752,8 @@ p { color: var(--ink-soft); }
     </div>
     <div class="asym-row rv">
       <div class="asym-text">
-        <p>I took digital image processing last semester. I photograph and cut videos in my spare time, so concepts like tone, exposure and gray value were familiar, and the course felt easy. My roommate kept finding it hard, though: he could recite the formulas but could not tell what the numbers described in an actual image. None of this is abstract — zoom an image all the way in and it is a grid of small cells, <mark>and gray value is simply how bright or dark each cell is</mark>.</p>
-        <p>The trouble probably is not the knowledge itself but how it is met: these concepts only ever appear as formulas and lecture notes, with no chance to work with them and see the effect directly. So I turned the most basic ones into a game, and let players build an understanding by clearing levels.</p>
+        <p>I took digital image processing last semester. I photograph and cut videos in my spare time, so concepts like tone, exposure and gray value were familiar, and the course felt easy. Many of my classmates, though — including a friend of mine — could recite the formulas but could not tell what the numbers described in an actual image. None of this is abstract — zoom an image all the way in and it is a grid of small cells, <mark>and gray value is simply how bright or dark each cell is</mark>.</p>
+        <p>The trouble probably is not the knowledge itself but how it is met: these concepts only ever appear as formulas and lecture notes, with no chance to work with them and see the effect directly. So I turned the most basic ones — gray value, threshold and gray mapping — into a game, and let players build an understanding by clearing levels.</p>
         <p>The game is made for two kinds of people: those with no background in the subject, and students taking the course who have not yet formed the concepts.</p>
       </div>
       <div class="asym-art" aria-hidden="true">
@@ -776,7 +776,7 @@ p { color: var(--ink-soft); }
     </div>
     <div class="asym-row flip rv">
       <div class="asym-text">
-        <p>The Gray Workshop is a web game with thirteen levels. <mark>Clearing it works in two phases</mark>: in the first nine, the check is pixel-for-pixel equality between the two images — pass and the frame flashes green into the next level, fail and it flashes red. From level 10 on, the left side shows the damaged original with a one-line prompt (such as “A faded old photo.”), the goal is the player’s to infer, and the restored picture appears on the left only after the check passes.</p>
+        <p>The Gray Workshop is a browser-based game with thirteen levels. <mark>Clearing it works in two phases</mark>: in levels 1–9 the left image is the answer and the check is pixel-for-pixel equality between the two images — pass and the frame flashes green into the next level, fail and it flashes red. Level 9 is a variant of level 8: the answer is still on the left, but it cannot be reached by copying pixels one by one. From level 10 on, the left image is no longer an answer: it shows the damaged original with a one-line prompt (such as “A faded old photo.”), the goal is the player’s to infer, and the restored picture appears on the left only after the check passes.</p>
         <p>Apart from a short note after clearing a level and the prompt line, no level carries any instructional text. <mark>Each level brings in only the moves it needs</mark>, and the rules are discovered through playing.</p>
       </div>
       <div class="asym-art" aria-hidden="true">
@@ -863,8 +863,8 @@ p { color: var(--ink-soft); }
         <div class="gc-card" style="left:40px; top:116px">
           <i class="chip" style="background:#D9C08F"></i>
           <span class="no">01</span>
-          <b>Target image</b>
-          <p>Shows the goal for this level. Adjust the right image until the two match pixel for pixel.</p>
+          <b>Left image</b>
+          <p>In levels 1–9 this is the answer: adjust the right image until the two match pixel for pixel. In levels 10–13 it shows the damaged scene with a one-line prompt instead.</p>
         </div>
         <div class="gc-card" style="left:40px; top:386px">
           <i class="chip" style="background:#7E9FB3"></i>
@@ -884,7 +884,7 @@ p { color: var(--ink-soft); }
           <i class="chip" style="background:#C98B6B"></i>
           <span class="no">04</span>
           <b>Working image</b>
-          <p>The grayscale twin of the target, and the main editing area. Click a pixel to select it; changes show up here as you make them.</p>
+          <p>The grayscale twin of the left image, and the main editing area. Click a pixel to select it; changes show up here as you make them.</p>
         </div>
         <div class="gc-card" style="left:1260px; top:386px">
           <i class="chip" style="background:#8FA985"></i>
@@ -929,7 +929,7 @@ p { color: var(--ink-soft); }
     </div>
     <div class="asym-row rv">
       <div class="asym-text">
-        <p>The game began with a single level: the one that later became level 8. The first prototype was exactly that level, surrounded by explanations: a histogram, a lookup table, written notes for every part. A classmate without the background tried it and got lost. The extra text did not make anything easier to learn; it gave him more to puzzle over before he could even tell what the screen wanted.</p>
+        <p>The game began with a single level: the one that later became level 8. The first prototype was exactly that level, surrounded by explanations: a histogram, a lookup table, written notes for every part. A friend of mine, who was taking the course but had not yet formed the concepts, tried it and got lost. The extra text did not make anything easier to learn; it gave him more to puzzle over before he could even tell what the screen wanted.</p>
         <p>So I set one standard: <mark>every level has to pass the test of a complete beginner finishing it by playing alone</mark>.</p>
         <p>With the standard fixed, the direction reversed: instead of building level after level forward, I took the one level already clear in my head, level 8, and worked backward. <b>What does a player need before this level?</b> Every missing concept became a level of its own.</p>
       </div>
@@ -963,7 +963,7 @@ p { color: var(--ink-soft); }
           </figure>
 
           <div class="ask">
-            <p class="why"><b>Trigger</b> A classmate played the level 8 prototype and couldn’t read the screen</p>
+            <p class="why"><b>Trigger</b> A friend of mine played the level 8 prototype and couldn’t read the screen</p>
             <q>What does a player<br>need before level 8?</q>
             <svg viewBox="0 0 240 70" width="225" height="66" fill="none" aria-hidden="true">
               <path d="M8 36 C 52 24, 96 48, 142 37 S 204 30, 220 36" stroke="#c4503c" stroke-width="5" stroke-linecap="round"/>
@@ -1046,7 +1046,7 @@ p { color: var(--ink-soft); }
             <svg class="fin-line" viewBox="0 0 240 14" width="240" height="14" fill="none" aria-hidden="true">
               <path d="M4 9 C 52 3, 108 12, 168 6 S 224 4, 236 8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
             </svg>
-            <i>1–7 prerequisites · 8 pivot · 9–13 real repairs</i>
+            <i>1–7 prerequisites · 8 pivot · 9 variant of 8 · 10–13 real repairs</i>
           </figure>
         </div>
 
@@ -1098,7 +1098,7 @@ p { color: var(--ink-soft); }
         </div>
         <div class="lv-card is-note">
           <p class="lbl">Design notes</p>
-          <p>This level came out of that classmate’s confusion. What I first wanted to build was the later level 8: one image, several thresholds, a full set of free colors, plus written explanations around it, and he could not read the screen. That playtest set a standard: <mark>a complete beginner has to be able to finish it by playing alone</mark>.</p>
+          <p>This level came out of that friend’s confusion. What I first wanted to build was the later level 8: one image, several thresholds, a full set of free colors, plus written explanations around it, and he could not read the screen. That playtest set a standard: <mark>a complete beginner has to be able to finish it by playing alone</mark>.</p>
           <p>Level 1 is the first step working back from that standard: the simplest image that lets a person see what gray is. The whole image is one pixel, the only thing to do is drag the slider, and the right square’s shade follows the handle.</p>
         </div>
         <aside class="iter">
@@ -1227,7 +1227,7 @@ p { color: var(--ink-soft); }
         <div class="lv-card is-note">
           <p class="lbl">Design notes</p>
           <p>Level 8 is the synthesis: every mechanic from levels 1–7, on a bigger image with more colors. To keep it from becoming pure labor, everything else eases up — the chips are already in answer order, and only the thresholds start in the wrong place.</p>
-          <p>Level 9 is the first time the target cannot simply be copied. Painted the level 8 way, the sun stays in the picture; the only fix is to drag the sky–sun threshold past the far right end of the axis, so the sun’s gray stretch disappears into the sky color.</p>
+          <p>Level 9 is a variant of level 8: the answer is still on the left, but it cannot be reached by copying pixels one by one. Painted the level 8 way, the sun stays in the picture; the only fix is to drag the sky–sun threshold past the far right end of the axis, so the sun’s gray stretch disappears into the sky color.</p>
         </div>
       </div>
     </div>
@@ -1335,7 +1335,6 @@ p { color: var(--ink-soft); }
 
 <footer class="site-foot">
   <p class="mono">THE GRAY WORKSHOP — a personal project page</p>
-  <p class="mono dim">Text adapted from the project write-up · Game: jesse20050324.github.io/dip-game · Static site, opens with a double-click</p>
 </footer>
 
 <script>
