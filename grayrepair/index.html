@@ -245,6 +245,21 @@ p { color: var(--ink-soft); }
 .asym-row.flip { grid-template-columns: minmax(0,.78fr) minmax(0,1.22fr); }
 .asym-row.flip .asym-text { order: 2; }
 .asym-row.flip .asym-art { order: 1; }
+/* ============ 实机视频（首屏后）============ */
+.sec-video { margin-top: clamp(28px,4vh,56px); }
+.video-row {
+  display: grid;
+  grid-template-columns: minmax(0,1.22fr) minmax(0,.78fr);
+  gap: clamp(26px,3.6vw,58px);
+  align-items: center;
+}
+.video-frame {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
+  box-shadow: 0 7px 0 var(--shadow); padding: 9px;
+}
+.video-frame .vbox { border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: var(--ink); }
+.video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.video-frame .video-cap { padding: 8px 4px 3px; font-size: 11px; font-weight: 600; letter-spacing: .1em; }
 .asym-text p { font-size: clamp(15px,.98vw,16.5px); line-height: 2; }
 .asym-text p + p { margin-top: .9em; }
 .asym-art { position: relative; aspect-ratio: 5 / 4; }
@@ -634,6 +649,7 @@ p { color: var(--ink-soft); }
 /* ========== 响应式 ========== */
 @media (max-width: 1180px) {
   .hero .b-grid { grid-template-columns: 1fr; gap: 40px; }
+  .video-row { grid-template-columns: 1fr; }
   .hero .b-stack { max-width: 620px; }
   .ops-rail { grid-template-columns: 1fr 1fr; }
   .ops-rail::before { display: none; }
@@ -718,6 +734,16 @@ p { color: var(--ink-soft); }
         </figure>
       </div>
     </div>
+  </section>
+
+  <!-- ============ 实机视频 ============ -->
+  <section class="sec sec-video" id="video">
+    <figure class="video-row rv">
+      <div class="video-frame">
+        <div class="vbox"><iframe src="https://www.youtube-nocookie.com/embed/rjIUUuGn3N0?rel=0" title="The Gray Workshop, gameplay video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        <figcaption class="video-cap mono">Gameplay video</figcaption>
+      </div>
+    </figure>
   </section>
 
   <!-- ============ 01 灵感 ============ -->
