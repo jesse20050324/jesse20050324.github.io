@@ -5,18 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Gray Workshop — Game Design Portfolio</title>
 <meta name="description" content="The Gray Workshop: a browser-based puzzle game about photo repair that teaches the basics of digital image processing through play. 13 levels, no text tutorials.">
-<!--
-  ============================================================
-  灰度修理铺 · 完整作品站（合并版）
-  ============================================================
-  结构：导航栏 / 首屏 / 01 灵感 / 02 概述 / 03 操作 / 04 界面解说 /
-        05 关卡设计（先讲起因，再进横屏锁定倒推叙事）/ 06 逐关解析 / 07 心得 / 08 试玩
-  视觉：雾蓝工坊（游戏同源色板）+ 白线网格底 + 空心数字小标题
-  素材：素材/*.png（160×160 关卡图，需 image-rendering: pixelated）
-  ============================================================
--->
 <style>
-/* ========== 令牌 ========== */
 :root {
   --paper: #cde8fa;
   --card: #f1f7fb;
@@ -49,7 +38,6 @@ body {
   line-height: 1.9;
   overflow-x: hidden;
   background-color: var(--paper);
-  /* 白线网格：130px 强格 + 26px 弱格（内容区底纹） */
   background-image:
     linear-gradient(var(--grid-strong) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
@@ -67,7 +55,6 @@ mark, .mark {
   color: inherit; padding: 0 1px;
 }
 
-/* ========== 顶部导航 ========== */
 .site-head {
   position: sticky; top: 0; z-index: 60;
   height: var(--navh);
@@ -114,7 +101,6 @@ mark, .mark {
 .site-nav a.nav-play { color: var(--red); font-weight: 800; }
 .site-nav a.nav-play::after { display: none; }
 
-/* ========== 首屏（雾蓝工坊） ========== */
 .hero {
   position: relative;
   min-height: calc(100svh - var(--navh));
@@ -176,7 +162,6 @@ mark, .mark {
   background: #e8b84a; border: 3px solid var(--ink); border-radius: 10px;
   box-shadow: 0 4px 0 var(--shadow); z-index: 4;
 }
-/* 首屏试玩入口：实心墨蓝按钮 + 红虚线描边（与 03 取景框同一支标注线） */
 .hero-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: -2px 0 22px 6px; }
 .btn-play {
   position: relative; display: inline-flex; align-items: center; gap: 11px;
@@ -197,12 +182,10 @@ mark, .mark {
 .btn-play:hover { translate: 0 -4px; rotate: 0deg; box-shadow: 0 9px 0 var(--shadow); background: #0b1725; }
 .btn-play:active { translate: 0 -1px; box-shadow: 0 3px 0 var(--shadow); }
 
-/* ========== 章节骨架 ========== */
 main { position: relative; }
 .sec {
   position: relative;
   max-width: 1140px;
-  /* 章节间距下限要盖住空心数字的上探（54px）+ 呼吸，矮视口/大缩放下才不会顶进上一节的内容 */
   margin: clamp(104px,11vh,140px) auto 0;
   padding: 0 26px;
   scroll-margin-top: calc(var(--navh) + 20px);
@@ -234,7 +217,6 @@ main { position: relative; }
 p { color: var(--ink-soft); }
 .sec b, .sec strong { color: var(--ink); }
 
-/* ========== 不对称排版：文字 / 美术元素交替 ========== */
 .asym-row {
   display: grid;
   grid-template-columns: minmax(0,1.22fr) minmax(0,.78fr);
@@ -245,7 +227,6 @@ p { color: var(--ink-soft); }
 .asym-row.flip { grid-template-columns: minmax(0,.78fr) minmax(0,1.22fr); }
 .asym-row.flip .asym-text { order: 2; }
 .asym-row.flip .asym-art { order: 1; }
-/* ============ 实机视频（首屏后）============ */
 .sec-video { margin-top: clamp(28px,4vh,56px); }
 .video-row { display: flex; justify-content: center; }
 .video-frame {
@@ -276,7 +257,6 @@ p { color: var(--ink-soft); }
   font-size: 10.5px; letter-spacing: .1em; color: var(--muted); z-index: 3;
 }
 
-/* ========== 03 操作：操控元素条 ========== */
 .ops-rail {
   position: relative;
   display: grid; grid-template-columns: repeat(4,minmax(0,1fr));
@@ -309,7 +289,6 @@ p { color: var(--ink-soft); }
   font-family: var(--mono); font-size: 11px; font-weight: 700;
   padding: 2px 8px; border-radius: 6px; box-shadow: 0 3px 0 var(--shadow);
 }
-/* 取景框：直接用游戏实机截图，只做取景与标注，不再重画控件 */
 .op-deck {
   position: relative; aspect-ratio: 4 / 3; overflow: hidden;
   background: #eaf3fb; border: 2px solid var(--ink); border-radius: 9px;
@@ -317,7 +296,6 @@ p { color: var(--ink-soft); }
 }
 .op-deck img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .op-deck.is-pix img { image-rendering: pixelated; }
-/* 红色虚线标注：圈出卡片正文提到的那个部件 */
 .op-mark {
   position: absolute; border: 2px dashed var(--red); border-radius: 5px;
   box-shadow: 0 0 0 4px rgba(196,80,60,.12); pointer-events: none;
@@ -333,7 +311,6 @@ p { color: var(--ink-soft); }
 .op h3 { font-size: 15.5px; font-weight: 900; letter-spacing: .05em; margin-bottom: 5px; }
 .op p { font-size: 12.5px; line-height: 1.75; color: var(--muted); }
 
-/* ========== 04 界面解说：1600×1200 说明画布 ========== */
 .guide-wrap { position: relative; width: 100%; margin: 26px auto 0; }
 .guide-canvas {
   position: relative; width: 1600px; height: 1000px;
@@ -346,14 +323,12 @@ p { color: var(--ink-soft); }
 .gc-wash { position: absolute; border-radius: 50%; filter: blur(2px); pointer-events: none; }
 .gc-wash.w1 { left: -180px; top: -160px; width: 620px; height: 560px; background: radial-gradient(circle at 40% 40%, rgba(217,192,143,.28), rgba(217,192,143,0) 70%); }
 .gc-wash.w2 { right: -200px; bottom: -180px; width: 680px; height: 600px; background: radial-gradient(circle at 60% 60%, rgba(126,159,179,.26), rgba(126,159,179,0) 70%); }
-/* 中央截图 */
 .gc-shot {
   position: absolute; left: 352px; top: 40px; width: 896px;
   background: #fff; border: 2px solid var(--ink); border-radius: 12px;
   padding: 14px; box-shadow: 0 8px 0 rgba(46,43,37,.12);
 }
 .gc-shot img { width: 100%; height: auto; border-radius: 4px; }
-/* 标注卡 */
 .gc-card {
   position: absolute; width: 300px; min-height: 220px;
   background: #fff; border: 2px solid var(--ink); border-radius: 12px;
@@ -364,7 +339,6 @@ p { color: var(--ink-soft); }
 .gc-card b { display: block; font-size: 29px; font-weight: 900; line-height: 1.25; margin: 6px 0 8px; letter-spacing: .01em; }
 .gc-card p { font-size: 17px; line-height: 1.7; color: #4a5a6b; }
 .gc-arrows { position: absolute; inset: 0; width: 1600px; height: 1000px; pointer-events: none; }
-/* 引线：与 03 标注框、05 手写批注同一支陶土红；加白色柔光，压深色实机截图也分得清 */
 .gc-arrows path.lead {
   fill: none; stroke: #c4503c; stroke-width: 3.4;
   stroke-dasharray: 11 8; stroke-linecap: round;
@@ -372,7 +346,6 @@ p { color: var(--ink-soft); }
 }
 .gc-arrows circle { fill: #c4503c; }
 .gc-arrows path.tip { fill: #c4503c; }
-/* 窄屏兜底：画布改为上下堆叠，不再整体缩放 */
 @media (max-width: 900px) {
   .guide-canvas {
     display: grid; gap: 14px; width: 100%; height: auto !important;
@@ -385,11 +358,8 @@ p { color: var(--ink-soft); }
   .guide-wrap { height: auto !important; }
 }
 
-/* ========== 05 关卡设计：横屏锁定叙事 ========== */
 .rail-wrap { position: relative; width: 100%; background: var(--paper); margin-top: clamp(60px,8vh,100px); scroll-margin-top: var(--navh); }
 .rail-stage { position: sticky; top: var(--navh); height: calc(100vh - var(--navh)); overflow: hidden; }
-/* 设计层：JS 把它设成固定的"设计尺寸"，再整体 scale 到舞台大小。
-   这样卡片、批注、图注的比例在 1280 与 1920 上是同一套，不会为了塞进矮屏把卡宽一路压到 150px。 */
 .rail-fit { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
 #cam { position: absolute; inset: 0; will-change: transform; }
 .rail-head { position: absolute; left: 6vw; top: 2.6vh; z-index: 5; }
@@ -418,7 +388,6 @@ p { color: var(--ink-soft); }
 }
 .st .st-thumb img { width: 100%; height: 100%; }
 .st figcaption { padding: 10px 4px 2px; }
-/* 图注保持单行：一旦折行，卡片变窄反而更高，measure() 的缩放循环会一路缩到底 */
 .st b, .st i { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .st b { display: block; font-size: 15px; font-weight: 900; letter-spacing: .04em; }
 .st i { display: block; font-style: normal; margin-top: 5px; font-size: 12px; color: var(--muted); letter-spacing: .05em; }
@@ -426,8 +395,6 @@ p { color: var(--ink-soft); }
 .st.live { box-shadow: 0 6px 0 var(--shadow), 0 0 0 3px var(--accent); }
 .st.live b { color: var(--accent-deep); }
 .st.hub {
-  /* 起点卡不再靠加宽撑大——加宽会抬高整条带的布局高度，把普通卡压小。
-     改为底部中心为原点的视觉放大：不占布局高度，向上溢出一半，正好落在批注区空档。 */
   transform: scale(1.18); transform-origin: 50% 100%;
   border: 3px solid var(--red);
   box-shadow: 0 6px 0 var(--shadow), 0 0 0 5px var(--paper), 0 0 0 8px var(--red);
@@ -441,8 +408,6 @@ p { color: var(--ink-soft); }
   box-shadow: 0 3px 0 var(--shadow); rotate: 3deg;
 }
 .st.hub b { color: var(--red); }
-/* 批注组是一个整体：上批注、链条线、下批注的相对位置固定，
-   三个 --rail-* 都由 JS 按组锚点算好写入（锚点 = 放大后的卡片顶），改 noteH 一个数整组平移 */
 #chainLine { position: absolute; left: 0; top: calc(-1 * var(--rail-chain, 134px)); height: 30px; overflow: visible; pointer-events: none; z-index: 0; }
 #chainLine path { stroke: var(--red); stroke-width: 2.5; stroke-dasharray: 12 9; stroke-linecap: round; fill: none; opacity: .55; }
 #chainLine circle { fill: var(--red); opacity: .55; }
@@ -454,9 +419,7 @@ p { color: var(--ink-soft); }
   color: var(--red); letter-spacing: .02em;
 }
 .lvnote.up { top: calc(-1 * var(--rail-up, 187px)); }
-/* 下批注是次级说明：字号更小、退成灰蓝，和上批注的红字拉开层次 */
 .lvnote.dn { top: calc(-1 * var(--rail-dn, 102px)); line-height: 1.4; color: #4e6072; letter-spacing: .05em; }
-/* 下带收尾：手写结论，与上带的「前因/问句」同族 */
 .st.finale {
   width: 340px; background: transparent; border: 0; box-shadow: none;
   padding: 14px 4px 0; display: block;
@@ -495,7 +458,6 @@ p { color: var(--ink-soft); }
   background: var(--red); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .16em;
   padding: 5px 10px; border-radius: 7px; box-shadow: 0 3px 0 var(--shadow);
 }
-/* 阶段③ 长箭头：固定悬在抬升后的下带上方，不随卡片滚动；主字在箭头上、副字在下 */
 .ext-note { position: absolute; z-index: 5; left: 50%; transform: translateX(-50%); width: min(58vw, 1000px); opacity: 0; pointer-events: none; }
 .ext-note .ext-main { font-family: var(--hand); font-weight: 700; font-size: clamp(23px,1.9vw,31px); color: var(--red); letter-spacing: .04em; line-height: 1.3; }
 .ext-note .ext-sub { font-size: 14.5px; font-weight: 600; color: var(--muted); letter-spacing: .08em; margin-top: 4px; }
@@ -509,7 +471,6 @@ p { color: var(--ink-soft); }
 .rail-hud .bar { width: 170px; height: 10px; background: rgba(18,33,51,.15); border-radius: 6px; overflow: hidden; }
 .rail-hud .bar b { display: block; height: 100%; width: 0; background: var(--red); border-radius: 6px; }
 
-/* ========== 06 逐关解析：大图交替 ========== */
 .lvg {
   display: grid;
   grid-template-columns: minmax(0,1.16fr) minmax(0,.84fr);
@@ -525,7 +486,6 @@ p { color: var(--ink-soft); }
 .lvg-title span { font-family: var(--hand); font-weight: 400; font-size: 15px; color: var(--red); margin-left: 10px; letter-spacing: .04em; }
 .lvg-media { display: grid; gap: 12px; grid-template-columns: 1fr; }
 .lvg-media.two, .lvg-media.multi { grid-template-columns: 1fr 1fr; }
-/* 奇数张时，最后一张通栏放大 */
 .lvg-media.multi .shot:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .shot {
   background: var(--card); border: 2px solid var(--ink); border-radius: 12px;
@@ -550,7 +510,6 @@ p { color: var(--ink-soft); }
 .lv-card p { font-size: 14px; line-height: 1.9; }
 .lv-card p + p { margin-top: .7em; }
 .lv-card.is-note { background: #eaf4fc; }
-/* 迭代：试玩后改掉的地方 —— 独立卡片，与「玩法 / 设计思路」同级 */
 .iter {
   position: relative; margin: 14px 0 0; padding: 15px 18px 16px 22px;
   background: #fbefea; border: 2px solid var(--ink); border-radius: 12px;
@@ -576,7 +535,6 @@ p { color: var(--ink-soft); }
   content: "→"; position: absolute; left: 0; top: 0;
   color: var(--red); font-weight: 700;
 }
-/* 设计细节：轻量批注，明确弱于迭代 */
 .quote-note { border-left: 3px dashed rgba(196,80,60,.55); padding: 2px 0 2px 14px; margin: 12px 0 0 4px; }
 .quote-note .q-tag { font-family: var(--mono); font-size: 10.5px; color: var(--red); letter-spacing: .2em; margin-bottom: 4px; }
 .quote-note p { font-family: var(--hand); font-size: 15.5px; line-height: 1.85; color: #3c4a58; }
@@ -585,8 +543,6 @@ p { color: var(--ink-soft); }
 .scene-en { font-family: var(--mono); font-size: 12px; color: var(--red); }
 .scene-zh { font-family: var(--hand); font-size: 13.5px; color: var(--muted); margin-top: 2px; }
 
-/* ========== 07 心得 ========== */
-/* 三条原则压成短句，作为心得的收口（原 07 总体设计不再单独成节） */
 .creed-lead {
   margin: 2px 0 16px;
   font-size: clamp(15px,1vw,17px); font-weight: 800;
@@ -602,7 +558,6 @@ p { color: var(--ink-soft); }
 .creed .cr-no { font-family: var(--mono); font-size: 11px; letter-spacing: .24em; color: var(--red); }
 .creed h3 { font-size: clamp(19px,1.4vw,23px); font-weight: 900; letter-spacing: .03em; margin: 7px 0 7px; }
 .creed p { font-size: 13.5px; line-height: 1.85; }
-/* 三句手写要点与三段正文逐行配对：左红字、右正文，首行基线对齐 */
 .note-rows { border-top: 2px dashed rgba(18,33,51,.14); margin-top: 4px; }
 .note-row {
   display: grid; grid-template-columns: minmax(0,.94fr) minmax(0,1.06fr);
@@ -617,7 +572,6 @@ p { color: var(--ink-soft); }
 }
 .note-row p { font-size: clamp(15px,.98vw,16.5px); line-height: 2; }
 
-/* ========== 08 试玩 ========== */
 .play-frame-wrap {
   position: relative; border: 2px solid var(--ink); border-radius: 14px;
   overflow: hidden; background: #0d1620;
@@ -627,7 +581,6 @@ p { color: var(--ink-soft); }
 .play-alt { margin-top: 12px; font-size: 12px; color: var(--muted); }
 .play-alt a { color: var(--red); font-weight: 700; }
 
-/* ========== 页脚 ========== */
 .site-foot {
   margin-top: clamp(64px,9vh,110px);
   border-top: 2px solid var(--ink);
@@ -637,12 +590,10 @@ p { color: var(--ink-soft); }
 .site-foot p { font-size: 12px; letter-spacing: .1em; color: var(--ink); }
 .site-foot .dim { color: var(--muted); margin-top: 6px; font-size: 11px; }
 
-/* ========== 浮现动效 ========== */
 .rv { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--out), transform .8s var(--out); transition-delay: var(--d,0s); }
 .rv.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .rv { opacity: 1 !important; transform: none !important; } }
 
-/* ========== 响应式 ========== */
 @media (max-width: 1180px) {
   .hero .b-grid { grid-template-columns: 1fr; gap: 40px; }
   .hero .b-stack { max-width: 620px; }
@@ -666,13 +617,11 @@ p { color: var(--ink-soft); }
   .hero .card-side1, .hero .card-side2 { display: none; }
   .ops-rail { grid-template-columns: 1fr; }
   .lvg-media.two, .lvg-media.multi, .scene-row { grid-template-columns: 1fr; }
-  /* 窄屏下阶段指示会压到标题上，收掉 */
   .rail-hud { display: none; }
 }
 </style>
 </head>
 <body>
-<!-- ============ 顶部导航 ============ -->
 <header class="site-head">
   <i class="progress" id="progress" aria-hidden="true"></i>
   <div class="head-inner">
@@ -692,7 +641,6 @@ p { color: var(--ink-soft); }
 
 <main id="top">
 
-  <!-- ============ 首屏：雾蓝工坊 ============ -->
   <section class="hero" id="hero">
     <div class="b-grid">
       <div>
@@ -731,7 +679,6 @@ p { color: var(--ink-soft); }
     </div>
   </section>
 
-  <!-- ============ 实机视频 ============ -->
   <section class="sec sec-video" id="video">
     <figure class="video-row rv">
       <div class="video-frame">
@@ -741,7 +688,6 @@ p { color: var(--ink-soft); }
     </figure>
   </section>
 
-  <!-- ============ 01 灵感 ============ -->
   <section class="sec" id="inspiration">
     <div class="sec-head">
       <span class="sec-ghost mono" aria-hidden="true">01</span>
@@ -765,7 +711,6 @@ p { color: var(--ink-soft); }
     </div>
   </section>
 
-  <!-- ============ 02 概述 ============ -->
   <section class="sec" id="overview">
     <div class="sec-head">
       <span class="sec-ghost mono" aria-hidden="true">02</span>
@@ -788,7 +733,6 @@ p { color: var(--ink-soft); }
     </div>
   </section>
 
-  <!-- ============ 03 操作：四种操作 × 游戏操控元素 ============ -->
   <section class="sec sec-wide" id="ops">
     <div class="sec-head">
       <span class="sec-ghost mono" aria-hidden="true">03</span>
@@ -840,7 +784,6 @@ p { color: var(--ink-soft); }
     </div>
   </section>
 
-  <!-- ============ 04 界面解说 ============ -->
   <section class="sec sec-wide" id="interface">
     <div class="sec-head">
       <span class="sec-ghost mono" aria-hidden="true">04</span>
@@ -859,7 +802,6 @@ p { color: var(--ink-soft); }
           <img src="素材/game-level8.png" alt="Level 8 live screen: color target on the left, grayscale working image on the right, gray axis, mapping bar and color chips below">
         </figure>
 
-        <!-- 标注卡：左列 -->
         <div class="gc-card" style="left:40px; top:116px">
           <i class="chip" style="background:#D9C08F"></i>
           <span class="no">01</span>
@@ -879,7 +821,6 @@ p { color: var(--ink-soft); }
           <p>Aligned with the gray axis. Put a color into a stretch, and every pixel in that gray range displays as that color.</p>
         </div>
 
-        <!-- 标注卡：右列 -->
         <div class="gc-card" style="left:1260px; top:116px">
           <i class="chip" style="background:#C98B6B"></i>
           <span class="no">04</span>
@@ -899,7 +840,6 @@ p { color: var(--ink-soft); }
           <p>The colors to choose from. Drag a chip into the mapping bar to assign it to a gray stretch.</p>
         </div>
 
-        <!-- 引线：墨蓝虚线 + 红点起点 + 实心三角终点 -->
         <svg class="gc-arrows" viewBox="0 0 1600 1000" aria-hidden="true">
           <defs>
             <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -918,7 +858,6 @@ p { color: var(--ink-soft); }
       </div>
     </div>
   </section>
-  <!-- ============ 05 关卡设计：起因 + 横屏锁定倒推叙事 ============ -->
   <section class="sec" id="levels">
     <div class="sec-head">
       <span class="sec-ghost mono" aria-hidden="true">05</span>
@@ -942,19 +881,16 @@ p { color: var(--ink-soft); }
     </div>
   </section>
 
-  <!-- 倒推图：横屏锁定叙事 -->
   <section class="rail-wrap" id="levels-rail">
     <div class="rail-stage">
      <div class="rail-fit" id="railFit">
       <header class="rail-head">
         <div>
           <p class="sec-en">DERIVATION · LEVELS 01–13</p>
-          <h2>Level design</h2>
         </div>
       </header>
 
       <div id="cam">
-        <!-- 上带：思考链（L8 起点 → 前因/提问 → L1–L7 升序补齐前置概念） -->
         <div class="track" id="trackU">
           <figure class="st hub" data-lv="8">
             <span class="tag">Start</span>
@@ -1013,7 +949,6 @@ p { color: var(--ink-soft); }
           <div id="noteLayer" aria-hidden="true"></div>
         </div>
 
-        <!-- 下带：L8–L13（自然顺序，镜头从轴心向右延伸） -->
         <div class="track" id="trackL">
           <figure class="st hub" data-lv="8">
             <span class="tag">Start</span>
@@ -1053,7 +988,6 @@ p { color: var(--ink-soft); }
         <div id="link"><span>Pivot · the same level 8</span></div>
       </div>
 
-      <!-- 阶段③ 的固定长箭头：字在箭头上下，箭头不随卡片滚动，只做淡入淡出 -->
       <div class="ext-note" id="extNote" aria-hidden="true">
         <p class="ext-main">Further: what can this mechanism repair in real life?</p>
         <svg id="extArrow" aria-hidden="true"></svg>
@@ -1068,7 +1002,6 @@ p { color: var(--ink-soft); }
     </div>
   </section>
 
-  <!-- ============ 06 逐关解析：大图交替 ============ -->
   <section class="sec sec-wide" id="levels-detail">
     <div class="sec-head">
       <span class="sec-ghost mono" aria-hidden="true">06</span>
@@ -1079,13 +1012,11 @@ p { color: var(--ink-soft); }
     </div>
     <p class="sec-lead">Each level introduces at most one new move or concept. Below, group by group: what it teaches, why it is built this way, and what playtesting changed.</p>
 
-    <!-- 第 1 关 -->
     <div class="lvg rv">
       <div class="lvg-head">
         <h3 class="lvg-title">Level 1<span>Meeting gray</span></h3>
       </div>
       <div class="lvg-media">
-        <!-- 动态图位：容器规格统一，后续把 img 换成通关过程 GIF 即可 -->
         <figure class="shot">
           <div class="shot-img"><img class="px" src="素材/level-1.png" alt="Level 1 screen"></div>
           <figcaption>L1 · single pixel · slider</figcaption>
@@ -1109,7 +1040,6 @@ p { color: var(--ink-soft); }
       </div>
     </div>
 
-    <!-- 第 2 关 -->
     <div class="lvg flip rv">
       <div class="lvg-head">
         <h3 class="lvg-title">Level 2<span>Meeting pixels</span></h3>
@@ -1137,7 +1067,6 @@ p { color: var(--ink-soft); }
       </div>
     </div>
 
-    <!-- 第 3–4 关 -->
     <div class="lvg rv">
       <div class="lvg-head">
         <h3 class="lvg-title">Levels 3–4<span>Color mapping</span></h3>
@@ -1166,7 +1095,6 @@ p { color: var(--ink-soft); }
       </div>
     </div>
 
-    <!-- 第 5–7 关 -->
     <div class="lvg flip rv">
       <div class="lvg-head">
         <h3 class="lvg-title">Levels 5–7<span>Thresholds, one step at a time</span></h3>
@@ -1203,7 +1131,6 @@ p { color: var(--ink-soft); }
       </div>
     </div>
 
-    <!-- 第 8–9 关 -->
     <div class="lvg rv">
       <div class="lvg-head">
         <h3 class="lvg-title">Levels 8–9<span>Combine and apply</span></h3>
@@ -1232,7 +1159,6 @@ p { color: var(--ink-soft); }
       </div>
     </div>
 
-    <!-- 第 10–13 关 -->
     <div class="lvg flip rv">
       <div class="lvg-head">
         <h3 class="lvg-title">Levels 10–13<span>Real repair jobs</span></h3>
@@ -1271,7 +1197,6 @@ p { color: var(--ink-soft); }
     </div>
   </section>
 
-  <!-- ============ 07 心得：三条原则 + 做下来的体会 ============ -->
   <section class="sec" id="notes">
     <div class="sec-head">
       <span class="sec-ghost mono" aria-hidden="true">07</span>
@@ -1316,7 +1241,6 @@ p { color: var(--ink-soft); }
     </div>
   </section>
 
-  <!-- ============ 08 试玩 ============ -->
   <section class="sec sec-wide" id="play">
     <div class="sec-head">
       <span class="sec-ghost mono" aria-hidden="true">08</span>
@@ -1338,7 +1262,6 @@ p { color: var(--ink-soft); }
 </footer>
 
 <script>
-/* ============ 1. 进度条 + 导航高亮 ============ */
 (() => {
   const bar = document.getElementById('progress');
   const links = [...document.querySelectorAll('.site-nav a')];
@@ -1359,7 +1282,6 @@ p { color: var(--ink-soft); }
   onScroll();
 })();
 
-/* ============ 2. 滚动浮现 ============ */
 (() => {
   const els = document.querySelectorAll('.rv');
   if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
@@ -1369,7 +1291,6 @@ p { color: var(--ink-soft); }
   els.forEach(e => io.observe(e));
 })();
 
-/* ============ 3. 界面解说画布等比缩放 ============ */
 (() => {
   const wrap = document.getElementById('guideWrap');
   const canvas = document.getElementById('guideCanvas');
@@ -1384,7 +1305,6 @@ p { color: var(--ink-soft); }
   fit();
 })();
 
-/* ============ 4. 关卡设计：滚动锁定横屏叙事 ============ */
 (() => {
   const wrap  = document.getElementById('levels-rail');
   const stage = wrap.querySelector('.rail-stage');
@@ -1404,13 +1324,10 @@ p { color: var(--ink-soft); }
   const noteLayer = document.getElementById('noteLayer');
   const noteMap = new Map();
 
-  const camShiftVH = -19;   // 阶段②镜头上移量（vh）
+  const camShiftVH = -19;
   let M = null, wrapTop = 0;
 
   function relocateNotes() {
-    // 批注第一次就被搬到 noteLayer，之后卡片里已经查不到它 —— 必须回落到 noteMap，
-    // 否则 measure() 二次收敛（卡宽变化）时批注会停在旧位置上。
-    // 舞台整体 scale 之后，屏幕坐标要除回缩放比才是设计坐标。
     const k = M ? M.scale : 1;
     const layerLeft = noteLayer.getBoundingClientRect().left;
     cardsU.forEach(c => {
@@ -1440,32 +1357,23 @@ p { color: var(--ink-soft); }
     chainSvg.innerHTML = `<path d="${d}"/>` + pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="3.5"/>`).join('');
   }
 
-  /* 可调参数：默认值 = 大哥在调参面板里选定的组合。
-     批注组（上批注+链条线+下批注）是一个整体，noteH = 下批注底到「放大后卡片顶」的距离，
-     组内相对位置固定，改一个数整组平移。锚定放大后的卡片顶，居中放大幅度再大也不会贴上。 */
   const RAIL_DEF = {
-    noteH: 27,    // 批注组底（下批注）↔ 放大后的卡片顶
-    dnGap: 22,    // 虚线 ↔ 下批注顶
-    upGap: 40,    // 虚线 ↔ 上批注底
-    upSize: 25,   // 上批注字号
-    gapV:  20,    // 上下两带的垂直间距
-    gapU:  93,    // 上带卡片水平间距
-    gapL:  131,   // 下带卡片水平间距
-    amp:   .3,    // 居中卡片的放大幅度
-    maxW:  440,   // 卡片宽度上限
-    headPad: 56,  // 标题底到批注组顶的留白
+    noteH: 27,
+    dnGap: 22,
+    upGap: 40,
+    upSize: 25,
+    gapV:  20,
+    gapU:  93,
+    gapL:  131,
+    amp:   .3,
+    maxW:  440,
+    headPad: 56,
   };
   function railConfig() {
-    try {
-      const saved = JSON.parse(localStorage.getItem('grayrepair-rail-tune') || '{}');
-      if (saved.dn !== undefined || saved.dnSize !== undefined) { localStorage.removeItem('grayrepair-rail-tune'); return Object.assign({}, RAIL_DEF); } // 旧格式迁移
-      return Object.assign({}, RAIL_DEF, saved);
-    } catch (e) { return Object.assign({}, RAIL_DEF); }
+    return Object.assign({}, RAIL_DEF);
   }
 
   function measure() {
-    /* 设计层固定 1016px 高（≈ 1080 屏扣掉导航），屏矮就整体等比缩放 —— 
-       不再靠压窄卡宽来塞进两行：压窄会把图注挤成省略号，卡片也小到看不清。 */
     const stageH = stage.clientHeight;
     const stageW = stage.clientWidth;
     const Hv = Math.max(stageH, 1016);
@@ -1475,7 +1383,7 @@ p { color: var(--ink-soft); }
     fit.style.height = Hv + 'px';
     fit.style.transform = 'scale(' + s.toFixed(4) + ')';
 
-    const jv   = Wv * .5;                          // 设计坐标里的画面中心 = 屏幕中心
+    const jv   = Wv * .5;
     const head = wrap.querySelector('.rail-head');
     const headBottom = head.offsetTop + head.offsetHeight;
     const R = railConfig();
@@ -1488,15 +1396,12 @@ p { color: var(--ink-soft); }
       document.documentElement.style.setProperty('--st-w', stW + 'px');
       cardH = tU.querySelector('.st:not(.hub)').offsetHeight;
       hubH  = tU.querySelector('.hub').offsetHeight;
-      /* 批注组锚定放大后的卡片顶。距离都以"离卡片顶向上"计：
-         D = 下批注底；上下批注同字号，高 = upSize*1.4；曲线 = 下字顶 + dnGap；上字底 = 曲线 + upGap。
-         注意 svg 内部 y 向下 = 向卡片靠近，所以 svg 顶 = 曲线 + 12（曲线画在 svg 内 y=12 处）。 */
       const rise = R.amp * cardH * .92;
       const D = rise + R.noteH;
-      const dnH = R.upSize * 1.4, upH = R.upSize * 1.4;   // 上下批注同字号（粗细一致）
-      dnTopD = D + dnH;                           // 下批注顶
-      chainSvgTop = dnTopD + R.dnGap + 12;        // 虚线画在 svg 内 y=12 → svg 顶 = 曲线 + 12
-      bandTop = dnTopD + R.dnGap + R.upGap + upH; // 上批注顶 = 曲线 + upGap + 上字高
+      const dnH = R.upSize * 1.4, upH = R.upSize * 1.4;
+      dnTopD = D + dnH;
+      chainSvgTop = dnTopD + R.dnGap + 12;
+      bandTop = dnTopD + R.dnGap + R.upGap + upH;
       tuTop = Math.max(headBottom + R.headPad + bandTop, Math.round(Hv * .20));
       tlTop = tuTop + Math.max(cardH, hubH) + R.gapV;
       if (tlTop + cardH <= Hv - 18 || stW <= 200) break;
@@ -1506,7 +1411,6 @@ p { color: var(--ink-soft); }
     document.documentElement.style.setProperty('--rail-dn', dnTopD + 'px');
     document.documentElement.style.setProperty('--rail-chain', chainSvgTop + 'px');
     document.documentElement.style.setProperty('--rail-up-size', R.upSize + 'px');
-    /* 高屏会把两带挤在上半部：多出来的空白对半分给上下 */
     const slack = Hv - 18 - (tlTop + cardH);
     if (slack > 0) { tuTop += Math.round(slack * .5); tlTop += Math.round(slack * .5); }
 
@@ -1535,24 +1439,18 @@ p { color: var(--ink-soft); }
     wrap.style.height = (stageH + M.total * s) + 'px';
 
     link.style.left = jv + 'px';
-    /* 起点卡外面还有一圈红环，虚线从中环下方起，标签才不会被卡片压住 */
     const linkTop = tuTop + hubU.offsetHeight + 13;
     link.style.top  = linkTop + 'px';
-    link.style.height = Math.max(6, tlTop - linkTop - 3) + 'px';   /* gapV 调小时轴线收缩，不再伸进卡片 */
+    link.style.height = Math.max(6, tlTop - linkTop - 3) + 'px';
 
     wrapTop = wrap.getBoundingClientRect().top + scrollY;
     buildChainLine();
     relocateNotes();
     buildExtArrow();
-    /* 长箭头固定悬在「抬升后的下带」上方：不进 cam，不随滚动平移，只在这里定位一次。
-       锚点要再减 rise —— 居中卡片放大后顶部还会抬高，箭头得让过它 */
-    const band3Top = tlTop + M.camY - M.liftY - M.rise; // 阶段③ 下带顶（含放大卡，设计坐标）
+    const band3Top = tlTop + M.camY - M.liftY - M.rise;
     extNote.style.top = Math.max(headBottom + 16,
       Math.round(band3Top - extNote.offsetHeight - 30)) + 'px';
-    /* gapV 太小时「轴心」胶囊放不下，只留虚线轴 */
     link.querySelector('span').style.display = R.gapV < 34 ? 'none' : '';
-    /* 循环里反复改 --st-w，首次读取可能拿到未被采用的中间布局；
-       隔一帧再校准一次（后台标签的 rAF 会被节流，所以用定时器兜底） */
     setTimeout(() => {
       buildChainLine();
       relocateNotes();
@@ -1560,7 +1458,6 @@ p { color: var(--ink-soft); }
     }, 50);
   }
 
-  /* 长箭头：按实际宽度画一条带手绘起伏的线 + 实心箭头 */
   function buildExtArrow() {
     const svg = document.getElementById('extArrow');
     const w = Math.max(220, Math.round(svg.getBoundingClientRect().width / (M ? M.scale : 1)));
@@ -1588,7 +1485,6 @@ p { color: var(--ink-soft); }
       const d = Math.abs(cx - fx);
       const k = d <= plateau ? 1 : Math.max(0, 1 - (d - plateau) / range);
       const s = 1 + (M.amp || .15) * k;
-      // 起点/枢纽卡本身已用 CSS scale(1.18) 放大，这里不再叠加，避免放大后压到另一条带
       if (!c.classList.contains('hub')) {
         c.style.transform = k > 0 ? `scale(${s.toFixed(3)})` : '';
       }
@@ -1615,7 +1511,6 @@ p { color: var(--ink-soft); }
     if (!M) { requestAnimationFrame(frame); return; }
     if (Math.abs(scrollY - lastY) >= .5 || lastY < 0) {
       lastY = scrollY;
-      /* 滚动量是屏幕 px，位移算的是设计 px —— 除回缩放比，滚动速度才和手势 1:1 */
       const sc = Math.max(0, Math.min(scrollY - wrapTop, M.total * M.scale));
       const s = sc / M.scale;
       const { segU, segV, segL } = M;
@@ -1669,155 +1564,8 @@ p { color: var(--ink-soft); }
   requestAnimationFrame(frame);
 })();
 
-/* ============ 5. 倒推段调参面板（网址后加 ?tune=1 打开） ============ */
-(() => {
-  if (!/[?&]tune=1|#tune/.test(location.href)) return;
-  const KEY = 'grayrepair-rail-tune';
-  const DEF = { noteH:27, dnGap:22, upGap:40, upSize:25, gapV:20, gapU:93, gapL:131, amp:.3, maxW:440, headPad:56 };
-  const NAME = {
-    noteH:'批注组↔卡片（整体）', dnGap:'虚线↔下批注', upGap:'虚线↔上批注',
-    upSize:'批注字号（上下一致）',
-    gapV:'上下两带垂直间距', gapU:'上带卡片间距', gapL:'下带卡片间距',
-    amp:'居中放大幅度', maxW:'卡宽上限', headPad:'标题下留白',
-  };
-  const RANGE = { noteH:[8,120], dnGap:[10,70], upGap:[10,70], upSize:[13,28], gapV:[20,110], gapU:[40,180], gapL:[40,200], amp:[0,.3], maxW:[240,480], headPad:[8,120] };
-  let cur;
-  try { cur = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e) { cur = Object.assign({}, DEF); }
-
-  const box = document.createElement('div');
-  box.style.cssText = 'position:fixed;right:14px;bottom:14px;z-index:99999;background:#fff;border:2px solid #122133;border-radius:12px;'
-    + 'box-shadow:0 6px 0 rgba(18,33,51,.28);padding:12px 14px;width:308px;font:12px/1.6 system-ui,sans-serif;color:#122133;';
-  box.innerHTML = '<div style="font-weight:800;letter-spacing:.08em;margin-bottom:6px">倒推段调参 <span style="font-weight:400;color:#888">（改动即时生效并保存）</span></div>'
-    + '<div id="tuneRows"></div>'
-    + '<div style="display:flex;gap:8px;margin-top:8px">'
-    + '<button id="tuneReset" style="flex:1;padding:6px 0;border:2px solid #122133;background:#fff;border-radius:8px;font-weight:700;cursor:pointer">重置默认</button>'
-    + '<button id="tuneCopy" style="flex:1;padding:6px 0;border:2px solid #122133;background:#122133;color:#f1f7fb;border-radius:8px;font-weight:700;cursor:pointer">复制参数发我</button>'
-    + '</div><textarea id="tuneOut" readonly style="width:100%;box-sizing:border-box;margin-top:8px;height:52px;font:11px/1.4 ui-monospace,monospace;border:1px solid #ccd7e0;border-radius:6px;padding:5px"></textarea>';
-  document.body.appendChild(box);
-
-  const rows = box.querySelector('#tuneRows');
-  Object.keys(DEF).forEach(k => {
-    const [lo, hi] = RANGE[k], step = (hi - lo) > 4 ? 1 : .01;
-    const row = document.createElement('label');
-    row.style.cssText = 'display:grid;grid-template-columns:150px 1fr 44px;gap:6px;align-items:center;margin:3px 0';
-    row.innerHTML = `<span>${NAME[k]}</span><input type="range" min="${lo}" max="${hi}" step="${step}" value="${cur[k]}"><b style="text-align:right;font-variant-numeric:tabular-nums">${cur[k]}</b>`;
-    const input = row.querySelector('input'), val = row.querySelector('b');
-    input.addEventListener('input', () => {
-      cur[k] = +input.value; val.textContent = input.value;
-      localStorage.setItem(KEY, JSON.stringify(cur));
-      dispatchEvent(new Event('resize'));          // 横屏段监听 resize，会重新取参布局
-    });
-    rows.appendChild(row);
-  });
-
-  box.querySelector('#tuneReset').addEventListener('click', () => {
-    localStorage.removeItem(KEY); location.reload();
-  });
-  box.querySelector('#tuneCopy').addEventListener('click', async () => {
-    const txt = JSON.stringify(cur);
-    box.querySelector('#tuneOut').value = txt;
-    try { await navigator.clipboard.writeText(txt); } catch(e) {}
-  });
-})();
 </script>
 
 
-<style>
-/* ============ 字体挑选插件（?font=1） ============ */
-#fontPanel { position: fixed; left: 16px; bottom: 16px; z-index: 9999; width: 300px;
-  background: #fff; border: 2px solid var(--ink); border-radius: 12px;
-  box-shadow: 0 6px 0 var(--shadow); padding: 13px 14px; font-family: var(--sans); }
-#fontPanel h4 { font-size: 12.5px; letter-spacing: .06em; margin-bottom: 9px; color: var(--ink); }
-#fontPanel .frow { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
-#fontPanel .frow label { flex: 0 0 74px; font-size: 11.5px; color: var(--muted); }
-#fontPanel .frow select { flex: 1; font-size: 12px; padding: 4px 5px; border: 2px solid var(--ink); border-radius: 7px; background: #fff; }
-#fontPanel .fbtns { display: flex; gap: 8px; margin-top: 10px; }
-#fontPanel button { flex: 1; padding: 6px 0; border: 2px solid var(--ink); background: #fff; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; }
-#fontPanel #fontCopy { background: var(--ink); color: var(--card); }
-#fontHint { font-size: 11px; color: var(--red); margin-top: 8px; display: none; }
-</style>
-<script>
-/* ============ 6. 字体挑选插件（网址后加 ?font=1 打开） ============ */
-(() => {
-  if (!/[?#&]font=1/.test(location.href)) return;
-  const DEF = {
-    body: 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif',
-    head: '"Segoe UI", system-ui, -apple-system, Arial, sans-serif',
-    mono: '"JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace',
-    hand: '"Bradley Hand", "Segoe Print", "Ink Free", cursive',
-  };
-  const KEY = 'grayrepair-font-tune';
-  const OPTS = {
-    body: [['system-ui（默认）', DEF.body], ['Segoe UI', '"Segoe UI", system-ui, sans-serif'], ['Arial', 'Arial, "Helvetica Neue", sans-serif'],
-           ['Verdana', 'Verdana, Geneva, sans-serif'], ['Tahoma', 'Tahoma, Geneva, sans-serif'],
-           ['Calibri', 'Calibri, "Segoe UI", sans-serif'], ['Trebuchet MS', '"Trebuchet MS", "Segoe UI", sans-serif'],
-           ['system-ui', 'system-ui, sans-serif']],
-    head: [['Segoe UI（默认）', DEF.head], ['Trebuchet MS', '"Trebuchet MS", "Segoe UI", sans-serif'],
-           ['Verdana', 'Verdana, Geneva, sans-serif'], ['Tahoma', 'Tahoma, Geneva, sans-serif'],
-           ['Arial', 'Arial, "Helvetica Neue", sans-serif'], ['Calibri', 'Calibri, "Segoe UI", sans-serif']],
-    mono: [['默认 JetBrains/Cascadia（默认）', DEF.mono], ['Consolas', 'Consolas, monospace'],
-           ['Cascadia Code', '"Cascadia Code", Consolas, monospace'], ['Courier New', '"Courier New", monospace'],
-           ['Menlo', 'Menlo, Consolas, monospace']],
-    hand: [['Bradley Hand（默认）', DEF.hand], ['Segoe Print', '"Segoe Print", cursive'], ['Ink Free', '"Ink Free", "Segoe Print", cursive'],
-           ['Comic Sans MS', '"Comic Sans MS", "Segoe Print", cursive'], ['Bradley Hand', '"Bradley Hand", "Segoe Print", cursive'],
-           ['楷体（中文手写）', '"Kaiti SC", "KaiTi", "STKaiti", cursive']],
-  };
-  const NAMES = { body: '正文 Body', head: '标题 Headings', mono: '标签 Mono', hand: '手写 Hand' };
-
-  function load() {
-    try { return Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); }
-    catch (e) { return Object.assign({}, DEF); }
-  }
-  function apply(c) {
-    const st = document.documentElement.style;
-    st.setProperty('--sans', c.body);
-    st.setProperty('--head', c.head);
-    st.setProperty('--mono', c.mono);
-    st.setProperty('--hand', c.hand);
-  }
-  const cur = load();
-  apply(cur);
-
-  const box = document.createElement('div');
-  box.id = 'fontPanel';
-  box.innerHTML = '<h4>字体挑选 <span style="font-weight:400;color:#8a968d">（改完点「复制参数发我」）</span></h4>'
-    + ['body','head','mono','hand'].map(k =>
-        '<div class="frow"><label>' + NAMES[k] + '</label><select data-k="' + k + '">'
-        + OPTS[k].map(o => '<option value="' + o[1].replace(/"/g, '&quot;') + '">' + o[0] + '</option>').join('')
-        + '</select></div>').join('')
-    + '<div class="fbtns"><button id="fontReset">重置默认</button><button id="fontCopy">复制参数发我</button></div>'
-    + '<p id="fontHint">已复制，把 JSON 发给小帮即可固化为默认值</p>';
-  document.body.appendChild(box);
-
-  const sel = [...box.querySelectorAll('select')];
-  sel.forEach(sl => {
-    const k = sl.dataset.k;
-    const match = OPTS[k].find(o => o[1] === cur[k]);
-    if (match) sl.value = match[1];
-    sl.addEventListener('change', () => {
-      const c = load(); c[k] = sl.value;
-      apply(c);
-      try { localStorage.setItem(KEY, JSON.stringify(c)); } catch (e) {}
-    });
-  });
-  box.querySelector('#fontReset').addEventListener('click', () => {
-    localStorage.removeItem(KEY);
-    apply(DEF);
-    sel.forEach(sl => { sl.value = sl.options[0].value; });
-  });
-  box.querySelector('#fontCopy').addEventListener('click', () => {
-    const c = load();
-    const pick = {};
-    ['body','head','mono','hand'].forEach(k => {
-      const opts = OPTS[k];
-      const m = opts.find(o => o[1] === c[k]);
-      pick[k] = m ? m[0] : c[k];
-    });
-    navigator.clipboard.writeText(JSON.stringify(pick)).then(
-      () => { document.getElementById('fontHint').style.display = 'block'; },
-      () => { window.prompt('手动复制：', JSON.stringify(pick)); });
-  });
-})();
-</script>
 </body>
 </html>
