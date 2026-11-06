@@ -38,7 +38,11 @@ Held against that standard, the prototype itself was the next problem: as a synt
 
 ## 6. Why I chose this piece
 
-Three reasons. First, it shows that I can turn a body of knowledge into a system a player can learn by playing: the concepts are never explained as instructions, they are the tools, and the levels are arranged so that a complete beginner can pick them up without text. A short note after each clear names what the player has just discovered. Second, the level design reflects my way of thinking as a designer: all 13 levels were derived from one level, working backward and forward, and every design decision has a reason behind it. Level 2 opens with one wrong pixel already selected, so its teaching lives in the starting state rather than in text. Level 4 hides two yellow pixels instead of painting them a wrong color, because a visible wrong color would send players back to the mapping bar to guess again and again, while an invisible pixel points the problem toward the gray. Third, teaching through level design rather than text is the direction I want to keep working in, and this piece is the clearest example of it I have.
+**It turns a body of knowledge into a system a player can learn by playing.** The concepts are never explained as instructions, they are the tools, and the levels are arranged so that a complete beginner can pick them up without text. A short note after each clear names what the player has just discovered.
+
+**It reflects my way of thinking as a designer.** All 13 levels were derived from one level, working backward and forward, and every design decision has a reason behind it. Level 2 opens with one wrong pixel already selected, so its teaching lives in the starting state rather than in text. Level 4 hides two yellow pixels instead of painting them a wrong color, because a visible wrong color would send players back to the mapping bar to guess again and again, while an invisible pixel points the problem toward the gray.
+
+**It points at the direction I want to keep working in.** Teaching through level design rather than text is what I want to keep doing, and this piece is the clearest example of it I have.
 
 ## 7. Links
 
