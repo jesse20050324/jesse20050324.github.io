@@ -247,13 +247,9 @@ p { color: var(--ink-soft); }
 .asym-row.flip .asym-art { order: 1; }
 /* ============ 实机视频（首屏后）============ */
 .sec-video { margin-top: clamp(28px,4vh,56px); }
-.video-row {
-  display: grid;
-  grid-template-columns: minmax(0,1.22fr) minmax(0,.78fr);
-  gap: clamp(26px,3.6vw,58px);
-  align-items: center;
-}
+.video-row { display: flex; justify-content: center; }
 .video-frame {
+  width: min(940px, 100%);
   background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
   box-shadow: 0 7px 0 var(--shadow); padding: 9px;
 }
@@ -649,7 +645,6 @@ p { color: var(--ink-soft); }
 /* ========== 响应式 ========== */
 @media (max-width: 1180px) {
   .hero .b-grid { grid-template-columns: 1fr; gap: 40px; }
-  .video-row { grid-template-columns: 1fr; }
   .hero .b-stack { max-width: 620px; }
   .ops-rail { grid-template-columns: 1fr 1fr; }
   .ops-rail::before { display: none; }
