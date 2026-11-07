@@ -11,7 +11,7 @@ The Gray Workshop is a browser-based puzzle game about photo repair. The player 
 
 ## 2. My role
 
-The game is a solo project and I did all of the work myself. My work included the level design, the UI, the interaction rules, and playtesting. I ran several rounds of playtests with classmates and friends; the earliest one was with a friend of mine in particular, and later rounds reshaped levels 1, 2 and 5.
+The game is a solo project and I did all of the work myself. My work included the level design, the UI, the interaction rules, and playtesting. I ran several rounds of playtests with classmates and friends; the earliest one was with a friend of mine in particular, and later rounds reshaped levels 1 and 2.
 
 ## 3. Inspiration
 
@@ -30,7 +30,7 @@ The game is made for both kinds of people: those with no background in the subje
 3. Drag a threshold to change the gray range that maps to a color.
 4. Drag a color chip onto a stretch of the mapping bar to assign a color to that stretch.
 
-**Winning.** In levels 1–9 the left image is the answer, and the check is pixel-for-pixel equality between the two images. Level 9 is a variant derived from level 8: the answer is still on the left, but it cannot be reached by copying pixels one by one — removing the sun from a landscape only works by dragging a threshold so far that the sun's gray stretch disappears into the sky. From level 10 on, the left image is no longer an answer: it shows a damaged photo with a one-line prompt such as "A faded old photo.", and the goal is the player's to infer. The answer is not given up front; the restored image appears only after the check passes. A pass flashes green and moves the player to the next level; a fail flashes red and the player tries again. There is no timer and no penalty.
+**Winning.** In levels 1–9 the left image is the answer, and the check is pixel-for-pixel equality between the two images. From level 10 on, the left image is no longer an answer: it shows the photo that needs repairing, with a one-line prompt such as "A faded old photo.", and the goal is the player's to infer. The answer is not given up front; the restored image appears only after the check passes. A pass flashes green and moves the player to the next level; a fail flashes red and the player tries again. There is no timer and no penalty.
 
 ## 5. Level design
 
