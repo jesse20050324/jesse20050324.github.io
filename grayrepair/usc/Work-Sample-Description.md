@@ -38,13 +38,11 @@ The game grew out of a playtest. The first prototype was a single level, the one
 
 Held against that standard, the prototype itself was the next problem: as a synthesis level it presupposed every concept at once. So the direction reversed: working backward from level 8, each concept it requires became a level of its own, from a single pixel in level 1 to thresholds in levels 5 to 7. Working forward from it gave levels 9 to 13, where the same mechanics meet real repair jobs.
 
-Level 9 is the first turn: a variant of level 8 in which the answer is still on the left, but it can no longer be reached by copying pixels one by one — removing the sun from a landscape only works by dragging a threshold so far that the sun's gray stretch disappears into the sky. From level 10 on, the left image is no longer an answer: for jobs like restoring an ink-stained letter or retouching a faded portrait, the player sees only a one-line prompt.
-
 The derivation also shaped the difficulty curve: each level introduces at most one new move or concept, and builds only on what the previous levels taught. The design notes behind the levels are on the portfolio website, linked below.
 
 ## 6. Why I chose this piece
 
-**It turns a body of knowledge into a system a player can learn by playing.** The concepts are never explained as instructions, they are the tools, and the levels are arranged so that a complete beginner can pick them up without text. A short note after each clear names what the player has just discovered.
+**It shows that I can turn a body of knowledge into a system a player can learn by playing.** The concepts are never explained as instructions, they are the tools, and the levels are arranged so that a complete beginner can pick them up without text. A short note after each clear names what the player has just discovered.
 
 **It reflects my way of thinking as a designer.** All 13 levels were derived from one level, working backward and forward, and every design decision has a reason behind it. Level 2 opens with one wrong pixel already selected, so its teaching lives in the starting state rather than in text. Level 4 hides two yellow pixels instead of painting them a wrong color, because a visible wrong color would send players back to the mapping bar to guess again and again, while an invisible pixel points the problem toward the gray.
 
