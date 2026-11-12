@@ -65,8 +65,9 @@
 </div>
 
 <main class="stage">
-  <!-- 视频上线后，只需把下面 data-video-id 的空值换成 YouTube 的 11 位 ID；本页地址永远不变 -->
-  <div class="player" id="player" data-video-id="">
+  <!-- 正式用法：把 data-video-id 换成 YouTube 的 11 位 ID；data-video-src 留空。
+       data-video-src 仅供临时测试其它平台的嵌入播放器，测试完必须清空。 -->
+  <div class="player" id="player" data-video-id="" data-video-src="https://player.bilibili.com/player.html?bvid=BV14xWJ68E5x&amp;page=1&amp;high_quality=1&amp;danmaku=0">
     <div class="placeholder">
       <div class="rule"></div>
       <div class="big">Gameplay video coming soon</div>
@@ -85,15 +86,27 @@
 (function () {
   var box = document.getElementById('player');
   if (!box) return;
-  var id = (box.getAttribute('data-video-id') || '').trim();
-  if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+  var src = (box.getAttribute('data-video-src') || '').trim();
+  var id  = (box.getAttribute('data-video-id') || '').trim();
+  var url = '';
+
+  // 临时测试：任意 https 嵌入地址（如 B 站 player.html）；正式上线时留空
+  if (/^https:\/\//i.test(src)) url = src;
+  // 正式用法：YouTube 的 11 位视频 ID
+  else if (/^[A-Za-z0-9_-]{11}$/.test(id))
+    url = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&modestbranding=1';
+  if (!url) return; // 两项都为空 → 保持占位态
 
   var frame = document.createElement('iframe');
-  frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?rel=0&modestbranding=1';
+  frame.src = url;
   frame.title = 'He Said, She Said — Gameplay Video';
-  frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+  frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
   frame.setAttribute('allowfullscreen', '');
-  frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+  frame.setAttribute('scrolling', 'no');
+  frame.setAttribute('frameborder', '0');
+  // B 站等平台可能校验 referer，不额外限制；仅 YouTube 用更严格的策略
+  if (url.indexOf('youtube') !== -1)
+    frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
 
   var ph = box.querySelector('.placeholder');
   if (ph) ph.remove();
