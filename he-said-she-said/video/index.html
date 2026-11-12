@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>He Said, She Said — Gameplay Video</title>
+<meta name="description" content="Gameplay video for He Said, She Said, an AI chat-based narrative game.">
+<!-- 隐藏页：不进导航、不被搜索引擎收录；以后要公开时删掉这一行即可 -->
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --ink:#1c1c1a; --ink-2:#55554f; --ink-3:#8a8a82;
+    --paper:#fafaf7; --card:#ffffff; --line:#e4e4dd;
+    --accent:#2f5d8a; --stage:#101216;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.6; font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--ink-2); text-decoration:none; font-size:13.5px}
+  a:hover{color:var(--accent); text-decoration:underline}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+
+  .top{
+    max-width:1280px; margin:0 auto; padding:22px 28px 0;
+    display:flex; align-items:baseline; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  }
+  .kicker{font-size:12.5px; color:var(--ink-3); letter-spacing:.16em; text-transform:uppercase}
+  .title{font-size:17px; font-weight:600; letter-spacing:.01em}
+
+  .stage{max-width:1280px; margin:0 auto; padding:18px 28px 12px}
+  .player{
+    position:relative; width:100%; aspect-ratio:16/9;
+    background:var(--stage); border:1px solid #2a2e34; border-radius:12px;
+    overflow:hidden; box-shadow:0 10px 30px rgba(20,24,30,.13);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .player iframe{position:absolute; inset:0; width:100%; height:100%; border:0; display:block}
+  .placeholder{text-align:center; color:#e9edf2; padding:24px}
+  .placeholder .big{font-size:clamp(19px,2.6vw,30px); font-weight:600; letter-spacing:.01em}
+  .placeholder .small{margin-top:12px; font-size:clamp(12.5px,1.2vw,14.5px); color:#9ba4af; line-height:1.7}
+  .placeholder .rule{width:44px; height:2px; background:#4d5866; margin:0 auto 22px; border-radius:2px}
+  .player.is-live .placeholder{display:none}
+
+  .foot{
+    max-width:1280px; margin:0 auto; padding:4px 28px 36px;
+    display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .foot .hint{font-size:12.5px; color:var(--ink-3)}
+  @media (max-width:600px){
+    .top{padding:16px 16px 0}
+    .stage{padding:14px 16px 10px}
+    .foot{padding:2px 16px 28px}
+    .player{border-radius:9px}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="kicker">He Said, She Said &nbsp;·&nbsp; 2026</div>
+  <div class="title">Gameplay Video</div>
+</div>
+
+<main class="stage">
+  <!-- 视频上线后，只需把下面 data-video-id 的空值换成 YouTube 的 11 位 ID；本页地址永远不变 -->
+  <div class="player" id="player" data-video-id="">
+    <div class="placeholder">
+      <div class="rule"></div>
+      <div class="big">Gameplay video coming soon</div>
+      <div class="small">The video is being prepared.<br>This link stays the same when it is published.</div>
+    </div>
+    <noscript><div class="placeholder"><div class="big">Please enable JavaScript to play this video.</div></div></noscript>
+  </div>
+</main>
+
+<div class="foot">
+  <span class="hint">Haoxiang Tang (Jesse) · Game Design Portfolio</span>
+  <a href="/he-said-she-said/">← Back to project page</a>
+</div>
+
+<script>
+(function () {
+  var box = document.getElementById('player');
+  if (!box) return;
+  var id = (box.getAttribute('data-video-id') || '').trim();
+  if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+
+  var frame = document.createElement('iframe');
+  frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?rel=0&modestbranding=1';
+  frame.title = 'He Said, She Said — Gameplay Video';
+  frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+  frame.setAttribute('allowfullscreen', '');
+  frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+
+  var ph = box.querySelector('.placeholder');
+  if (ph) ph.remove();
+  var ns = box.querySelector('noscript');
+  if (ns) ns.remove();
+  box.classList.add('is-live');
+  box.appendChild(frame);
+})();
+</script>
+
+</body>
+</html>
