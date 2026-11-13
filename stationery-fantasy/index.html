@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stationery Fantasy — Game Design Portfolio</title>
 <meta name="description" content="Stationery Fantasy, a three-level side-scrolling shoot 'em up built in Unity. Game design portfolio of Haoxiang Tang (Jesse).">
+<script>
+  try {
+    const theme = localStorage.getItem("stationery-fantasy-theme");
+    if (["desk", "notebook", "sketch"].includes(theme)) document.documentElement.dataset.theme = theme;
+  } catch {}
+</script>
 <style>
   :root {
     --ink:#2d241a; --muted:#665542; --paper:#f1e2c9; --light:#fff7e6;
@@ -107,12 +113,69 @@
   @media (prefers-reduced-motion:reduce) {
     html { scroll-behavior:auto; }
   }
+  .nav-tools { display:flex; align-items:center; flex-wrap:wrap; gap:4px 20px; min-width:0; }
+  .theme-picker { display:flex; align-items:center; gap:6px; color:var(--muted); font-size:.8125rem; }
+  .theme-picker select {
+    min-height:32px; padding:3px 6px; border:1px solid #92795570; border-radius:4px;
+    background:var(--light); color:var(--ink); font:inherit;
+  }
+  [data-theme] .nav { background:var(--light); }
+  [data-theme] .continue { color:var(--accent); }
+  [data-theme] .tag, [data-theme] .btn { border-color:var(--line); }
+  [data-theme] .btn.primary { background:var(--button); color:var(--button-ink); border-color:var(--accent); }
+  [data-theme] .btn:hover { box-shadow:inset 0 0 0 1px currentColor; background:var(--light); color:var(--ink); }
+  [data-theme="desk"] {
+    --paper:#b67e4c; --light:#ffefd1; --ink:#382414; --muted:#674a31;
+    --accent:#733813; --line:#98673e; --button:#f5bd4e; --button-ink:#382414;
+  }
+  [data-theme="desk"] .edition {
+    background:repeating-linear-gradient(0deg,#9f57200e 0 1px,transparent 1px 6px),
+      linear-gradient(145deg,#ffefd1,#eab772);
+  }
+  [data-theme="desk"] .hero-art { background:#fff2d6; border:2px solid #87603c; }
+  [data-theme="desk"] .hero-art::before { background:#e9b540b8; width:23%; left:37%; }
+  [data-theme="desk"] footer { color:#2d1c10; }
+  [data-theme="notebook"] {
+    --paper:#dedccd; --light:#fcfaf0; --ink:#233845; --muted:#465964;
+    --accent:#2e5873; --line:#63819b; --button:#304f66; --button-ink:#fff;
+  }
+  [data-theme="notebook"] .edition {
+    background:repeating-linear-gradient(0deg,transparent 0 27px,#5c7f9c20 27px 28px),#fcfaf0;
+    box-shadow:1px 0 #70889e, -1px 0 #70889e;
+  }
+  [data-theme="notebook"] .hero::before {
+    content:""; position:absolute; inset:0 auto 0 clamp(9px, 2vw, 26px);
+    border-left:1px solid #b35d5266; pointer-events:none;
+  }
+  [data-theme="notebook"] .hero-art { background:#fffdf5; border-color:#6c879a; border-radius:2px; }
+  [data-theme="notebook"] .hero-art::before { background:#9bb1bcaa; transform:rotate(4deg); }
+  [data-theme="sketch"] {
+    --paper:#d6d1c5; --light:#f5f1e7; --ink:#302d28; --muted:#5b554a;
+    --accent:#694b25; --line:#817568; --button:#f5d765; --button-ink:#302d28;
+  }
+  [data-theme="sketch"] .edition {
+    background:radial-gradient(circle,#675a481c .65px,transparent .8px) 0 0 / 5px 5px,#f5f1e7;
+    box-shadow:1px 0 #817568, -1px 0 #817568;
+  }
+  [data-theme="sketch"] h1 { text-shadow:2px 2px #ddd1b6; }
+  [data-theme="sketch"] .hero-art {
+    border:2px solid #4e4940; border-radius:7px 3px 9px 4px;
+    box-shadow:5px 6px #746a5755; background:#faf6eb;
+  }
+  [data-theme="sketch"] .hero-art::before { background:#f5d765aa; }
+  @media (max-width:760px) {
+    .nav-inner { column-gap:10px; }
+    .nav-tools { display:contents; }
+    .theme-picker { order:1; }
+    .nav-links { width:100%; order:2; }
+  }
 </style>
 </head>
 <body>
 <nav class="nav" aria-label="Project contents">
   <div class="nav-inner">
     <a class="nav-logo" href="/">唐浩翔 Jesse</a>
+    <div class="nav-tools">
     <ul class="nav-links">
       <li><a href="#document">Document</a></li>
       <li><a href="#inspiration">Inspiration</a></li>
@@ -123,6 +186,15 @@
       <li><a href="#art">Art</a></li>
       <li><a href="#mindset">Mindset</a></li>
     </ul>
+    <div class="theme-picker"><label for="page-style">Style</label>
+      <select id="page-style">
+        <option value="original">Original</option>
+        <option value="desk">School Desk</option>
+        <option value="notebook">Notebook</option>
+        <option value="sketch">Pencil Sketch</option>
+      </select>
+    </label>
+    </div>
   </div>
 </nav>
 
@@ -208,6 +280,17 @@
 </footer>
 
 <script>
+  const stylePicker = document.querySelector("#page-style");
+  stylePicker.value = document.documentElement.dataset.theme || "original";
+  stylePicker.addEventListener("change", () => {
+    const theme = stylePicker.value;
+    if (theme === "original") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = theme;
+    try {
+      localStorage.setItem("stationery-fantasy-theme", theme);
+    } catch {}
+  });
+
   const navigation = document.querySelector(".nav");
   const links = [...document.querySelectorAll(".nav-links a")];
   const sections = links.map(link => document.querySelector(link.hash));
