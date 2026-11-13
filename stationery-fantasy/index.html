@@ -174,6 +174,13 @@
     .theme-picker { order:1; }
     .nav-links { width:100%; order:2; }
   }
+  .plane-stage { position:relative; border-radius:4px; overflow:hidden; background:var(--light); }
+  .plane-stage model-viewer {
+    position:absolute; inset:0; width:100%; height:100%; opacity:0;
+    background:radial-gradient(ellipse at 50% 42%, #fffaf0, #e5cfa6);
+  }
+  .plane-stage model-viewer::part(default-progress-bar) { display:none; }
+  .plane-stage[data-ready] model-viewer { opacity:1; }
 </style>
 </head>
 <body>
@@ -221,7 +228,9 @@
       </div>
     </div>
     <figure class="hero-art">
-      <img class="gameplay" fetchpriority="high" src="gameplay.webp" width="828" height="360" alt="The stationery plane flies over a wooden school desk.">
+      <div class="plane-stage">
+        <img class="gameplay" fetchpriority="high" src="gameplay.webp" width="828" height="360" alt="The stationery plane flies over a wooden school desk.">
+      </div>
       <figcaption>In-game view</figcaption>
     </figure>
   </div>
@@ -326,6 +335,57 @@
   measureNavigation();
   new ResizeObserver(measureNavigation).observe(navigation);
   window.addEventListener("scroll", markSection, { passive: true });
+</script>
+<script type="module">
+  const stage = document.querySelector(".plane-stage");
+  const caption = stage.closest("figure").querySelector("figcaption");
+
+  async function showPlane() {
+    try {
+      await import("./model-viewer-4.1.0.min.js");
+    } catch {
+      return;
+    }
+    const viewer = document.createElement("model-viewer");
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    const updateRotation = () => viewer.toggleAttribute("auto-rotate", !motion.matches);
+    viewer.setAttribute("alt", "The assembled stationery airplane with a pen, a ruler, and two erasers");
+    viewer.setAttribute("camera-controls", "");
+    viewer.setAttribute("touch-action", "pan-y");
+    viewer.setAttribute("disable-zoom", "");
+    viewer.setAttribute("interaction-prompt", "none");
+    viewer.setAttribute("camera-orbit", "32deg 52deg auto");
+    viewer.setAttribute("field-of-view", "24deg");
+    viewer.setAttribute("auto-rotate-delay", "1000");
+    viewer.setAttribute("rotation-per-second", "14deg");
+    viewer.setAttribute("shadow-intensity", "0.85");
+    viewer.setAttribute("reveal", "auto");
+    viewer.inert = true;
+    viewer.addEventListener("load", () => {
+      stage.dataset.ready = "";
+      viewer.inert = false;
+      stage.querySelector("img").setAttribute("aria-hidden", "true");
+      caption.textContent = "Stationery plane · Drag to rotate";
+      updateRotation();
+      motion.addEventListener("change", updateRotation);
+    }, { once:true });
+    viewer.src = "./stationery-plane.glb";
+    stage.append(viewer);
+  }
+
+  const poster = stage.querySelector("img");
+  poster.decode().catch(() => {}).then(() => {
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        showPlane();
+      });
+      observer.observe(stage);
+    } else {
+      showPlane();
+    }
+  });
 </script>
 </body>
 </html>
