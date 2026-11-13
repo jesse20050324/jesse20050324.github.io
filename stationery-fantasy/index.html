@@ -157,14 +157,15 @@
     .theme-picker { order:1; }
     .nav-links { width:100%; order:2; }
   }
-  .plane-stage { position:relative; aspect-ratio:16 / 9; display:grid; align-items:center; border-radius:4px; overflow:hidden; background:var(--light); }
+  .plane-stage { position:relative; aspect-ratio:4 / 3; display:grid; align-items:center; border-radius:4px; overflow:hidden; background:var(--light); }
   .plane-stage model-viewer {
     position:absolute; inset:0; width:100%; height:100%; opacity:0;
     background:transparent;
   }
   .plane-stage model-viewer::part(default-progress-bar) { display:none; }
   .plane-stage[data-ready], .plane-stage[data-ready] model-viewer { background:transparent; }
-  .plane-stage[data-ready] model-viewer { opacity:1; }
+  .plane-stage[data-ready] model-viewer { opacity:1; touch-action:none; cursor:grab; }
+  .plane-stage model-viewer[data-dragging] { cursor:grabbing; }
   .plane-stage[data-ready] .gameplay { visibility:hidden; }
   .hero-art figcaption { text-align:center; }
 </style>
@@ -326,6 +327,99 @@
   const stage = document.querySelector(".plane-stage");
   const caption = stage.closest("figure").querySelector("figcaption");
 
+  function multiply([x,y,z,w], [a,b,c,d]) {
+    return [
+      w*a+x*d+y*c-z*b,
+      w*b-x*c+y*d+z*a,
+      w*c+x*b-y*a+z*d,
+      w*d-x*a-y*b-z*c,
+    ];
+  }
+
+  function axisRotation([x,y,z], angle) {
+    const sine = Math.sin(angle / 2);
+    return [x*sine, y*sine, z*sine, Math.cos(angle / 2)];
+  }
+
+  function enableScreenRotation(viewer, motion) {
+    const { theta, phi } = viewer.getCameraOrbit();
+    const right = [Math.cos(theta), 0, -Math.sin(theta)];
+    const up = [-Math.cos(phi)*Math.sin(theta), Math.sin(phi), -Math.cos(phi)*Math.cos(theta)];
+    let rotation = [0,0,0,1];
+    let drag;
+    let lastInteraction = performance.now();
+    let frame = 0;
+
+    function turn(horizontal, vertical) {
+      rotation = multiply(axisRotation(up, horizontal), multiply(axisRotation(right, vertical), rotation));
+      const length = Math.hypot(...rotation);
+      rotation = rotation.map(value => value / length);
+      const [x,y,z,w] = rotation;
+      // model-viewer expects angles in Z, X, Y order for its YXZ Euler rotation.
+      const m23 = 2*(y*z-x*w);
+      const pitch = Math.asin(Math.max(-1, Math.min(1, -m23)));
+      const regular = Math.abs(m23) < 0.9999999;
+      const yaw = regular ? Math.atan2(2*(x*z+y*w), 1-2*(x*x+y*y))
+                          : Math.atan2(-2*(x*z-y*w), 1-2*(y*y+z*z));
+      const roll = regular ? Math.atan2(2*(x*y+z*w), 1-2*(x*x+z*z)) : 0;
+      viewer.orientation = [roll,pitch,yaw].map(angle => angle + "rad").join(" ");
+    }
+
+    viewer.addEventListener("pointerdown", event => {
+      if (!event.isPrimary || event.button !== 0) return;
+      drag = { id:event.pointerId, x:event.clientX, y:event.clientY };
+      viewer.setPointerCapture(event.pointerId);
+      viewer.focus({ preventScroll:true });
+      viewer.dataset.dragging = "";
+    });
+    viewer.addEventListener("pointermove", event => {
+      if (drag?.id !== event.pointerId) return;
+      const radiansPerPixel = Math.PI * 0.5 / viewer.clientHeight;
+      turn((event.clientX-drag.x)*radiansPerPixel, (event.clientY-drag.y)*radiansPerPixel);
+      drag.x = event.clientX;
+      drag.y = event.clientY;
+    });
+    viewer.addEventListener("lostpointercapture", () => {
+      drag = undefined;
+      delete viewer.dataset.dragging;
+      lastInteraction = performance.now();
+    });
+
+    const keyTurns = { ArrowLeft:[-1,0], ArrowRight:[1,0], ArrowUp:[0,-1], ArrowDown:[0,1] };
+    viewer.addEventListener("keydown", event => {
+      if (!Object.hasOwn(keyTurns, event.key)) return;
+      event.preventDefault();
+      const [x,y] = keyTurns[event.key];
+      turn(x*Math.PI/36, y*Math.PI/36);
+      lastInteraction = performance.now();
+    });
+
+    let lastFrame = performance.now();
+    const animate = now => {
+      const delta = Math.min(now-lastFrame, 40);
+      lastFrame = now;
+      if (!drag && now-lastInteraction > 1000) turn(delta*14*Math.PI/180000, 0);
+      frame = requestAnimationFrame(animate);
+    };
+    const updateMotion = () => {
+      cancelAnimationFrame(frame);
+      if (motion.matches || document.hidden || !visible) return;
+      lastFrame = performance.now();
+      frame = requestAnimationFrame(animate);
+    };
+    let visible = true;
+    motion.addEventListener("change", updateMotion);
+    document.addEventListener("visibilitychange", updateMotion);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        updateMotion();
+      }).observe(viewer);
+    } else {
+      updateMotion();
+    }
+  }
+
   async function showPlane() {
     try {
       await import("./model-viewer-4.1.0.min.js");
@@ -334,20 +428,12 @@
     }
     const viewer = document.createElement("model-viewer");
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
-    const updateRotation = () => viewer.toggleAttribute("auto-rotate", !motion.matches);
     viewer.setAttribute("alt", "The assembled stationery airplane with a pen, a ruler, and two erasers");
-    viewer.setAttribute("camera-controls", "");
-    viewer.setAttribute("touch-action", "pan-y");
-    viewer.setAttribute("disable-zoom", "");
-    viewer.setAttribute("disable-pan", "");
-    viewer.setAttribute("disable-tap", "");
-    viewer.setAttribute("orbit-sensitivity", "0.5");
     viewer.setAttribute("exposure", "0.82");
-    viewer.setAttribute("interaction-prompt", "none");
     viewer.setAttribute("camera-orbit", "32deg 52deg 78%");
+    viewer.setAttribute("camera-target", "0m 0m 0m");
+    viewer.tabIndex = 0;
     viewer.setAttribute("field-of-view", "24deg");
-    viewer.setAttribute("auto-rotate-delay", "1000");
-    viewer.setAttribute("rotation-per-second", "14deg");
     viewer.setAttribute("shadow-intensity", "0.85");
     viewer.setAttribute("reveal", "auto");
     viewer.inert = true;
@@ -356,8 +442,7 @@
       viewer.inert = false;
       stage.querySelector("img").setAttribute("aria-hidden", "true");
       caption.textContent = "Stationery plane · Drag to rotate";
-      updateRotation();
-      motion.addEventListener("change", updateRotation);
+      enableScreenRotation(viewer, motion);
     }, { once:true });
     viewer.src = "./stationery-plane.glb?v=soft-light";
     stage.append(viewer);
