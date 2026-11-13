@@ -39,24 +39,39 @@
   .btn:hover{text-decoration:none; background:var(--ink); color:#fff}
   .btn.primary{background:var(--ink); color:#fff}
   .btn.primary:hover{background:#000}
-  main{padding:64px 0 88px}
-  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:22px}
-  .sec-head .no{font-family:ui-monospace,Consolas,monospace; font-size:13px; color:var(--ink-3)}
-  h2{font-size:22px; font-weight:600}
-  .note{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px 26px; color:var(--ink-2); font-size:15px}
-  .note p+p{margin-top:12px}
   footer{border-top:1px solid var(--line); padding:26px 0; color:var(--ink-3); font-size:13.5px}
   footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px}
-  @media (max-width:600px){ .hero{padding:60px 0 44px} main{padding:48px 0 64px} }
+  @media (max-width:600px){ .hero{padding:60px 0 44px} }
+
+  .nav{position:sticky; top:0; z-index:10; backdrop-filter:blur(12px); background:rgba(250,250,247,.97)}
+  .nav-inner{max-width:1280px; gap:10px 24px}
+  .nav-links{gap:6px 18px; flex-wrap:wrap}
+  .nav-links a{display:block; padding:4px 0; white-space:nowrap}
+  .nav-links a[aria-current="location"]{color:var(--accent); text-decoration:underline; text-underline-offset:4px}
+  html{scroll-padding-top:var(--nav-height, 120px)}
+  main.document{padding:0; width:min(100%,1440px); margin:0 auto}
+  .document img{display:block; width:100%; height:auto; background:var(--line)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+  @media (max-width:760px){
+    .nav-inner{padding:10px 16px; gap:4px; display:block}
+    .nav-links{column-gap:12px; row-gap:0; font-size:13px}
+    .nav-links a{padding:5px 0}
+  }
 </style>
 </head>
 <body>
-<nav class="nav" aria-label="Main navigation">
+<nav class="nav" aria-label="Project contents">
   <div class="nav-inner">
     <a class="nav-logo" href="/">唐浩翔 Jesse</a>
     <ul class="nav-links">
-      <li><a href="/">作品</a></li>
-      <li><a href="/">关于</a></li>
+      <li><a href="#document">Document</a></li>
+      <li><a href="#inspiration">Inspiration</a></li>
+      <li><a href="#mechanics">Mechanics</a></li>
+      <li><a href="#enemies">Enemies</a></li>
+      <li><a href="#development">Development</a></li>
+      <li><a href="#retrospective">Implementation</a></li>
+      <li><a href="#art">Art</a></li>
+      <li><a href="#mindset">Mindset</a></li>
     </ul>
   </div>
 </nav>
@@ -78,14 +93,52 @@
   </div>
 </header>
 
-<main>
-  <div class="wrap">
-    <div class="sec-head"><span class="no">01</span><h2>Design document</h2></div>
-    <div class="note">
-      <p>The full design document for this project is being prepared and will be published on this page.</p>
-      <p>In the meantime, the gameplay video above shows the three levels and the core combat mechanics.</p>
-    </div>
-  </div>
+<main class="document" aria-label="Stationery Fantasy design document">
+  <section id="document" aria-labelledby="document-title">
+    <h2 id="document-title" class="sr-only">Cover and Overview</h2>
+    <img src="design-document/page-01.webp" width="1920" height="1080" loading="eager" decoding="async" alt="Page 1. Stationery Fantasy cover artwork.">
+    <img src="design-document/page-02.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 2. Game introduction and overview.">
+  </section>
+  <section id="inspiration" aria-labelledby="inspiration-title">
+    <h2 id="inspiration-title" class="sr-only">Inspiration</h2>
+    <img src="design-document/page-03.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 3. The experience of being ranked by test scores and the childhood inspiration for the stationery plane.">
+  </section>
+  <section id="mechanics" aria-labelledby="mechanics-title">
+    <h2 id="mechanics-title" class="sr-only">Mechanics and Narrative Design</h2>
+    <img src="design-document/page-04.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 4. Three levels connect test mistakes, internalized pressure, and outside expectations.">
+    <img src="design-document/page-05.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 5. Plane assembly in the first two levels: the ruler, pen, and eraser.">
+    <img src="design-document/page-06.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 6. Level three introduces colored pens, the rainbow wave, and symbols of personal interests.">
+    <img src="design-document/page-07.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 7. How the plane assembly animation recreates the feeling of putting stationery together.">
+  </section>
+  <section id="enemies" aria-labelledby="enemies-title">
+    <h2 id="enemies-title" class="sr-only">Enemy and Boss Design</h2>
+    <img src="design-document/page-08.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 8. The basic cross mark and its transformation into a checkmark.">
+    <img src="design-document/page-09.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 9. The misspelled character enemy and its ink-droplet attack.">
+    <img src="design-document/page-10.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 10. The anxiety tangle and the eraser’s wide attack.">
+    <img src="design-document/page-11.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 11. Roaring comments become affirmations when transformed.">
+    <img src="design-document/page-12.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 12. The eye boss and the final battle’s transformation mechanic.">
+  </section>
+  <section id="development" aria-labelledby="development-title">
+    <h2 id="development-title" class="sr-only">Challenges and Growth in Development</h2>
+    <img src="design-document/page-13.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 13. Introduction to the development challenges and lessons.">
+    <img src="design-document/page-14.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 14. Design shifts, including the decision to transform enemies instead of defeating them.">
+    <img src="design-document/page-15.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 15. Lessons on starting with a workable core and making design trade-offs.">
+  </section>
+  <section id="retrospective" aria-labelledby="retrospective-title">
+    <h2 id="retrospective-title" class="sr-only">Implementation and Retrospective</h2>
+    <img src="design-document/page-16.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 16. The development difficulties behind the plane assembly system.">
+    <img src="design-document/page-17.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 17. The development workflow built to solve those problems.">
+  </section>
+  <section id="art" aria-labelledby="art-title">
+    <h2 id="art-title" class="sr-only">Art and Asset Production</h2>
+    <img src="design-document/page-18.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 18. The 3D scrolling background and its progression through school supplies.">
+    <img src="design-document/page-19.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 19. AI-generated image assets based on in-game model references.">
+    <img src="design-document/page-20.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 20. Storyboard-based image generation and refinement.">
+  </section>
+  <section id="mindset" aria-labelledby="mindset-title">
+    <h2 id="mindset-title" class="sr-only">Mindset When Facing Design</h2>
+    <img src="design-document/page-21.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 21. A closing reflection on uncertainty and working through design problems.">
+  </section>
 </main>
 
 <footer>
@@ -94,5 +147,37 @@
     <span>GitHub Pages</span>
   </div>
 </footer>
+
+<script>
+  const navigation = document.querySelector(".nav");
+  const links = [...document.querySelectorAll(".nav-links a")];
+  const sections = links.map(link => document.querySelector(link.hash));
+  let navigationHeight = 0;
+
+  function markSection() {
+    const edge = navigationHeight + 20;
+    let active = -1;
+    sections.forEach((section, index) => {
+      if (section.getBoundingClientRect().top <= edge) active = index;
+    });
+    if (active >= 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+      active = sections.length - 1;
+    }
+    links.forEach((link, index) => {
+      if (index === active) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  }
+
+  function measureNavigation() {
+    navigationHeight = navigation.offsetHeight;
+    document.documentElement.style.setProperty("--nav-height", navigationHeight + "px");
+    markSection();
+  }
+
+  measureNavigation();
+  new ResizeObserver(measureNavigation).observe(navigation);
+  window.addEventListener("scroll", markSection, { passive: true });
+</script>
 </body>
 </html>
