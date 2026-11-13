@@ -8,7 +8,7 @@
 <script>
   try {
     const theme = localStorage.getItem("stationery-fantasy-theme");
-    if (["desk", "notebook", "sketch", "oat", "sage", "rose"].includes(theme)) document.documentElement.dataset.theme = theme;
+    if (["desk", "notebook", "sketch", "oat", "warm-notebook"].includes(theme)) document.documentElement.dataset.theme = theme;
   } catch {}
 </script>
 <style>
@@ -135,10 +135,10 @@
     --accent:#2e5873; --line:#63819b; --button:#304f66; --button-ink:#fff;
   }
   [data-theme="notebook"] .edition {
-    background:repeating-linear-gradient(0deg,transparent 0 27px,#5c7f9c20 27px 28px),#fcfaf0;
+    background:repeating-linear-gradient(0deg,transparent 0 calc(var(--rule-step, 28px) - var(--rule-width, 1px)),#5c7f9c20 0 var(--rule-step, 28px)),#fcfaf0;
     --edge:#70889e88; --side-shadow:#2338453d;
   }
-  [data-theme="notebook"] .hero::before {
+  :is([data-theme="notebook"], [data-theme="warm-notebook"]) .hero::before {
     content:""; position:absolute; inset:0 auto 0 clamp(9px, 2vw, 26px);
     border-left:1px solid #b35d5266; pointer-events:none;
   }
@@ -174,19 +174,14 @@
     --accent:#803c32; --line:#94734f; --button:#eac58b; --button-ink:#35291f;
     --title-paper:#f7e8d0; --title-glow:#fff9ee;
   }
-  [data-theme="sage"] {
-    --paper:#c8d1bd; --light:#f2f5ec; --ink:#26352c; --muted:#4e5c50;
-    --accent:#415c46; --line:#788c73; --button:#4e6953; --button-ink:#fff;
-    --title-paper:#e4ecdd; --title-glow:#fafbf3;
-  }
-  [data-theme="rose"] {
-    --paper:#ddc2bd; --light:#fbefeb; --ink:#3a292c; --muted:#685052;
-    --accent:#86494c; --line:#a57a76; --button:#88494d; --button-ink:#fff;
-    --title-paper:#f1ddda; --title-glow:#fff7f3;
-  }
-  :is([data-theme="oat"], [data-theme="sage"], [data-theme="rose"]) .edition {
+  [data-theme="oat"] .edition {
     background:linear-gradient(145deg,var(--title-glow),var(--title-paper));
     --edge:var(--line);
+  }
+  [data-theme="warm-notebook"] .edition {
+    background:
+      repeating-linear-gradient(0deg, transparent 0 calc(var(--rule-step, 28px) - var(--rule-width, 1px)), #98724729 0 var(--rule-step, 28px)),
+      linear-gradient(145deg, #fff9eb 0%, #f8edda 53%, #edd4aa 100%);
   }
 </style>
 </head>
@@ -212,8 +207,7 @@
         <option value="notebook">Notebook</option>
         <option value="sketch">Pencil Sketch</option>
         <option value="oat">Oat Paper</option>
-        <option value="sage">Sage Paper</option>
-        <option value="rose">Rose Paper</option>
+        <option value="warm-notebook">Warm Notebook</option>
       </select>
     </label>
     </div>
@@ -342,6 +336,15 @@
     markSection();
   }
 
+  function syncNotebookRules() {
+    const resolution = window.devicePixelRatio || 1;
+    document.documentElement.style.setProperty("--rule-step", 28 / resolution + "px");
+    document.documentElement.style.setProperty("--rule-width", 1 / resolution + "px");
+    matchMedia("(resolution: " + resolution + "dppx)")
+      .addEventListener("change", syncNotebookRules, { once:true });
+  }
+
+  syncNotebookRules();
   measureNavigation();
   new ResizeObserver(measureNavigation).observe(navigation);
   window.addEventListener("scroll", markSection, { passive: true });
@@ -364,14 +367,12 @@
     return [x*sine, y*sine, z*sine, Math.cos(angle / 2)];
   }
 
-  function enableScreenRotation(viewer, motion) {
+  function enableScreenRotation(viewer) {
     const { theta, phi } = viewer.getCameraOrbit();
     const right = [Math.cos(theta), 0, -Math.sin(theta)];
     const up = [-Math.cos(phi)*Math.sin(theta), Math.sin(phi), -Math.cos(phi)*Math.cos(theta)];
     let rotation = [0,0,0,1];
     let drag;
-    let lastInteraction = performance.now();
-    let frame = 0;
 
     function turn(horizontal, vertical) {
       rotation = multiply(axisRotation(up, horizontal), multiply(axisRotation(right, vertical), rotation));
@@ -405,7 +406,6 @@
     viewer.addEventListener("lostpointercapture", () => {
       drag = undefined;
       delete viewer.dataset.dragging;
-      lastInteraction = performance.now();
     });
 
     const keyTurns = { ArrowLeft:[-1,0], ArrowRight:[1,0], ArrowUp:[0,-1], ArrowDown:[0,1] };
@@ -414,33 +414,8 @@
       event.preventDefault();
       const [x,y] = keyTurns[event.key];
       turn(x*Math.PI/36, y*Math.PI/36);
-      lastInteraction = performance.now();
     });
 
-    let lastFrame = performance.now();
-    const animate = now => {
-      const delta = Math.min(now-lastFrame, 40);
-      lastFrame = now;
-      if (!drag && now-lastInteraction > 1000) turn(delta*14*Math.PI/180000, 0);
-      frame = requestAnimationFrame(animate);
-    };
-    const updateMotion = () => {
-      cancelAnimationFrame(frame);
-      if (motion.matches || document.hidden || !visible) return;
-      lastFrame = performance.now();
-      frame = requestAnimationFrame(animate);
-    };
-    let visible = true;
-    motion.addEventListener("change", updateMotion);
-    document.addEventListener("visibilitychange", updateMotion);
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(([entry]) => {
-        visible = entry.isIntersecting;
-        updateMotion();
-      }).observe(viewer);
-    } else {
-      updateMotion();
-    }
   }
 
   async function showPlane() {
@@ -450,10 +425,9 @@
       return;
     }
     const viewer = document.createElement("model-viewer");
-    const motion = matchMedia("(prefers-reduced-motion: reduce)");
     viewer.setAttribute("alt", "The assembled stationery airplane with a pen, a ruler, and two erasers");
     viewer.setAttribute("exposure", "0.82");
-    viewer.setAttribute("camera-orbit", "32deg 52deg 78%");
+    viewer.setAttribute("camera-orbit", "-32deg 48deg 78%");
     viewer.setAttribute("camera-target", "0m 0m 0m");
     viewer.tabIndex = 0;
     viewer.setAttribute("field-of-view", "24deg");
@@ -465,7 +439,7 @@
       viewer.inert = false;
       stage.querySelector("img").setAttribute("aria-hidden", "true");
       caption.textContent = "Stationery plane · Drag to rotate";
-      enableScreenRotation(viewer, motion);
+      enableScreenRotation(viewer);
     }, { once:true });
     viewer.src = "./stationery-plane.glb?v=soft-light";
     stage.append(viewer);
