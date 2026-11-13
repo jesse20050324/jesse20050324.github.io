@@ -339,6 +339,10 @@
     viewer.setAttribute("camera-controls", "");
     viewer.setAttribute("touch-action", "pan-y");
     viewer.setAttribute("disable-zoom", "");
+    viewer.setAttribute("disable-pan", "");
+    viewer.setAttribute("disable-tap", "");
+    viewer.setAttribute("orbit-sensitivity", "0.5");
+    viewer.setAttribute("exposure", "0.82");
     viewer.setAttribute("interaction-prompt", "none");
     viewer.setAttribute("camera-orbit", "32deg 52deg 78%");
     viewer.setAttribute("field-of-view", "24deg");
@@ -355,7 +359,7 @@
       updateRotation();
       motion.addEventListener("change", updateRotation);
     }, { once:true });
-    viewer.src = "./stationery-plane.glb?v=matte";
+    viewer.src = "./stationery-plane.glb?v=soft-light";
     stage.append(viewer);
   }
 
