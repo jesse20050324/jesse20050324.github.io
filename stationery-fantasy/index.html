@@ -59,12 +59,10 @@
     display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.05fr);
     gap:clamp(28px, 5vw, 82px); align-items:center; min-width:0;
   }
-  .kicker { margin:0 0 16px; color:var(--muted); font-size:.8125rem; letter-spacing:.12em; }
   h1 {
     margin:0; font-family:Georgia, "Times New Roman", serif; font-weight:700;
     font-size:clamp(2.25rem, 5vw, 5.25rem); line-height:.98; letter-spacing:-.045em;
   }
-  .zh { display:block; margin-top:16px; color:var(--accent); font:600 1.125rem/1.3 system-ui,sans-serif; letter-spacing:.12em; }
   .lead { margin:22px 0 0; max-width:32ch; color:var(--muted); font-size:clamp(1rem, 1.4vw, 1.25rem); }
   .meta, .cta { display:flex; gap:8px 12px; flex-wrap:wrap; }
   .meta { margin-top:20px; }
@@ -135,7 +133,7 @@
     --accent:#2e5873; --line:#63819b; --button:#304f66; --button-ink:#fff;
   }
   [data-theme="notebook"] .edition {
-    background:repeating-linear-gradient(0deg,transparent 0 calc(var(--rule-step, 28px) - var(--rule-width, 1px)),#5c7f9c20 0 var(--rule-step, 28px)),#fcfaf0;
+    background:#fcfaf0;
     --edge:#70889e88; --side-shadow:#2338453d;
   }
   :is([data-theme="notebook"], [data-theme="warm-notebook"]) .hero::before {
@@ -179,9 +177,36 @@
     --edge:var(--line);
   }
   [data-theme="warm-notebook"] .edition {
-    background:
-      repeating-linear-gradient(0deg, transparent 0 calc(var(--rule-step, 28px) - var(--rule-width, 1px)), #98724729 0 var(--rule-step, 28px)),
-      linear-gradient(145deg, #fff9eb 0%, #f8edda 53%, #edd4aa 100%);
+    background:linear-gradient(145deg, #fff9eb 0%, #f8edda 53%, #edd4aa 100%);
+  }
+  .hero-grid { grid-template-columns:minmax(0, 1.15fr) minmax(0, 1fr); gap:clamp(22px, 4vw, 64px); }
+  .hero-copy {
+    padding:clamp(18px, 2.6vw, 38px);
+    border:1px solid var(--edge); border-radius:12px;
+    background:color-mix(in srgb, var(--light) 89%, var(--paper));
+  }
+  .hero-copy h1 { line-height:1; }
+  .title-art { max-width:none; }
+  .lead { margin:12px 0 0; max-width:none; }
+  .meta { margin-top:12px; }
+  .tag { border-style:solid; border-color:var(--edge); border-radius:4px; }
+  .cta {
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px; padding-top:16px; margin-top:18px; border-top:1px solid var(--edge);
+  }
+  .cta .btn {
+    display:flex; gap:.3em; align-items:center; justify-content:center; text-align:center;
+    min-height:46px; padding:8px 6px; font-size:clamp(.78rem, 1.15vw, .94rem);
+  }
+  [data-theme="notebook"] .hero { --rule-ink:#5c7f9c26; }
+  [data-theme="warm-notebook"] .hero { --rule-ink:#98724730; }
+  :is([data-theme="notebook"], [data-theme="warm-notebook"]) .hero {
+    background-image:linear-gradient(to top, var(--rule-ink) 1px, transparent 1px);
+    background-size:100% calc(100% / 28);
+  }
+  @media (max-width:700px) {
+    .hero-grid { grid-template-columns:minmax(0,1fr); }
+    .hero-art { width:100%; justify-self:center; }
   }
 </style>
 </head>
@@ -218,8 +243,7 @@
 <header class="hero">
   <div class="hero-grid">
     <div class="hero-copy">
-      <p class="kicker">GAME DESIGN PORTFOLIO · 2026</p>
-      <h1><img class="title-art" src="hand-drawn-title.webp" width="1400" height="746" alt="Stationery Fantasy" fetchpriority="high"><span class="zh">文具幻想</span></h1>
+      <h1><img class="title-art" src="hand-drawn-title.webp" width="1400" height="746" alt="Stationery Fantasy" fetchpriority="high"></h1>
       <p class="lead">A three-level side-scrolling shoot 'em up built in Unity.</p>
       <div class="meta">
         <span class="tag">2026</span>
@@ -336,15 +360,6 @@
     markSection();
   }
 
-  function syncNotebookRules() {
-    const resolution = window.devicePixelRatio || 1;
-    document.documentElement.style.setProperty("--rule-step", 28 / resolution + "px");
-    document.documentElement.style.setProperty("--rule-width", 1 / resolution + "px");
-    matchMedia("(resolution: " + resolution + "dppx)")
-      .addEventListener("change", syncNotebookRules, { once:true });
-  }
-
-  syncNotebookRules();
   measureNavigation();
   new ResizeObserver(measureNavigation).observe(navigation);
   window.addEventListener("scroll", markSection, { passive: true });
