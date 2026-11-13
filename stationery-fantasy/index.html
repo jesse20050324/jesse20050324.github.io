@@ -6,56 +6,106 @@
 <title>Stationery Fantasy — Game Design Portfolio</title>
 <meta name="description" content="Stationery Fantasy, a three-level side-scrolling shoot 'em up built in Unity. Game design portfolio of Haoxiang Tang (Jesse).">
 <style>
-  :root{
-    --ink:#1c1c1a; --ink-2:#55554f; --ink-3:#8a8a82;
-    --paper:#fafaf7; --card:#ffffff; --line:#e4e4dd;
-    --accent:#2f5d8a; --accent-soft:#e8eff6; --max:820px;
+  :root {
+    --ink:#2d241a; --muted:#665542; --paper:#f1e2c9; --light:#fff7e6;
+    --line:#927955; --accent:#7b4220; --nav-height:72px;
+    --column:min(calc(100% - clamp(32px, 8vw, 128px)), 1440px);
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--paper); color:var(--ink); line-height:1.7; font-size:16px;
-    -webkit-font-smoothing:antialiased;
+  * { box-sizing:border-box; }
+  html { scroll-padding-top:var(--nav-height); scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font:1rem/1.55 system-ui, "Microsoft YaHei", sans-serif;
   }
-  a{color:var(--accent); text-decoration:none}
-  a:hover{text-decoration:underline}
-  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
-  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
-  .nav{border-bottom:1px solid var(--line); background:rgba(250,250,247,.92)}
-  .nav-inner{max-width:var(--max); margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
-  .nav-logo{font-weight:600; color:var(--ink)}
-  .nav-logo:hover{text-decoration:none}
-  .nav-links{display:flex; gap:22px; list-style:none; font-size:14px}
-  .nav-links a{color:var(--ink-2)}
-  .hero{padding:88px 0 56px; border-bottom:1px solid var(--line)}
-  .kicker{font-size:13px; color:var(--ink-3); letter-spacing:.14em; margin-bottom:18px}
-  h1{font-size:clamp(34px,5.5vw,52px); line-height:1.2; font-weight:600; letter-spacing:.01em}
-  .zh{display:block; margin-top:10px; font-size:18px; font-weight:400; color:var(--ink-3)}
-  .lead{margin-top:26px; max-width:620px; font-size:18px; color:var(--ink-2)}
-  .meta{margin-top:30px; display:flex; gap:10px; flex-wrap:wrap}
-  .tag{font-size:12.5px; color:var(--ink-2); background:var(--card); border:1px solid var(--line); border-radius:99px; padding:3px 12px}
-  .cta{margin-top:36px; display:flex; gap:14px; flex-wrap:wrap}
-  .btn{display:inline-block; padding:11px 26px; border-radius:8px; font-size:15px; border:1px solid var(--ink); color:var(--ink)}
-  .btn:hover{text-decoration:none; background:var(--ink); color:#fff}
-  .btn.primary{background:var(--ink); color:#fff}
-  .btn.primary:hover{background:#000}
-  footer{border-top:1px solid var(--line); padding:26px 0; color:var(--ink-3); font-size:13.5px}
-  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px}
-  @media (max-width:600px){ .hero{padding:60px 0 44px} }
-
-  .nav{position:sticky; top:0; z-index:10; backdrop-filter:blur(12px); background:rgba(250,250,247,.97)}
-  .nav-inner{max-width:1280px; gap:10px 24px}
-  .nav-links{gap:6px 18px; flex-wrap:wrap}
-  .nav-links a{display:block; padding:4px 0; white-space:nowrap}
-  .nav-links a[aria-current="location"]{color:var(--accent); text-decoration:underline; text-underline-offset:4px}
-  html{scroll-padding-top:var(--nav-height, 120px)}
-  main.document{padding:0; width:min(100%,1440px); margin:0 auto}
-  .document img{display:block; width:100%; height:auto; background:var(--line)}
-  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
-  @media (max-width:760px){
-    .nav-inner{padding:10px 16px; gap:4px; display:block}
-    .nav-links{column-gap:12px; row-gap:0; font-size:13px}
-    .nav-links a{padding:5px 0}
+  a { color:inherit; text-decoration:none; }
+  a:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+  .wrap, .nav-inner, .edition { width:var(--column); margin-inline:auto; }
+  .nav {
+    position:sticky; top:0; z-index:10; background:#fff5e6f5;
+    backdrop-filter:blur(12px); box-shadow:0 1px 0 #92795542;
+  }
+  .nav-inner {
+    min-height:62px; padding-block:10px; display:flex; justify-content:space-between;
+    align-items:center; gap:8px 24px; flex-wrap:wrap;
+  }
+  .nav-logo { font-weight:700; }
+  .nav-links {
+    display:flex; flex-wrap:wrap; gap:2px clamp(12px, 1.4vw, 22px);
+    padding:0; margin:0; list-style:none; font-size:.875rem;
+  }
+  .nav-links a { display:block; padding-block:5px; color:var(--muted); white-space:nowrap; }
+  .nav-links a:hover, .nav-links a[aria-current="location"] {
+    color:var(--accent); text-decoration:underline; text-underline-offset:5px;
+  }
+  .edition {
+    position:relative;
+    box-shadow:1px 0 #9279556b, -1px 0 #9279556b;
+    background:linear-gradient(145deg, #fff9eb 0%, #f8edda 53%, #edd4aa 100%);
+  }
+  .hero {
+    min-height:calc(100svh - var(--nav-height));
+    position:relative; display:grid; align-items:center;
+    padding:clamp(32px, 5vw, 76px) clamp(22px, 5vw, 78px) 96px;
+  }
+  .hero-grid {
+    display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.05fr);
+    gap:clamp(28px, 5vw, 82px); align-items:center; min-width:0;
+  }
+  .kicker { margin:0 0 16px; color:var(--muted); font-size:.8125rem; letter-spacing:.12em; }
+  h1 {
+    margin:0; font-family:Georgia, "Times New Roman", serif; font-weight:700;
+    font-size:clamp(2.25rem, 5vw, 5.25rem); line-height:.98; letter-spacing:-.045em;
+  }
+  .zh { display:block; margin-top:16px; color:var(--accent); font:600 1.125rem/1.3 system-ui,sans-serif; letter-spacing:.12em; }
+  .lead { margin:22px 0 0; max-width:32ch; color:var(--muted); font-size:clamp(1rem, 1.4vw, 1.25rem); }
+  .meta, .cta { display:flex; gap:8px 12px; flex-wrap:wrap; }
+  .meta { margin-top:20px; }
+  .cta { margin-top:28px; }
+  .tag { border:1px dashed #a78963; padding:3px 9px; font-size:.8125rem; }
+  .btn { display:inline-block; padding:10px 16px; border:1px solid #7e6748; border-radius:5px; font-size:.9375rem; }
+  .btn.primary { background:#ecc164; border-color:#ad783a; font-weight:650; }
+  .btn:hover { background:#ffe1a0; }
+  .hero-art {
+    position:relative; margin:0; padding:clamp(6px, 1vw, 13px);
+    background:#fff9eb; border:1px solid #b39a74; border-radius:9px;
+    box-shadow:0 18px 42px #60402026;
+  }
+  .hero-art::before {
+    content:""; position:absolute; top:-10px; left:42%; width:17%; height:20px;
+    background:#e9c980b8; transform:rotate(-5deg);
+  }
+  .gameplay {
+    display:block; width:100%; height:auto; border-radius:4px;
+  }
+  .hero-art figcaption { margin:7px 3px 1px; color:var(--muted); font-size:.8125rem; }
+  .continue {
+    position:absolute; bottom:20px; left:50%; transform:translateX(-50%);
+    display:grid; justify-items:center; gap:2px; padding:4px 12px;
+    width:max-content; max-width:95%; text-align:center; font-size:.8125rem; color:#67472a;
+  }
+  .continue:hover { color:#2d241a; text-decoration:underline; }
+  .continue span { font-size:1.375rem; line-height:1; }
+  .document img { display:block; width:100%; height:auto; background:#e7cca4; }
+  .sr-only {
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip-path:inset(50%); white-space:nowrap;
+  }
+  footer { padding:26px 0; color:var(--muted); font-size:.875rem; }
+  footer .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  @media (max-width:900px) {
+    .hero-grid { grid-template-columns:minmax(0, 1fr) minmax(0, .9fr); gap:22px; }
+  }
+  @media (max-width:700px) {
+    .nav-inner { gap:4px; }
+    .nav-links { font-size:.8125rem; }
+    .hero { padding-top:32px; padding-bottom:78px; }
+    .hero-grid { grid-template-columns:minmax(0, 1fr); gap:24px; }
+    .hero-art { max-width:420px; }
+    .lead { margin-top:16px; }
+    .meta, .cta { margin-top:16px; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    html { scroll-behavior:auto; }
   }
 </style>
 </head>
@@ -76,21 +126,29 @@
   </div>
 </nav>
 
+<div class="edition">
 <header class="hero">
-  <div class="wrap">
-    <p class="kicker">GAME DESIGN PORTFOLIO · 2026</p>
-    <h1>Stationery Fantasy<span class="zh">文具幻想</span></h1>
-    <p class="lead">A three-level side-scrolling shoot 'em up built in Unity.</p>
-    <div class="meta">
-      <span class="tag">2026</span>
-      <span class="tag">Independent personal project</span>
-      <span class="tag">Unity</span>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="kicker">GAME DESIGN PORTFOLIO · 2026</p>
+      <h1>Stationery Fantasy<span class="zh">文具幻想</span></h1>
+      <p class="lead">A three-level side-scrolling shoot 'em up built in Unity.</p>
+      <div class="meta">
+        <span class="tag">2026</span>
+        <span class="tag">Independent personal project</span>
+        <span class="tag">Unity</span>
+      </div>
+      <div class="cta">
+        <a class="btn primary" href="https://youtu.be/R7B-a1l2xzg" target="_blank" rel="noopener">Watch gameplay video ↗</a>
+        <a class="btn" href="/">Back to portfolio</a>
+      </div>
     </div>
-    <div class="cta">
-      <a class="btn primary" href="https://youtu.be/R7B-a1l2xzg" target="_blank" rel="noopener">Watch gameplay video ↗</a>
-      <a class="btn" href="/">Back to portfolio</a>
-    </div>
+    <figure class="hero-art">
+      <img class="gameplay" src="gameplay.webp" width="828" height="360" alt="The stationery plane flies over a wooden school desk.">
+      <figcaption>In-game view</figcaption>
+    </figure>
   </div>
+  <a class="continue" href="#document">Read the design document <span aria-hidden="true">↓</span></a>
 </header>
 
 <main class="document" aria-label="Stationery Fantasy design document">
@@ -140,6 +198,7 @@
     <img src="design-document/page-21.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Page 21. A closing reflection on uncertainty and working through design problems.">
   </section>
 </main>
+</div>
 
 <footer>
   <div class="wrap">
@@ -161,7 +220,8 @@
       if (section.getBoundingClientRect().top <= edge) active = index;
     });
     if (active >= 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
-      active = sections.length - 1;
+      const requested = sections.findIndex(section => "#" + section.id === location.hash);
+      active = requested > active ? requested : sections.length - 1;
     }
     links.forEach((link, index) => {
       if (index === active) link.setAttribute("aria-current", "location");
