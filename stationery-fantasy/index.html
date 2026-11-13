@@ -8,7 +8,7 @@
 <script>
   try {
     const theme = localStorage.getItem("stationery-fantasy-theme");
-    if (["desk", "notebook", "sketch"].includes(theme)) document.documentElement.dataset.theme = theme;
+    if (["desk", "notebook", "sketch", "oat", "sage", "rose"].includes(theme)) document.documentElement.dataset.theme = theme;
   } catch {}
 </script>
 <style>
@@ -168,6 +168,26 @@
   .plane-stage model-viewer[data-dragging] { cursor:grabbing; }
   .plane-stage[data-ready] .gameplay { visibility:hidden; }
   .hero-art figcaption { text-align:center; }
+  .title-art { display:block; width:100%; max-width:580px; height:auto; mix-blend-mode:multiply; }
+  [data-theme="oat"] {
+    --paper:#dbc4a1; --light:#fcf2e2; --ink:#35291f; --muted:#635142;
+    --accent:#803c32; --line:#94734f; --button:#eac58b; --button-ink:#35291f;
+    --title-paper:#f7e8d0; --title-glow:#fff9ee;
+  }
+  [data-theme="sage"] {
+    --paper:#c8d1bd; --light:#f2f5ec; --ink:#26352c; --muted:#4e5c50;
+    --accent:#415c46; --line:#788c73; --button:#4e6953; --button-ink:#fff;
+    --title-paper:#e4ecdd; --title-glow:#fafbf3;
+  }
+  [data-theme="rose"] {
+    --paper:#ddc2bd; --light:#fbefeb; --ink:#3a292c; --muted:#685052;
+    --accent:#86494c; --line:#a57a76; --button:#88494d; --button-ink:#fff;
+    --title-paper:#f1ddda; --title-glow:#fff7f3;
+  }
+  :is([data-theme="oat"], [data-theme="sage"], [data-theme="rose"]) .edition {
+    background:linear-gradient(145deg,var(--title-glow),var(--title-paper));
+    --edge:var(--line);
+  }
 </style>
 </head>
 <body>
@@ -191,6 +211,9 @@
         <option value="desk">School Desk</option>
         <option value="notebook">Notebook</option>
         <option value="sketch">Pencil Sketch</option>
+        <option value="oat">Oat Paper</option>
+        <option value="sage">Sage Paper</option>
+        <option value="rose">Rose Paper</option>
       </select>
     </label>
     </div>
@@ -202,7 +225,7 @@
   <div class="hero-grid">
     <div class="hero-copy">
       <p class="kicker">GAME DESIGN PORTFOLIO · 2026</p>
-      <h1>Stationery Fantasy<span class="zh">文具幻想</span></h1>
+      <h1><img class="title-art" src="hand-drawn-title.webp" width="1400" height="746" alt="Stationery Fantasy" fetchpriority="high"><span class="zh">文具幻想</span></h1>
       <p class="lead">A three-level side-scrolling shoot 'em up built in Unity.</p>
       <div class="meta">
         <span class="tag">2026</span>
