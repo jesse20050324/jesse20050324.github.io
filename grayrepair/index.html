@@ -77,13 +77,8 @@ mark, .mark {
   font-weight: 900; letter-spacing: .1em; white-space: nowrap;
   font-size: 15px;
 }
-.brand-dot {
-  display: inline-block; width: 12px; height: 12px; margin-right: 9px;
-  border: 2px solid var(--ink); border-radius: 3px;
-  background: linear-gradient(135deg, #1b2a3d 0 50%, #fff 50% 100%);
-  transition: rotate .6s var(--spring);
-}
-.brand:hover .brand-dot { rotate: 135deg; }
+.brand span { margin-inline-end:8px; }
+.brand:hover { color:var(--red); }
 .site-nav { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
 .site-nav a {
   position: relative; margin-left: 19px;
@@ -625,7 +620,7 @@ p { color: var(--ink-soft); }
 <header class="site-head">
   <i class="progress" id="progress" aria-hidden="true"></i>
   <div class="head-inner">
-    <a class="brand" href="#top"><span class="brand-dot" aria-hidden="true"></span>The Gray Workshop</a>
+    <a class="brand" href="/#work" aria-label="Back to portfolio projects"><span aria-hidden="true">←</span> Portfolio</a>
     <nav class="site-nav" aria-label="Page menu">
       <a href="#inspiration">Inspiration</a>
       <a href="#overview">Overview</a>
