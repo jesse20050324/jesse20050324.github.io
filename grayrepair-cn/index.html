@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>灰度修理铺 — 游戏设计作品集</title>
+<meta name="description" content="灰度修理铺：一款在浏览器里运行的照片修复解谜游戏，用玩的方式讲清数字图像处理的基础概念。13 关，全程没有文字教学。">
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root {
+  --paper: #cde8fa;
+  --card: #f1f7fb;
+  --ink: #122133;
+  --ink-soft: #3d4d60;
+  --muted: #556373;
+  --accent: #449df0;
+  --accent-deep: #3081cb;
+  --red: #c4503c;
+  --line: #a9cdec;
+  --shadow: rgba(18,33,51,.28);
+  --mark: rgba(255,214,64,.5);
+  --grid: rgba(255,255,255,.2);
+  --grid-strong: rgba(255,255,255,.36);
+  --warm: #fdfcf9;
+  --sans: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  --head: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, Arial, sans-serif;
+  --mono: "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+  --hand: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --spring: cubic-bezier(.34,1.45,.5,1);
+  --out: cubic-bezier(.22,.8,.28,1);
+  --navh: 64px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.9;
+  overflow-x: hidden;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 130px 130px, 130px 130px, 26px 26px, 26px 26px;
+}
+h1, h2, h3 { font-family: var(--head); }
+img { display: block; }
+.px { image-rendering: pixelated; }
+.mono { font-family: var(--mono); }
+.kai { font-family: var(--hand); }
+mark, .mark {
+  background: linear-gradient(transparent 58%, var(--mark) 58%);
+  color: inherit; padding: 0 1px;
+}
+
+.site-head {
+  position: sticky; top: 0; z-index: 60;
+  height: var(--navh);
+  background: rgba(205,232,250,.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--ink);
+}
+.progress {
+  position: absolute; left: 0; bottom: -2px; height: 3px; width: 0;
+  background: var(--red); z-index: 2;
+}
+.head-inner {
+  max-width: 1240px; height: 100%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 0 26px;
+}
+.brand {
+  display: flex; align-items: center;
+  color: var(--ink); text-decoration: none;
+  font-weight: 900; letter-spacing: .1em; white-space: nowrap;
+  font-size: 15px;
+}
+.brand-dot {
+  display: inline-block; width: 12px; height: 12px; margin-right: 9px;
+  border: 2px solid var(--ink); border-radius: 3px;
+  background: linear-gradient(135deg, #1b2a3d 0 50%, #fff 50% 100%);
+  transition: rotate .6s var(--spring);
+}
+.brand:hover .brand-dot { rotate: 135deg; }
+.site-nav { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.site-nav a {
+  position: relative; margin-left: 19px;
+  color: var(--muted); text-decoration: none;
+  font-size: 13.5px; font-weight: 600; letter-spacing: .06em;
+  transition: color .2s ease;
+}
+.site-nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
+  background: var(--red); transform: scaleX(0); transform-origin: left;
+  transition: transform .32s var(--out);
+}
+.site-nav a:hover, .site-nav a.active { color: var(--red); }
+.site-nav a:hover::after, .site-nav a.active::after { transform: scaleX(1); }
+.site-nav a.nav-play { color: var(--red); font-weight: 800; }
+.site-nav a.nav-play::after { display: none; }
+
+.hero {
+  position: relative;
+  min-height: calc(100svh - var(--navh));
+  padding: clamp(28px,5vh,64px) 4.5vw clamp(28px,4vh,48px) 4vw;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--paper);
+  overflow: hidden;
+}
+.hero .b-grid {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, clamp(452px,19vw,524px));
+  gap: clamp(52px,6.5vw,150px);
+  align-items: center;
+  width: 100%; max-width: 1700px; margin: 0 auto;
+}
+.hero .title {
+  font-weight: 900;
+  font-size: clamp(50px,5.2vw,100px);
+  letter-spacing: -.015em; line-height: 1.14;
+  text-shadow: 0 5px 0 #f1f7fb, 0 9px 0 rgba(18,33,51,.2);
+  margin-bottom: 34px;
+}
+.hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px 6px; list-style: none; }
+.hero .facts li {
+  display: flex; align-items: baseline; gap: 8px;
+  background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
+  box-shadow: 0 2px 0 var(--shadow);
+  padding: 5px 10px; font-size: 11px; font-weight: 600; letter-spacing: .06em;
+}
+.hero .facts b { font-weight: 700; color: var(--accent-deep); letter-spacing: .14em; }
+.hero .overview { max-width: 500px; margin: 0 0 24px 6px; }
+.hero .overview h2 {
+  font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--muted); margin-bottom: 9px;
+}
+.hero .overview p { font-size: clamp(13.5px,.75vw,15px); line-height: 1.72; }
+.hero .overview p + p { margin-top: .6em; }
+.hero .nums { display: flex; gap: 10px; list-style: none; flex-wrap: wrap; margin-left: 6px; }
+.hero .nums li {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
+  box-shadow: 0 3px 0 var(--shadow); padding: 8px 13px;
+}
+.hero .nums li:nth-child(1) { rotate: -1.5deg; }
+.hero .nums li:nth-child(3) { rotate: 1.5deg; }
+.hero .nums b { display: block; font-size: clamp(24px,1.9vw,30px); font-weight: 900; line-height: 1; }
+.hero .nums span { display: block; margin-top: 4px; font-size: 11px; letter-spacing: .2em; color: var(--muted); }
+.hero .nums .zero b { color: var(--red); }
+.hero .b-stack { position: relative; padding: 34px 0 34px 14px; }
+.hero .card {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
+  box-shadow: 0 7px 0 var(--shadow); padding: 9px;
+}
+.hero .card img { width: 100%; height: auto; border-radius: 8px; }
+.hero .card figcaption { padding: 8px 4px 3px; font-size: 11px; font-weight: 600; letter-spacing: .1em; }
+.hero .card-main { rotate: 1.2deg; z-index: 2; position: relative; }
+.hero .card-side1 { position: absolute; width: 35%; left: -62px; top: -52px; rotate: -8deg; z-index: 1; }
+.hero .card-side2 { position: absolute; width: 31%; right: -26px; bottom: -32px; rotate: 5deg; z-index: 3; }
+.hero .sun {
+  position: absolute; top: -22px; right: 26px; width: 40px; height: 40px;
+  background: #e8b84a; border: 3px solid var(--ink); border-radius: 10px;
+  box-shadow: 0 4px 0 var(--shadow); z-index: 4;
+}
+.hero-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: -2px 0 22px 6px; }
+.btn-play {
+  position: relative; display: inline-flex; align-items: center; gap: 11px;
+  padding: 13px 24px 13px 20px;
+  background: var(--ink); color: var(--paper); text-decoration: none;
+  border: 2px solid var(--ink); border-radius: 11px;
+  box-shadow: 0 5px 0 var(--shadow);
+  font-size: 16px; font-weight: 900; letter-spacing: .12em;
+  rotate: -.8deg;
+  transition: translate .3s var(--spring), rotate .3s var(--spring),
+              box-shadow .3s var(--out), background .3s ease;
+}
+.btn-play::before {
+  content: ""; position: absolute; inset: -7px; border-radius: 16px;
+  border: 2px dashed rgba(196,80,60,.5); pointer-events: none;
+}
+.btn-play .tri { flex: none; }
+.btn-play:hover { translate: 0 -4px; rotate: 0deg; box-shadow: 0 9px 0 var(--shadow); background: #0b1725; }
+.btn-play:active { translate: 0 -1px; box-shadow: 0 3px 0 var(--shadow); }
+
+main { position: relative; }
+.sec {
+  position: relative;
+  max-width: 1140px;
+  margin: clamp(104px,11vh,140px) auto 0;
+  padding: 0 26px;
+  scroll-margin-top: calc(var(--navh) + 20px);
+}
+.sec-wide { max-width: 1280px; }
+.sec-head {
+  position: relative; z-index: 1;
+  display: flex; align-items: flex-end; gap: 16px;
+  margin-bottom: 26px;
+}
+.sec-ghost {
+  position: absolute; top: -54px; left: -12px;
+  font-size: clamp(2.9rem,5.2vw,4.8rem); font-weight: 800; line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(196,80,60,.26);
+  pointer-events: none; user-select: none;
+  rotate: -2deg;
+  z-index: 0;
+}
+.sec-en {
+  color: var(--red); letter-spacing: .4em; font-size: .68rem;
+  text-transform: uppercase; margin-bottom: 3px; font-family: var(--mono);
+}
+.sec-head h2 {
+  font-size: clamp(1.7rem,3vw,2.3rem); font-weight: 900;
+  letter-spacing: .02em; line-height: 1.15;
+}
+.sec-lead { max-width: 760px; margin-bottom: 22px; font-size: clamp(14.5px,.95vw,16px); color: var(--ink-soft); }
+p { color: var(--ink-soft); }
+.sec b, .sec strong { color: var(--ink); }
+
+.asym-row {
+  display: grid;
+  grid-template-columns: minmax(0,1.22fr) minmax(0,.78fr);
+  gap: clamp(26px,3.6vw,58px);
+  align-items: center;
+  margin: 10px 0 26px;
+}
+.asym-row.flip { grid-template-columns: minmax(0,.78fr) minmax(0,1.22fr); }
+.asym-row.flip .asym-text { order: 2; }
+.asym-row.flip .asym-art { order: 1; }
+.sec-video { margin-top: clamp(28px,4vh,56px); }
+.video-row { display: flex; justify-content: center; }
+.video-frame {
+  width: min(940px, 100%);
+  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
+  box-shadow: 0 7px 0 var(--shadow); padding: 9px;
+}
+.video-frame .vbox { border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: var(--ink); }
+.video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.video-frame .video-cap { padding: 8px 4px 3px; font-size: 11px; font-weight: 600; letter-spacing: .1em; }
+.asym-text p { font-size: clamp(15px,.98vw,16.5px); line-height: 2; }
+.asym-text p + p { margin-top: .9em; }
+.asym-art { position: relative; aspect-ratio: 5 / 4; }
+.asym-art img {
+  border: 2px solid var(--ink); border-radius: 10px;
+  box-shadow: 0 6px 0 var(--shadow);
+  background: #fff;
+}
+.asym-art .aa-1 { position: absolute; width: 64%; left: 2%; top: 4%; rotate: -3.5deg; z-index: 1; }
+.asym-art .aa-2 { position: absolute; width: 44%; right: 0; bottom: 6%; rotate: 4.5deg; z-index: 2; }
+.asym-art .aa-chip {
+  position: absolute; right: 30%; top: 2%; width: 26px; height: 26px;
+  background: #e8b84a; border: 2px solid var(--ink); border-radius: 6px;
+  box-shadow: 0 3px 0 var(--shadow); z-index: 3; rotate: 8deg;
+}
+.asym-art .aa-cap {
+  position: absolute; left: 2%; bottom: -2px;
+  font-size: 10.5px; letter-spacing: .1em; color: var(--muted); z-index: 3;
+}
+
+.ops-rail {
+  position: relative;
+  display: grid; grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: clamp(20px,2.2vw,34px);
+  margin: 34px 0 8px;
+}
+.ops-rail::before {
+  content: ""; position: absolute; left: 4%; right: 4%; top: 37%;
+  border-top: 2px dashed rgba(196,80,60,.45); z-index: 0;
+}
+.op::after {
+  content: "→"; position: absolute; right: -19px; top: 33%;
+  font-family: var(--hand); font-size: 19px; color: var(--red);
+  opacity: .75; z-index: 2;
+}
+.op:last-child::after { display: none; }
+.op {
+  position: relative; z-index: 1;
+  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
+  box-shadow: 0 6px 0 var(--shadow);
+  padding: 11px 11px 13px;
+  transition: translate .35s var(--spring), rotate .35s var(--spring);
+}
+.op:nth-child(odd) { rotate: -1deg; }
+.op:nth-child(even) { rotate: .8deg; }
+.op:hover { translate: 0 -6px; rotate: 0deg; }
+.op-no {
+  position: absolute; top: -12px; left: 10px; z-index: 3;
+  background: var(--red); color: #fff;
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  padding: 2px 8px; border-radius: 6px; box-shadow: 0 3px 0 var(--shadow);
+}
+.op-deck {
+  position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+  background: #eaf3fb; border: 2px solid var(--ink); border-radius: 9px;
+  margin-bottom: 11px; box-shadow: 0 4px 0 var(--shadow);
+}
+.op-deck img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.op-deck.is-pix img { image-rendering: pixelated; }
+.op-mark {
+  position: absolute; border: 2px dashed var(--red); border-radius: 5px;
+  box-shadow: 0 0 0 4px rgba(196,80,60,.12); pointer-events: none;
+}
+.op-mark::after {
+  content: attr(data-label);
+  position: absolute; left: -2px; top: -19px;
+  font-family: var(--hand); font-size: 13px; line-height: 1.2;
+  color: var(--red); background: rgba(255,255,255,.9);
+  padding: 0 4px; border-radius: 3px; white-space: nowrap;
+}
+.op-mark.below::after { top: auto; bottom: -20px; }
+.op h3 { font-size: 15.5px; font-weight: 900; letter-spacing: .05em; margin-bottom: 5px; }
+.op p { font-size: 12.5px; line-height: 1.75; color: var(--muted); }
+
+.guide-wrap { position: relative; width: 100%; margin: 26px auto 0; }
+.guide-canvas {
+  position: relative; width: 1600px; height: 1000px;
+  transform-origin: top left;
+  background: var(--warm);
+  border: 2px solid var(--ink); border-radius: 16px;
+  box-shadow: 0 10px 0 var(--shadow);
+  overflow: hidden;
+}
+.gc-wash { position: absolute; border-radius: 50%; filter: blur(2px); pointer-events: none; }
+.gc-wash.w1 { left: -180px; top: -160px; width: 620px; height: 560px; background: radial-gradient(circle at 40% 40%, rgba(217,192,143,.28), rgba(217,192,143,0) 70%); }
+.gc-wash.w2 { right: -200px; bottom: -180px; width: 680px; height: 600px; background: radial-gradient(circle at 60% 60%, rgba(126,159,179,.26), rgba(126,159,179,0) 70%); }
+.gc-shot {
+  position: absolute; left: 352px; top: 40px; width: 896px;
+  background: #fff; border: 2px solid var(--ink); border-radius: 12px;
+  padding: 14px; box-shadow: 0 8px 0 rgba(46,43,37,.12);
+}
+.gc-shot img { width: 100%; height: auto; border-radius: 4px; }
+.gc-card {
+  position: absolute; width: 300px; min-height: 220px;
+  background: #fff; border: 2px solid var(--ink); border-radius: 12px;
+  padding: 20px 20px 18px; box-shadow: 0 5px 0 rgba(46,43,37,.1);
+}
+.gc-card .chip { position: absolute; right: 16px; top: 16px; width: 20px; height: 20px; border-radius: 4px; border: 1.5px solid rgba(18,33,51,.35); }
+.gc-card .no { font-family: var(--mono); font-size: 13px; letter-spacing: .2em; color: #8a968d; }
+.gc-card b { display: block; font-size: 29px; font-weight: 900; line-height: 1.25; margin: 6px 0 8px; letter-spacing: .01em; }
+.gc-card p { font-size: 17px; line-height: 1.7; color: #4a5a6b; }
+.gc-arrows { position: absolute; inset: 0; width: 1600px; height: 1000px; pointer-events: none; }
+.gc-arrows path.lead {
+  fill: none; stroke: #c4503c; stroke-width: 3.4;
+  stroke-dasharray: 11 8; stroke-linecap: round;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,.9)) drop-shadow(0 0 5px rgba(255,255,255,.55));
+}
+.gc-arrows circle { fill: #c4503c; }
+.gc-arrows path.tip { fill: #c4503c; }
+@media (max-width: 900px) {
+  .guide-canvas {
+    display: grid; gap: 14px; width: 100%; height: auto !important;
+    transform: none !important; padding: 22px 18px 26px;
+  }
+  .gc-shot, .gc-card { position: relative; left: auto !important; top: auto !important; width: auto; }
+  .gc-shot { max-width: 100%; }
+  .gc-card { min-height: 0; }
+  .gc-arrows, .gc-wash { display: none; }
+  .guide-wrap { height: auto !important; }
+}
+
+.rail-wrap { position: relative; width: 100%; background: var(--paper); margin-top: clamp(60px,8vh,100px); scroll-margin-top: var(--navh); }
+.rail-stage { position: sticky; top: var(--navh); height: calc(100vh - var(--navh)); overflow: hidden; }
+.rail-fit { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+#cam { position: absolute; inset: 0; will-change: transform; }
+.rail-head { position: absolute; left: 6vw; top: 2.6vh; z-index: 5; }
+.rail-head > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 18px; }
+.rail-head .sec-en { flex: 0 0 100%; font-size: 10px; letter-spacing: .34em; margin-bottom: 3px; }
+.rail-head h2 { font-size: 31px; font-weight: 900; letter-spacing: .02em; line-height: 1.1; }
+.track { position: absolute; left: 0; display: flex; align-items: flex-start; gap: var(--rail-gap-l, 96px); will-change: transform; }
+#trackU { z-index: 3; gap: var(--rail-gap-u, 78px); }
+#trackU .st { z-index: 1; }
+#trackL { z-index: 2; transition: opacity .25s linear; }
+#trackL.ghost {
+  opacity: .45;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 26%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 26%);
+}
+.st {
+  flex: none; width: var(--st-w, 252px);
+  background: var(--card); border: 2px solid var(--ink); border-radius: 14px;
+  box-shadow: 0 6px 0 var(--shadow); padding: 12px;
+  transition: opacity .2s linear;
+  position: relative; transform-origin: 50% 92%;
+}
+.st .st-thumb {
+  display: block; width: 100%; aspect-ratio: 1;
+  background: #fff; border: 2px solid var(--ink); border-radius: 9px; overflow: hidden;
+}
+.st .st-thumb img { width: 100%; height: 100%; }
+.st figcaption { padding: 10px 4px 2px; }
+.st b, .st i { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.st b { display: block; font-size: 15px; font-weight: 900; letter-spacing: .04em; }
+.st i { display: block; font-style: normal; margin-top: 5px; font-size: 12px; color: var(--muted); letter-spacing: .05em; }
+#trackU .st:not(.hub) .st-thumb img { filter: grayscale(1) contrast(.92); }
+.st.live { box-shadow: 0 6px 0 var(--shadow), 0 0 0 3px var(--accent); }
+.st.live b { color: var(--accent-deep); }
+.st.hub {
+  transform: scale(1.18); transform-origin: 50% 100%;
+  border: 3px solid var(--red);
+  box-shadow: 0 6px 0 var(--shadow), 0 0 0 5px var(--paper), 0 0 0 8px var(--red);
+}
+.st.hub .st-thumb img { filter: none !important; }
+.st.hub .tag {
+  position: absolute; top: -16px; right: -14px;
+  background: var(--red); color: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  padding: 5px 10px; border-radius: 7px;
+  box-shadow: 0 3px 0 var(--shadow); rotate: 3deg;
+}
+.st.hub b { color: var(--red); }
+#chainLine { position: absolute; left: 0; top: calc(-1 * var(--rail-chain, 134px)); height: 30px; overflow: visible; pointer-events: none; z-index: 0; }
+#chainLine path { stroke: var(--red); stroke-width: 2.5; stroke-dasharray: 12 9; stroke-linecap: round; fill: none; opacity: .55; }
+#chainLine circle { fill: var(--red); opacity: .55; }
+#noteLayer { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: visible; }
+.lvnote {
+  position: absolute; left: 0; transform: translateX(-50%);
+  width: max-content; text-align: center; white-space: nowrap;
+  font-family: var(--hand); font-size: var(--rail-up-size, 19px); line-height: 1.4;
+  color: var(--red); letter-spacing: .02em;
+}
+.lvnote.up { top: calc(-1 * var(--rail-up, 187px)); }
+.lvnote.dn { top: calc(-1 * var(--rail-dn, 102px)); line-height: 1.4; color: #4e6072; letter-spacing: .05em; }
+.st.finale {
+  width: 340px; background: transparent; border: 0; box-shadow: none;
+  padding: 14px 4px 0; display: block;
+}
+.st.finale.live { box-shadow: none; }
+.st.finale .fin-seal {
+  display: inline-block; border: 2px solid var(--red); color: var(--red);
+  font-size: 11px; font-weight: 700; letter-spacing: .2em;
+  padding: 2px 9px; border-radius: 4px; rotate: -4deg; margin-bottom: 16px;
+}
+.st.finale b {
+  display: block; font-family: var(--hand); font-size: 33px; line-height: 1.5;
+  color: var(--red); letter-spacing: .04em;
+  white-space: normal; overflow: visible; text-overflow: clip;
+}
+.st.finale .fin-line { display: block; margin: 4px 0 12px; color: rgba(196,80,60,.5); }
+.st.finale i { display: block; font-style: normal; font-size: 12px; color: var(--muted); letter-spacing: .1em; }
+.ask { flex: none; width: 560px; height: 236px; align-self: center; position: relative; }
+.ask .why {
+  position: absolute; left: 0; top: -6px; width: 210px;
+  font-family: var(--hand); font-size: 19px; line-height: 1.6;
+  color: var(--red); letter-spacing: .03em; rotate: -2.5deg;
+}
+.ask .why b { display: block; font-size: 22px; margin-bottom: 2px; }
+.ask q {
+  position: absolute; left: 226px; top: 46px; width: 330px;
+  font-family: var(--hand); font-size: 25px; font-weight: 700; line-height: 1.6;
+  color: var(--red); letter-spacing: .02em; quotes: none; rotate: -1deg;
+}
+.ask q small { display: block; margin-top: 6px; font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: .06em; }
+.ask > svg { position: absolute; right: 6px; bottom: -28px; overflow: visible; }
+.tail { flex: none; width: 272px; align-self: center; rotate: 1.5deg; font-family: var(--hand); font-size: 18px; line-height: 1.65; color: var(--red); letter-spacing: .03em; }
+#link { position: absolute; z-index: 4; width: 0; border-left: 3px dashed var(--red); pointer-events: none; }
+#link span {
+  position: absolute; left: 14px; top: 50%; translate: 0 -50%; white-space: nowrap;
+  background: var(--red); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .16em;
+  padding: 5px 10px; border-radius: 7px; box-shadow: 0 3px 0 var(--shadow);
+}
+.ext-note { position: absolute; z-index: 5; left: 50%; transform: translateX(-50%); width: min(58vw, 1000px); opacity: 0; pointer-events: none; }
+.ext-note .ext-main { font-family: var(--hand); font-weight: 700; font-size: clamp(23px,1.9vw,31px); color: var(--red); letter-spacing: .04em; line-height: 1.3; }
+.ext-note .ext-sub { font-size: 14.5px; font-weight: 600; color: var(--muted); letter-spacing: .08em; margin-top: 4px; }
+.ext-note svg { display: block; width: 100%; height: 54px; margin: 6px 0 4px; overflow: visible; color: var(--red); opacity: .85; }
+.rail-hud { position: absolute; z-index: 6; right: 6vw; top: 5vh; display: flex; align-items: center; gap: 12px; }
+.rail-hud .phase {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
+  box-shadow: 0 3px 0 var(--shadow); padding: 7px 13px;
+  font-size: 12px; font-weight: 700; letter-spacing: .12em; min-width: 150px; text-align: center;
+}
+.rail-hud .bar { width: 170px; height: 10px; background: rgba(18,33,51,.15); border-radius: 6px; overflow: hidden; }
+.rail-hud .bar b { display: block; height: 100%; width: 0; background: var(--red); border-radius: 6px; }
+
+.lvg {
+  display: grid;
+  grid-template-columns: minmax(0,1.16fr) minmax(0,.84fr);
+  gap: clamp(22px,3vw,44px);
+  align-items: start;
+  margin: 0 0 clamp(44px,6.5vh,78px);
+  padding-top: 8px;
+  border-top: 2px dashed rgba(18,33,51,.16);
+}
+.lvg.flip .lvg-media { order: 2; }
+.lvg > .lvg-head { grid-column: 1 / -1; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin: 14px 0 4px; }
+.lvg-title { font-size: clamp(1.3rem,2vw,1.75rem); font-weight: 900; letter-spacing: .03em; }
+.lvg-title span { font-family: var(--hand); font-weight: 400; font-size: 15px; color: var(--red); margin-left: 10px; letter-spacing: .04em; }
+.lvg-media { display: grid; gap: 12px; grid-template-columns: 1fr; }
+.lvg-media.two, .lvg-media.multi { grid-template-columns: 1fr 1fr; }
+.lvg-media.multi .shot:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.shot {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 12px;
+  box-shadow: 0 6px 0 var(--shadow); padding: 9px;
+  transition: translate .35s var(--spring);
+}
+.shot:hover { translate: 0 -5px; }
+.shot .shot-img { position: relative; border: 2px solid var(--ink); border-radius: 8px; overflow: hidden; background: #fff; }
+.shot img { width: 100%; height: auto; }
+.shot figcaption { padding: 8px 3px 2px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; color: var(--muted); }
+.shot .gif-badge {
+  position: absolute; top: 7px; right: 7px;
+  background: rgba(18,33,51,.82); color: #cde8fa;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em;
+  padding: 2px 5.5px 2px 7px; border-radius: 4px;
+}
+.lv-txt .lv-card {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 12px;
+  box-shadow: 0 4px 0 var(--shadow); padding: 15px 17px; margin-bottom: 12px;
+}
+.lv-card .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; color: var(--accent-deep); margin-bottom: 6px; }
+.lv-card p { font-size: 14px; line-height: 1.9; }
+.lv-card p + p { margin-top: .7em; }
+.lv-card.is-note { background: #eaf4fc; }
+.iter {
+  position: relative; margin: 14px 0 0; padding: 15px 18px 16px 22px;
+  background: #fbefea; border: 2px solid var(--ink); border-radius: 12px;
+  box-shadow: 0 4px 0 var(--shadow);
+}
+.iter::before {
+  content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 5px;
+  background: var(--red); border-radius: 0 4px 4px 0;
+}
+.iter-head { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+.iter-tag {
+  background: var(--red); color: #fff; font-size: 11px; font-weight: 700;
+  letter-spacing: .16em; padding: 3px 9px; border-radius: 5px;
+  box-shadow: 0 2px 0 rgba(46,43,37,.16);
+}
+.iter-head em {
+  font-style: normal; font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: .14em; color: #a5624f;
+}
+.iter p { font-family: var(--hand); font-size: 16px; line-height: 1.9; color: #3a2f2b; }
+.iter p.chg { position: relative; margin-top: 10px; padding-left: 22px; }
+.iter p.chg::before {
+  content: "→"; position: absolute; left: 0; top: 0;
+  color: var(--red); font-weight: 700;
+}
+.quote-note { border-left: 3px dashed rgba(196,80,60,.55); padding: 2px 0 2px 14px; margin: 12px 0 0 4px; }
+.quote-note .q-tag { font-family: var(--mono); font-size: 10.5px; color: var(--red); letter-spacing: .2em; margin-bottom: 4px; }
+.quote-note p { font-family: var(--hand); font-size: 15.5px; line-height: 1.85; color: #3c4a58; }
+.scene-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.scene-card { background: var(--card); border: 2px solid var(--ink); border-radius: 10px; padding: 10px 12px; box-shadow: 0 3px 0 var(--shadow); }
+.scene-en { font-family: var(--mono); font-size: 12px; color: var(--red); }
+.scene-zh { font-family: var(--hand); font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+
+.creed-lead {
+  margin: 2px 0 16px;
+  font-size: clamp(15px,1vw,17px); font-weight: 800;
+  color: var(--ink); letter-spacing: .02em;
+}
+.creed {
+  display: grid; grid-template-columns: repeat(3,minmax(0,1fr));
+  border-top: 2px solid var(--ink); margin: 0 0 30px;
+}
+.creed > article { padding: 18px 26px 6px 0; border-right: 2px dashed rgba(18,33,51,.14); }
+.creed > article + article { padding-left: 26px; }
+.creed > article:last-child { border-right: 0; padding-right: 0; }
+.creed .cr-no { font-family: var(--mono); font-size: 11px; letter-spacing: .24em; color: var(--red); }
+.creed h3 { font-size: clamp(19px,1.4vw,23px); font-weight: 900; letter-spacing: .03em; margin: 7px 0 7px; }
+.creed p { font-size: 13.5px; line-height: 1.85; }
+.note-rows { border-top: 2px dashed rgba(18,33,51,.14); margin-top: 4px; }
+.note-row {
+  display: grid; grid-template-columns: minmax(0,.94fr) minmax(0,1.06fr);
+  gap: clamp(24px,3.4vw,52px); align-items: baseline;
+  padding: 26px 0; border-bottom: 2px dashed rgba(18,33,51,.14);
+}
+.note-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.note-row blockquote {
+  font-family: var(--hand); font-size: clamp(19px,1.7vw,23px); line-height: 1.72;
+  color: var(--red); padding-left: 18px;
+  border-left: 3px dashed rgba(196,80,60,.5);
+}
+.note-row p { font-size: clamp(15px,.98vw,16.5px); line-height: 2; }
+
+.play-frame-wrap {
+  position: relative; border: 2px solid var(--ink); border-radius: 14px;
+  overflow: hidden; background: #0d1620;
+  box-shadow: 0 8px 0 var(--shadow); margin-top: 20px;
+}
+.play-frame { display: block; width: 100%; aspect-ratio: 16 / 10; border: 0; }
+.play-alt { margin-top: 12px; font-size: 12px; color: var(--muted); }
+.play-alt a { color: var(--red); font-weight: 700; }
+
+.site-foot {
+  margin-top: clamp(64px,9vh,110px);
+  border-top: 2px solid var(--ink);
+  background: rgba(241,247,251,.72);
+  padding: 26px 26px 34px; text-align: center;
+}
+.site-foot p { font-size: 12px; letter-spacing: .1em; color: var(--ink); }
+.site-foot .dim { color: var(--muted); margin-top: 6px; font-size: 11px; }
+
+.rv { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--out), transform .8s var(--out); transition-delay: var(--d,0s); }
+.rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1 !important; transform: none !important; } }
+
+@media (max-width: 1180px) {
+  .hero .b-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero .b-stack { max-width: 620px; }
+  .ops-rail { grid-template-columns: 1fr 1fr; }
+  .ops-rail::before { display: none; }
+  .asym-row, .asym-row.flip { grid-template-columns: 1fr; }
+  .asym-row.flip .asym-text { order: 0; }
+  .asym-row.flip .asym-art { order: 1; }
+  .asym-art { min-height: 360px; }
+  .lvg, .lvg.flip { grid-template-columns: 1fr; }
+  .lvg.flip .lvg-media { order: 0; }
+  .creed { grid-template-columns: 1fr; }
+  .creed > article { padding: 16px 0 14px; border-right: 0; border-bottom: 2px dashed rgba(18,33,51,.14); }
+  .creed > article:last-child { border-bottom: 0; }
+  .note-row { grid-template-columns: 1fr; gap: 10px; align-items: start; }
+}
+@media (max-width: 820px) {
+  .head-inner { padding: 0 14px; }
+  .site-nav a { margin-left: 11px; font-size: 12px; }
+  .brand { font-size: 12.5px; letter-spacing: .04em; }
+  .hero .card-side1, .hero .card-side2 { display: none; }
+  .ops-rail { grid-template-columns: 1fr; }
+  .lvg-media.two, .lvg-media.multi, .scene-row { grid-template-columns: 1fr; }
+  .rail-hud { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <i class="progress" id="progress" aria-hidden="true"></i>
+  <div class="head-inner">
+    <a class="brand" href="#top"><span class="brand-dot" aria-hidden="true"></span>灰度修理铺</a>
+    <nav class="site-nav" aria-label="页面菜单">
+      <a href="#inspiration">灵感</a>
+      <a href="#overview">概览</a>
+      <a href="#ops">操作</a>
+      <a href="#interface">界面</a>
+      <a href="#levels">关卡设计</a>
+      <a href="#levels-detail">关卡</a>
+      <a href="#notes">心得</a>
+      <a href="#play" class="nav-play">试玩 →</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" id="hero">
+    <div class="b-grid">
+      <div>
+        <h1 class="title rv" style="--d:.05s">灰度修理铺</h1>
+        <ul class="facts rv" style="--d:.12s">
+          <li><b>平台</b>浏览器（HTML5）</li>
+          <li><b>开发周期</b>2 个月</li>
+          <li><b>类型</b>个人项目</li>
+        </ul>
+        <div class="overview rv" style="--d:.2s">
+          <h2>项目速览</h2>
+          <p>一个关于修复照片的解谜游戏：你开一间小小的灰度修理铺，送来的每张照片都被抽掉了颜色。你只有四种操作——点像素、拖滑块、拖阈值、拖色块——靠它们一点点把照片修回来。十三关，从认识灰度到把所有东西一起用上。</p>
+          <p>特别的地方在于：全游戏没有一句教学文字。规则藏在关卡设计里，玩家靠玩把它们摸出来。</p>
+        </div>
+        <div class="hero-cta rv" style="--d:.3s">
+          <a class="btn-play" href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">
+            <svg class="tri" viewBox="0 0 8 9" width="16" height="18" aria-hidden="true"><path d="M2 1h1v1h1v1h1v1h1v1h-1v1h-1v1h-1v1h-1z" fill="currentColor" shape-rendering="crispEdges"/></svg>
+            <span>开始试玩</span>
+          </a>
+        </div>
+        <ul class="nums rv" style="--d:.38s">
+          <li><b>13</b><span>关卡</span></li>
+          <li><b>4</b><span>操作</span></li>
+          <li class="zero"><b>0</b><span>文字教程</span></li>
+        </ul>
+      </div>
+      <div class="b-stack rv" style="--d:.3s">
+        <span class="sun"></span>
+        <figure class="card card-side1"><img class="px" src="../grayrepair/素材/level-7.png" alt=""><figcaption>第 7 关</figcaption></figure>
+        <figure class="card card-side2"><img class="px" src="../grayrepair/素材/level-4.png" alt=""><figcaption>第 4 关</figcaption></figure>
+        <figure class="card card-main">
+          <img class="px" src="../grayrepair/素材/game-level8.png" alt="第 8 关实机画面">
+          <figcaption>第 8 关 · 实机画面</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-video" id="video">
+    <figure class="video-row rv">
+      <div class="video-frame">
+        <div class="vbox"><iframe src="https://www.youtube-nocookie.com/embed/rjIUUuGn3N0?rel=0" title="The Gray Workshop, gameplay video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        <figcaption class="video-cap mono">试玩视频</figcaption>
+      </div>
+    </figure>
+  </section>
+
+  <section class="sec" id="inspiration">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">01</span>
+      <div>
+        <p class="sec-en">灵感</p>
+        <h2>灵感</h2>
+      </div>
+    </div>
+    <div class="asym-row rv">
+      <div class="asym-text">
+        <p>上学期我修了数字图像处理。平时拍照、剪片子，影调、曝光、灰度值这些概念本来就熟，课听起来很轻松。但不少同学——包括我一个朋友——公式背得出来，却说不出那些数字在一张真实的图里到底指的是什么。这些其实一点都不抽象：把一张图一直放大，它就是一格一格的小方块， <mark>而灰度值就是每一格有多亮或多暗</mark>.</p>
+        <p>问题大概不在知识本身，而在碰到它的方式：这些概念永远只以公式和讲义出现，没有机会亲手摆弄、直接看到结果。所以我把最基础的三个——灰度值、阈值、灰度映射——做成了游戏，让玩家一关一关玩出理解。</p>
+        <p>这个游戏做给两类人：完全没接触过这门课的人，和正在修课、但还没把这些概念真正建立起来的学生。</p>
+      </div>
+      <div class="asym-art" aria-hidden="true">
+        <img class="aa-1 px" src="../grayrepair/素材/level-6.png" alt="">
+        <img class="aa-2 px" src="../grayrepair/素材/level-2.png" alt="">
+        <i class="aa-chip"></i>
+        <p class="aa-cap mono">第 6 关 雾中月牙／第 2 关 5×5 像素</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="overview">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">02</span>
+      <div>
+        <p class="sec-en">概览</p>
+        <h2>概览</h2>
+      </div>
+    </div>
+    <div class="asym-row flip rv">
+      <div class="asym-text">
+        <p>灰度修理铺是一款在浏览器里运行的游戏，共 13 关。 <mark>通关判定分两个阶段</mark>：第 1–9 关的左图就是答案，判定方式是两图逐像素比对——通过则边框闪绿进入下一关，失败闪红。第 9 关是第 8 关的变体：答案仍在左边，但不能靠逐像素照抄做出来。第 10 关起，左图不再是答案，它显示需要处理的原图和一句提示（比如“一张褪色的旧照片。”），要修成什么样由玩家自己推断，修好的图只在判定通过后才出现在左边。</p>
+        <p>除了通关后的一句短注和那行提示，任何一关都没有教学文字。 <mark>每关只引入它用得上的操作</mark>，规则靠玩出来。</p>
+      </div>
+      <div class="asym-art" aria-hidden="true">
+        <img class="aa-1 px" src="../grayrepair/素材/level-3.png" alt="">
+        <img class="aa-2 px" src="../grayrepair/素材/level-5.png" alt="">
+        <i class="aa-chip"></i>
+        <p class="aa-cap mono">第 3 关 四色映射／第 5 关 双色阈值</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-wide" id="ops">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">03</span>
+      <div>
+        <p class="sec-en">四种操作</p>
+        <h2>只有四种操作</h2>
+      </div>
+    </div>
+    <div class="ops-rail">
+      <article class="op rv" style="--d:.02s">
+        <span class="op-no">01</span>
+        <div class="op-deck is-pix">
+          <img src="../grayrepair/素材/op-1-pixel.png" alt="第 2 关：两张 5×5 像素图，其中一格灰度明显不对">
+          <i class="op-mark below" style="left:42.6%; top:60%; width:14.8%; height:20%" data-label="This cell"></i>
+        </div>
+        <h3>点选像素</h3>
+        <p>在操作图里点一格。从第 3 关起，灰度轴上会亮起一个标记，指出这个像素的灰度位置。</p>
+      </article>
+
+      <article class="op rv" style="--d:.1s">
+        <span class="op-no">02</span>
+        <div class="op-deck">
+          <img src="../grayrepair/素材/op-2-axis.png" alt="游戏画面下方的灰度轴、斜纹映射条与色块">
+          <i class="op-mark" style="left:2%; top:43.5%; width:96%; height:13%" data-label="Black → White"></i>
+        </div>
+        <h3>拖动滑块</h3>
+        <p>改变选中像素的灰度值。从黑到白一格一格走，来回拖，深浅跟着变。</p>
+      </article>
+
+      <article class="op rv" style="--d:.18s">
+        <span class="op-no">03</span>
+        <div class="op-deck">
+          <img src="../grayrepair/素材/op-3-threshold.png" alt="灰度轴上的阈值线，底部带圆形手柄">
+          <i class="op-mark" style="left:43.5%; top:49%; width:13%; height:18%" data-label="This handle"></i>
+        </div>
+        <h3>拖动阈值</h3>
+        <p>拖动轴上的分界线，决定从哪里切开、每一段落在哪一侧。手柄可以拖出两端，把一段灰度并进相邻的一段。</p>
+      </article>
+
+      <article class="op rv" style="--d:.26s">
+        <span class="op-no">04</span>
+        <div class="op-deck">
+          <img src="../grayrepair/素材/op-4-chip.png" alt="斜纹映射条上方的一排色块">
+          <i class="op-mark below" style="left:35%; top:41%; width:26%; height:27%" data-label="Drop it here"></i>
+        </div>
+        <h3>拖放色块</h3>
+        <p>把颜色放进映射条的某一段，落在这一段灰度里的像素会同时变成那个颜色。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec sec-wide" id="interface">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">04</span>
+      <div>
+        <p class="sec-en">界面说明</p>
+        <h2>界面说明</h2>
+      </div>
+    </div>
+
+    <div class="guide-wrap" id="guideWrap">
+      <div class="guide-canvas" id="guideCanvas">
+        <i class="gc-wash w1"></i>
+        <i class="gc-wash w2"></i>
+
+        <figure class="gc-shot">
+          <img src="../grayrepair/素材/game-level8.png" alt="Level 8 live screen: color target on the left, grayscale working image on the right, gray axis, mapping bar and color chips below">
+        </figure>
+
+        <div class="gc-card" style="left:40px; top:116px">
+          <i class="chip" style="background:#D9C08F"></i>
+          <span class="no">01</span>
+          <b>左图</b>
+          <p>第 1–9 关：这是答案，把右图和它逐像素对上。第 10–13 关：这里只剩一句提示。</p>
+        </div>
+        <div class="gc-card" style="left:40px; top:386px">
+          <i class="chip" style="background:#7E9FB3"></i>
+          <span class="no">02</span>
+          <b>灰度轴</b>
+          <p>从黑到白，每一级灰度占一格。选中像素后，轴上会标出它的位置；拖滑块调深浅。</p>
+        </div>
+        <div class="gc-card" style="left:40px; top:656px">
+          <i class="chip" style="background:#D3B25C"></i>
+          <span class="no">03</span>
+          <b>映射条</b>
+          <p>和灰度轴上下对齐。给某一段放上颜色，落在这段灰度里的像素就都显示成那个颜色。</p>
+        </div>
+
+        <div class="gc-card" style="left:1260px; top:116px">
+          <i class="chip" style="background:#C98B6B"></i>
+          <span class="no">04</span>
+          <b>操作图</b>
+          <p>左图的灰度版本，也是主要的操作区。点一个像素选中它，改动实时显示在这里。</p>
+        </div>
+        <div class="gc-card" style="left:1260px; top:386px">
+          <i class="chip" style="background:#8FA985"></i>
+          <span class="no">05</span>
+          <b>阈值</b>
+          <p>那条竖线和它底部的圆手柄。拖动分界线重划灰度区间，每一段随后各取一种颜色。</p>
+        </div>
+        <div class="gc-card" style="left:1260px; top:656px">
+          <i class="chip" style="background:#A98BA8"></i>
+          <span class="no">06</span>
+          <b>色块</b>
+          <p>可选的颜色。把色块拖进映射条，就把它指派给某一段灰度。</p>
+        </div>
+
+        <svg class="gc-arrows" viewBox="0 0 1600 1000" aria-hidden="true">
+          <defs>
+            <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 Z" fill="#c4503c"/>
+            </marker>
+          </defs>
+          <path class="lead" marker-end="url(#tip)" d="M344 230 C 430 236, 520 336, 592 394"/>
+          <path class="lead" marker-end="url(#tip)" d="M344 496 C 416 548, 480 682, 560 720"/>
+          <path class="lead" marker-end="url(#tip)" d="M344 766 C 430 790, 600 776, 700 752"/>
+          <path class="lead" marker-end="url(#tip)" d="M1256 230 C 1170 244, 1060 348, 991 394"/>
+          <path class="lead" marker-end="url(#tip)" d="M1256 496 C 1150 566, 946 730, 806 768"/>
+          <path class="lead" marker-end="url(#tip)" d="M1256 766 C 1120 806, 900 818, 804 805"/>
+          <circle cx="344" cy="230" r="6"/><circle cx="344" cy="496" r="6"/><circle cx="344" cy="766" r="6"/>
+          <circle cx="1256" cy="230" r="6"/><circle cx="1256" cy="496" r="6"/><circle cx="1256" cy="766" r="6"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+  <section class="sec" id="levels">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">05</span>
+      <div>
+        <p class="sec-en">关卡设计</p>
+        <h2>关卡设计</h2>
+      </div>
+    </div>
+    <div class="asym-row rv">
+      <div class="asym-text">
+        <p>游戏是从一关开始的：后来成了第 8 关的那一关。第一版原型就是这一关，周围围满了说明：直方图、对照表、每个部分都配了文字注解。我一个正在修这门课、但还没把概念建立起来的朋友试玩，直接看懵了。多出来的文字没让任何东西更好学，反而让他在还没弄明白屏幕要他做什么之前，就先多了一堆要猜的东西。</p>
+        <p>于是我定下一条标准： <mark>每一关都必须让完全新手只靠自己玩就能通关</mark>.</p>
+        <p>标准定下来之后，方向反了过来：不再一关一关往前做，而是从脑子里已经想清楚的那关——第 8 关——往回推。 <b>玩家在这一关之前需要什么？</b> 每缺一个概念，就单独做一关。</p>
+      </div>
+      <div class="asym-art" aria-hidden="true">
+        <img class="aa-1 px" src="../grayrepair/素材/level-11-tight.png" alt="">
+        <img class="aa-2 px" src="../grayrepair/素材/level-4.png" alt="">
+        <i class="aa-chip"></i>
+        <p class="aa-cap mono">第 11 关 · 只留她。／第 4 关 · 蒙德里安</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="rail-wrap" id="levels-rail">
+    <div class="rail-stage">
+     <div class="rail-fit" id="railFit">
+      <header class="rail-head">
+        <div>
+          <p class="sec-en">推导过程 · 第 01–13 关</p>
+        </div>
+      </header>
+
+      <div id="cam">
+        <div class="track" id="trackU">
+          <figure class="st hub" data-lv="8">
+            <span class="tag">起点</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-8.png" alt=""></span>
+            <figcaption><b>第 8 关 · 综合</b><i>四个阈值 · 五个色块</i></figcaption>
+          </figure>
+
+          <div class="ask">
+            <p class="why"><b>起因</b> 一位朋友试玩第 8 关原型，看不懂屏幕</p>
+            <q>玩家在第 8 关之前<br>需要什么？</q>
+            <svg viewBox="0 0 240 70" width="225" height="66" fill="none" aria-hidden="true">
+              <path d="M8 36 C 52 24, 96 48, 142 37 S 204 30, 220 36" stroke="#c4503c" stroke-width="5" stroke-linecap="round"/>
+              <path d="M202 19 L228 36 L200 51 Z" fill="#c4503c"/>
+            </svg>
+          </div>
+
+          <figure class="st" data-lv="1">
+            <span class="lvnote up">首先，灰度到底是什么</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-1.png" alt=""></span>
+            <figcaption><b>第 1 关 · 认识灰度</b><i>单个像素 · 滑块</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="2">
+            <span class="lvnote dn">很多像素组成一张图</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-2.png" alt=""></span>
+            <figcaption><b>第 2 关 · 认识像素</b><i>图由像素构成</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="3">
+            <span class="lvnote up">灰度可以映射成颜色</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-3.png" alt=""></span>
+            <figcaption><b>第 3 关 · 颜色映射</b><i>灰度区间对应颜色</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="4">
+            <span class="lvnote dn">前三种操作合在一起</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-4.png" alt=""></span>
+            <figcaption><b>第 4 关 · 操作组合</b><i>灰度 × 映射 同时用</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="5">
+            <span class="lvnote up">开始认识阈值</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-5.png" alt=""></span>
+            <figcaption><b>第 5 关 · 认识阈值</b><i>第一次拖阈值</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="6">
+            <span class="lvnote dn">两个阈值，难一点</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-6.png" alt=""></span>
+            <figcaption><b>第 6 关 · 两个阈值</b><i>颜色预先摆好</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="7">
+            <span class="lvnote up">两个阈值 + 自由上色</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-7.png" alt=""></span>
+            <figcaption><b>第 7 关 · 全手动</b><i>阈值 + 自由上色</i></figcaption>
+          </figure>
+
+          <p class="tail">从认识灰度到自己全部上手，<br>第 8 关集齐了所有前置概念</p>
+
+          <svg id="chainLine" aria-hidden="true"></svg>
+          <div id="noteLayer" aria-hidden="true"></div>
+        </div>
+
+        <div class="track" id="trackL">
+          <figure class="st hub" data-lv="8">
+            <span class="tag">起点</span>
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-8.png" alt=""></span>
+            <figcaption><b>第 8 关 · 综合</b><i>还是那个第 8 关</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="9">
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-9.png" alt=""></span>
+            <figcaption><b>第 9 关 · 删掉太阳</b><i>阈值拖出轴外</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="10">
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-10.png" alt=""></span>
+            <figcaption><b>第 10 关 · 去墨渍</b><i>墨色并进纸色</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="11">
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-11.png" alt=""></span>
+            <figcaption><b>第 11 关 · 去树枝</b><i>只留下人</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="12">
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-12.png" alt=""></span>
+            <figcaption><b>第 12 关 · 去印章</b><i>复用第 9 关的解法</i></figcaption>
+          </figure>
+          <figure class="st" data-lv="13">
+            <span class="st-thumb"><img class="px" src="../grayrepair/素材/level-13.png" alt=""></span>
+            <figcaption><b>第 13 关 · 修复旧照</b><i>补回更深的色</i></figcaption>
+          </figure>
+          <figure class="st finale">
+            <span class="fin-seal">结果</span>
+            <b>一个念头，<br>倒推成 13 关</b>
+            <svg class="fin-line" viewBox="0 0 240 14" width="240" height="14" fill="none" aria-hidden="true">
+              <path d="M4 9 C 52 3, 108 12, 168 6 S 224 4, 236 8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <i>1–7 关前置 · 8 关枢纽 · 9 关是 8 的变体 · 10–13 关真实修理</i>
+          </figure>
+        </div>
+
+        <div id="link"><span>枢纽 · 还是第 8 关</span></div>
+      </div>
+
+      <div class="ext-note" id="extNote" aria-hidden="true">
+        <p class="ext-main">再往外：这套机制在现实里能修什么？</p>
+        <svg id="extArrow" aria-hidden="true"></svg>
+        <p class="ext-sub">从教概念到做真实任务；修成什么样由玩家自己推断</p>
+      </div>
+
+      <div class="rail-hud">
+        <span class="phase" id="phase">① 从第 8 关倒推到第 1 关</span>
+        <span class="bar"><b id="barFill"></b></span>
+      </div>
+     </div>
+    </div>
+  </section>
+
+  <section class="sec sec-wide" id="levels-detail">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">06</span>
+      <div>
+        <p class="sec-en">逐关详解</p>
+        <h2>逐关详解</h2>
+      </div>
+    </div>
+    <p class="sec-lead">每关最多引入一个新操作或新概念。下面按组说清三件事：教什么、为什么这么设计、试玩之后改了什么。</p>
+
+    <div class="lvg rv">
+      <div class="lvg-head">
+        <h3 class="lvg-title">第 1 关<span>认识灰度</span></h3>
+      </div>
+      <div class="lvg-media">
+        <figure class="shot">
+          <div class="shot-img"><img class="px" src="../grayrepair/素材/level-1.png" alt="Level 1 screen"></div>
+          <figcaption>第 1 关 · 单像素 · 滑块</figcaption>
+        </figure>
+      </div>
+      <div class="lv-txt">
+        <div class="lv-card">
+          <p class="lbl">玩法</p>
+          <p>拖滑块改变右侧方块的灰度；松手时比对两边，和左图一致即通关。</p>
+        </div>
+        <div class="lv-card is-note">
+          <p class="lbl">设计思路</p>
+          <p>这一关来自那位朋友的困惑。我最初想做的是后来的第 8 关：一张图、几个阈值、一整套自由颜色，旁边还配着文字说明，结果他看不懂屏幕。那次试玩定下了一条标准： <mark>完全新手只靠自己玩就得能通关</mark>.</p>
+          <p>第 1 关是从这条标准往回走的第一步：用最简单的图让人看见灰度是什么。整张图只有一个像素，唯一能做的是拖滑块，右边方块的深浅跟着手柄走。</p>
+        </div>
+        <aside class="iter">
+          <p class="iter-head"><span class="iter-tag">迭代</span><em>试玩后调整</em></p>
+          <p>最初这关有个接近提示：滑块快到正确灰度时屏幕会发光。试玩发现玩家只是把滑块在轴上一路划过去，提示一亮就松手——通关里完全没有比较和判断。</p>
+          <p class="chg">于是改成松手才判定，失败时滑块弹回：玩家得先比较两个灰度，再决定往哪边走。</p>
+        </aside>
+      </div>
+    </div>
+
+    <div class="lvg flip rv">
+      <div class="lvg-head">
+        <h3 class="lvg-title">第 2 关<span>认识像素</span></h3>
+      </div>
+      <div class="lvg-media">
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-02.gif" alt="第 2 关，动态图"></div>
+          <figcaption>第 2 关 · 5×5 像素 · 逐个修正</figcaption>
+        </figure>
+      </div>
+      <div class="lv-txt">
+        <div class="lv-card">
+          <p class="lbl">玩法</p>
+          <p>点一个像素，滑块跳到它的灰度；把不对的逐个改回来即可通关。</p>
+        </div>
+        <div class="lv-card is-note">
+          <p class="lbl">设计思路</p>
+          <p>把上一关的单个像素长成一张 5×5 的图；要教的是：图是由像素组成的。</p>
+        </div>
+        <aside class="iter">
+          <p class="iter-head"><span class="iter-tag">迭代</span><em>试玩后调整</em></p>
+          <p>试玩发现玩家没意识到像素可以点，还沿用第 1 关的习惯去拖滑块，画面毫无反应。</p>
+          <p class="chg">于是这一关开局就预先选中一个错像素：在操作图上把那一格框出来，让玩家知道像素是可以选的。要么注意到框，要么拖动时发现那个像素在变，两条路都能教会这个操作。</p>
+        </aside>
+      </div>
+    </div>
+
+    <div class="lvg rv">
+      <div class="lvg-head">
+        <h3 class="lvg-title">第 3–4 关<span>颜色映射</span></h3>
+      </div>
+      <div class="lvg-media two">
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-03.gif" alt="第 3 关，动态图"></div>
+          <figcaption>第 3 关 · 四色映射 · 阈值固定</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-04.gif" alt="第 4 关，动态图"></div>
+          <figcaption>第 4 关 · 蒙德里安 · 灰度×映射同时用</figcaption>
+        </figure>
+      </div>
+      <div class="lv-txt">
+        <div class="lv-card">
+          <p class="lbl">玩法</p>
+          <p><b>第 3 关</b>：把每个色块拖到轴上预先分好的那一段；落在这一段里的像素都会变成该颜色，所有段都对上即通关。</p>
+          <p><b>第 4 关</b>：画面变成一幅蒙德里安。目标图里有两个黄色像素在灰度视图中看不见，得把它们找回来。</p>
+        </div>
+        <div class="lv-card is-note">
+          <p class="lbl">设计思路</p>
+          <p><b>第 3 关</b> 故意把阈值固定住。前两关里，滑块位置代表一个像素的值；阈值是把整条轴切成区间的分界，同样的位置含义就变了。分界先画好，玩家一次只处理一层新关系——一段灰度对一个颜色；动分界留到第 5 关。</p>
+          <p><b>第 4 关</b> 把灰度调整和颜色映射摆到同一张桌子上。两个黄色像素和背景灰度相同，在灰度视图里是看不见的。故意让它们隐形、而不是显示成一种错颜色：错颜色会把玩家赶回映射条反复试，而隐形像素把问题从映射那一头指向灰度。这里还会遇到一条贯穿全游戏的规则：灰度相同的像素必须共享一种颜色，所以想让这两格变黄，只能先改它们的灰度。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lvg flip rv">
+      <div class="lvg-head">
+        <h3 class="lvg-title">第 5–7 关<span>阈值，一步一步来</span></h3>
+      </div>
+      <div class="lvg-media multi">
+        <figure class="shot">
+          <div class="shot-img"><img class="px" src="../grayrepair/素材/level-5.png" alt="Level 5 screen"></div>
+          <figcaption>第 5 关 · 双色阈值 · 第一次拖动</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-img"><img class="px" src="../grayrepair/素材/level-6.png" alt="Level 6 screen"></div>
+          <figcaption>第 6 关 · 雾中月牙 · 两个阈值</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-07.gif" alt="第 7 关，动态图"></div>
+          <figcaption>第 7 关 · 雾中心形 · 自由上色</figcaption>
+        </figure>
+      </div>
+      <div class="lv-txt">
+        <div class="lv-card">
+          <p class="lbl">玩法</p>
+          <p><b>第 5 关</b>：一个阈值、两个色块，而且第一次两样都由玩家自己摆、自己拖。</p>
+          <p><b>第 6 关</b>：要把月牙那一层灰度从雾和背景之间切出来，后两者随后显示为同一种颜色。</p>
+          <p><b>第 7 关</b>：和第 6 关一样的雾中心形，但这次颜色一个都没预先摆好。</p>
+        </div>
+        <div class="lv-card is-note">
+          <p class="lbl">设计思路</p>
+          <p>这一组的递进全在阈值上：第 5 关第一次拖，只给两种颜色把负担压低；第 6 关多一个阈值，同时把颜色预先摆好来找平；第 7 关阈值数量不变，把上色交回给玩家。</p>
+        </div>
+        <aside class="quote-note">
+          <p class="q-tag">设计细节</p>
+          <p>第 5 关里两个色块故意按正确顺序的反序摆放，玩家没法从左到右一放了事、跳过“阈值两侧各取一种颜色”这层意思；放反了会得到一张颜色对调的图，得自己看出来再换回来。</p>
+        </aside>
+      </div>
+    </div>
+
+    <div class="lvg rv">
+      <div class="lvg-head">
+        <h3 class="lvg-title">第 8–9 关<span>综合与运用</span></h3>
+      </div>
+      <div class="lvg-media two">
+        <figure class="shot">
+          <div class="shot-img"><img class="px" src="../grayrepair/素材/level-8.png" alt="Level 8 screen"></div>
+          <figcaption>第 8 关 · 综合 · 四个阈值、五个色块</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-09.gif" alt="第 9 关，动态图"></div>
+          <figcaption>第 9 关 · 删掉太阳 · 阈值拖出轴外</figcaption>
+        </figure>
+      </div>
+      <div class="lv-txt">
+        <div class="lv-card">
+          <p class="lbl">玩法</p>
+          <p><b>第 8 关</b>：这里同样没有预置颜色，每个阈值和色块都得玩家自己设。</p>
+          <p><b>第 9 关</b>：场景和第 8 关一样，但目标图里没有太阳；怎么把太阳去掉由玩家自己想。</p>
+        </div>
+        <div class="lv-card is-note">
+          <p class="lbl">设计思路</p>
+          <p>第 8 关是综合：前 7 关的所有机制，放在更大、颜色更多的图上。为了不让它变成纯体力活，其它地方都松一手——色块已经按答案顺序摆好，只有阈值起始位置是错的。</p>
+          <p>第 9 关是第 8 关的变体：答案仍在左边，但不能靠逐像素照抄做出来。照第 8 关的画法，太阳会留在画面里；唯一的解法是把天空与太阳之间的阈值一直拖过轴的最右端，让太阳那段灰度并进天空的颜色。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lvg flip rv">
+      <div class="lvg-head">
+        <h3 class="lvg-title">第 10–13 关<span>真实修理任务</span></h3>
+      </div>
+      <div class="lvg-media multi">
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-10.gif" alt="第 10 关，动态图"></div>
+          <figcaption>第 10 关 · 沾了墨的信</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-11.gif" alt="第 11 关，动态图"></div>
+          <figcaption>第 11 关 · 被树枝挡住的人像</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-12.gif" alt="第 12 关，动态图"></div>
+          <figcaption>第 12 关 · 盖了日期的海景</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="../grayrepair/素材/level-13.gif" alt="第 13 关，动态图"></div>
+          <figcaption>第 13 关 · 褪色的旧照</figcaption>
+        </figure>
+      </div>
+      <div class="lv-txt">
+        <div class="lv-card is-note">
+          <p class="lbl">设计思路</p>
+          <p>这四关把前面的概念接到真实用途上。我找了照片修复里的实际情形：翻新旧照片、去水印、修人像。真实手法复杂得多，但抽象下来就是游戏里教的这件事： <mark>把不对的颜色换成你想要的颜色</mark>.</p>
+          <p>这几关最初是按前面的样子起草的，目标图完整摆出来。那样屏幕上会出现三张图——目标图、待修原图、灰度图——打破从第 1 关保持至今的双图布局。为了守住布局，目标颜色不再作为答案给出，改用一句提示点到为止，要修成什么样由玩家推断。设计因此保持统一，通关也多了一步推理。</p>
+        </div>
+        <div class="scene-row">
+          <div class="scene-card"><p class="scene-en">“糟了，墨渍。”</p><p class="scene-zh">沾了墨的信</p></div>
+          <div class="scene-card"><p class="scene-en">“只留她。”</p><p class="scene-zh">被树枝挡住的人像</p></div>
+          <div class="scene-card"><p class="scene-en">“谁盖的水印？”</p><p class="scene-zh">盖了日期戳的海景</p></div>
+          <div class="scene-card"><p class="scene-en">“一张褪色的旧照片。”</p><p class="scene-zh">褪色的旧照</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="notes">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">07</span>
+      <div>
+        <p class="sec-en">心得</p>
+        <h2>心得</h2>
+      </div>
+    </div>
+
+    <p class="creed-lead rv">关卡设计一直朝着几件事使劲：</p>
+    <div class="creed rv">
+      <article>
+        <p class="cr-no">01</p>
+        <h3>元素统一</h3>
+        <p>灰度、阈值、映射都在同一条轴上；四种操作从第 1 关用到最后；屏幕上永远不超过两张图。</p>
+      </article>
+      <article>
+        <p class="cr-no">02</p>
+        <h3>不用文字教学</h3>
+        <p>全程没有文字教学：规则放在每关的起始状态里，等玩家玩出来；概念的名字留到通关后的短注里才给。</p>
+      </article>
+      <article>
+        <p class="cr-no">03</p>
+        <h3>难度曲线平缓</h3>
+        <p>难度一级一级往上：新概念进来时，别的地方就松一手找平；每关只建立在前一关教过的东西上。</p>
+      </article>
+    </div>
+
+    <div class="note-rows">
+      <div class="note-row rv">
+        <blockquote>设计很少一次就成型，<br>先做你已经看清楚的那部分。</blockquote>
+        <p>这个项目印证了一种做法：第 8 关比任何一关都先在脑子里成形，前面的关往基础拆，后面的关往综合长。做出来的东西会变成线索，从已有部分里找到的规律和逻辑被用到下一关，整体结构就是这样长出来的。</p>
+      </div>
+      <div class="note-row rv">
+        <blockquote>有时线索以约束的形式出现，<br>而约束本身就是亮点。</blockquote>
+        <p>第 10–13 关就是例子：守住双图布局就放不下目标图，正是这个约束催生了用提示句代替答案，每次通关都多一步推断。元素统一是我一开始就想要的东西，但起初并不知道怎么守住；方法是在对着已有的一关关反复想的过程中才清楚的。</p>
+      </div>
+      <div class="note-row rv">
+        <blockquote>假设你是第一次玩这个游戏：<br>你会怎么想，会在哪里卡住？</blockquote>
+        <p>整个项目里有一条一直没变的习惯：站在玩家那一边想。不默认自己觉得当然的读法别人也觉得当然。凡是自己觉得“这还用想”的地方，都重新当成玩家可能卡住的位置检查一遍，而这些位置恰恰就是后来迭代修掉的。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-wide" id="play">
+    <div class="sec-head">
+      <span class="sec-ghost mono" aria-hidden="true">08</span>
+      <div>
+        <p class="sec-en">开始试玩</p>
+        <h2>试玩</h2>
+      </div>
+    </div>
+    <div class="play-frame-wrap rv">
+      <iframe class="play-frame" src="https://jesse20050324.github.io/dip-game/game/blue/index.html" title="The Gray Workshop — full game" loading="lazy"></iframe>
+    </div>
+    <p class="play-alt mono">如果内嵌播放不正常， <a href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">在新标签页打开 →</a></p>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <p class="mono">灰度修理铺 — 个人项目页</p>
+</footer>
+
+<script>
+(() => {
+  const bar = document.getElementById('progress');
+  const links = [...document.querySelectorAll('.site-nav a')];
+  const secs = links
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  function onScroll() {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (Math.min(1, scrollY / Math.max(1, h)) * 100) + '%';
+    const mid = scrollY + innerHeight * 0.32;
+    let cur = null;
+    secs.forEach(s => { if (s.offsetTop <= mid) cur = s; });
+    links.forEach(a => a.classList.toggle('active', cur && a.getAttribute('href') === '#' + cur.id));
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  onScroll();
+})();
+
+(() => {
+  const els = document.querySelectorAll('.rv');
+  if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+  els.forEach(e => io.observe(e));
+})();
+
+(() => {
+  const wrap = document.getElementById('guideWrap');
+  const canvas = document.getElementById('guideCanvas');
+  if (!wrap || !canvas) return;
+  function fit() {
+    const k = Math.min(1, wrap.clientWidth / 1600);
+    canvas.style.transform = `scale(${k})`;
+    wrap.style.height = (canvas.offsetHeight * k) + 'px';
+  }
+  addEventListener('resize', fit);
+  addEventListener('load', fit);
+  fit();
+})();
+
+(() => {
+  const wrap  = document.getElementById('levels-rail');
+  const stage = wrap.querySelector('.rail-stage');
+  const fit   = document.getElementById('railFit');
+  const cam   = document.getElementById('cam');
+  const tU    = document.getElementById('trackU');
+  const tL    = document.getElementById('trackL');
+  const link  = document.getElementById('link');
+  const extNote = document.getElementById('extNote');
+  const phaseEl = document.getElementById('phase');
+  const barFill = document.getElementById('barFill');
+  const cardsU = [...tU.querySelectorAll('.st')];
+  const cardsL = [...tL.querySelectorAll('.st')];
+  const chainU = cardsU.filter(c => !c.classList.contains('hub'));
+  const chainL = cardsL.filter(c => !c.classList.contains('hub'));
+  const chainSvg = document.getElementById('chainLine');
+  const noteLayer = document.getElementById('noteLayer');
+  const noteMap = new Map();
+
+  const camShiftVH = -19;
+  let M = null, wrapTop = 0;
+
+  function relocateNotes() {
+    const k = M ? M.scale : 1;
+    const layerLeft = noteLayer.getBoundingClientRect().left;
+    cardsU.forEach(c => {
+      const n = c.querySelector('.lvnote') || noteMap.get(c);
+      if (!n) return;
+      if (n.parentElement !== noteLayer) noteLayer.appendChild(n);
+      const r = c.getBoundingClientRect();
+      n.style.left = ((r.left - layerLeft) / k + r.width / k / 2) + 'px';
+      noteMap.set(c, n);
+    });
+  }
+
+  function buildChainLine() {
+    const chain = [...tU.querySelectorAll('.st[data-lv]')].filter(c => +c.dataset.lv < 8);
+    if (!chain.length) return;
+    const pts = chain.map(c => ({ x: c.offsetLeft + c.offsetWidth / 2, y: 12 }));
+    const P = [{ x: pts[0].x - 150, y: 20 }, ...pts, { x: pts[pts.length - 1].x + 110, y: 16 }];
+    let d = `M ${P[0].x} ${P[0].y}`;
+    for (let i = 1; i < P.length; i++) {
+      const a = P[i - 1], b = P[i], w = i % 2 ? 7 : -7;
+      d += ` C ${(a.x + (b.x - a.x) * .4).toFixed(1)} ${a.y + w}, ${(b.x - (b.x - a.x) * .4).toFixed(1)} ${b.y - w}, ${b.x} ${b.y}`;
+    }
+    const W = Math.ceil(P[P.length - 1].x + 40);
+    const svgH = chainSvg.offsetHeight || 30;
+    chainSvg.setAttribute('viewBox', `0 0 ${W} ${svgH}`);
+    chainSvg.setAttribute('width', W);
+    chainSvg.innerHTML = `<path d="${d}"/>` + pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="3.5"/>`).join('');
+  }
+
+  const RAIL_DEF = {
+    noteH: 27,
+    dnGap: 22,
+    upGap: 40,
+    upSize: 25,
+    gapV:  20,
+    gapU:  93,
+    gapL:  131,
+    amp:   .3,
+    maxW:  440,
+    headPad: 56,
+  };
+  function railConfig() {
+    return Object.assign({}, RAIL_DEF);
+  }
+
+  function measure() {
+    const stageH = stage.clientHeight;
+    const stageW = stage.clientWidth;
+    const Hv = Math.max(stageH, 1016);
+    const s  = stageH / Hv;
+    const Wv = stageW / s;
+    fit.style.width  = Wv + 'px';
+    fit.style.height = Hv + 'px';
+    fit.style.transform = 'scale(' + s.toFixed(4) + ')';
+
+    const jv   = Wv * .5;
+    const head = wrap.querySelector('.rail-head');
+    const headBottom = head.offsetTop + head.offsetHeight;
+    const R = railConfig();
+    const st = document.documentElement.style;
+    st.setProperty('--rail-gap-u', R.gapU + 'px');
+    st.setProperty('--rail-gap-l', R.gapL + 'px');
+    let stW = Math.min(R.maxW, Math.max(236, Math.round(Wv * .19)));
+    let cardH = 0, hubH = 0, tuTop = 0, tlTop = 0, bandTop = 0, dnTopD = 0, chainSvgTop = 0;
+    for (let i = 0; i < 24; i++) {
+      document.documentElement.style.setProperty('--st-w', stW + 'px');
+      cardH = tU.querySelector('.st:not(.hub)').offsetHeight;
+      hubH  = tU.querySelector('.hub').offsetHeight;
+      const rise = R.amp * cardH * .92;
+      const D = rise + R.noteH;
+      const dnH = R.upSize * 1.4, upH = R.upSize * 1.4;
+      dnTopD = D + dnH;
+      chainSvgTop = dnTopD + R.dnGap + 12;
+      bandTop = dnTopD + R.dnGap + R.upGap + upH;
+      tuTop = Math.max(headBottom + R.headPad + bandTop, Math.round(Hv * .20));
+      tlTop = tuTop + Math.max(cardH, hubH) + R.gapV;
+      if (tlTop + cardH <= Hv - 18 || stW <= 200) break;
+      stW -= 6;
+    }
+    document.documentElement.style.setProperty('--rail-up', bandTop + 'px');
+    document.documentElement.style.setProperty('--rail-dn', dnTopD + 'px');
+    document.documentElement.style.setProperty('--rail-chain', chainSvgTop + 'px');
+    document.documentElement.style.setProperty('--rail-up-size', R.upSize + 'px');
+    const slack = Hv - 18 - (tlTop + cardH);
+    if (slack > 0) { tuTop += Math.round(slack * .5); tlTop += Math.round(slack * .5); }
+
+    tU.style.top = tuTop + 'px';
+    tL.style.top = tlTop + 'px';
+
+    const hubU = tU.querySelector('.hub');
+    const hubL = tL.querySelector('.hub');
+    const lastU = [...tU.querySelectorAll('.st')].pop();
+    const last  = tL.querySelector('.finale');
+    const cU = hubU.offsetLeft + hubU.offsetWidth / 2;
+    const cL = hubL.offsetLeft + hubL.offsetWidth / 2;
+    const cF = lastU.offsetLeft + lastU.offsetWidth / 2;
+    const cE = last.offsetLeft + last.offsetWidth / 2;
+    M = {
+      vh: Hv, vw: Wv, jx: jv, scale: s, tuTop, tlTop, amp: R.amp, bandTop,
+      rise: R.amp * cardH * .92,
+      segU: cF - cU,
+      segV: Math.round(Hv * .45),
+      segL: (jv - cL) - (jv - cE),
+      u0: jv - cU, u1: jv - cF, l0: jv - cL, l1: jv - cE,
+      camY: Math.round(Hv * camShiftVH / 100),
+      liftY: Math.round(Hv * .11),
+    };
+    M.total = M.segU + M.segV + M.segL;
+    wrap.style.height = (stageH + M.total * s) + 'px';
+
+    link.style.left = jv + 'px';
+    const linkTop = tuTop + hubU.offsetHeight + 13;
+    link.style.top  = linkTop + 'px';
+    link.style.height = Math.max(6, tlTop - linkTop - 3) + 'px';
+
+    wrapTop = wrap.getBoundingClientRect().top + scrollY;
+    buildChainLine();
+    relocateNotes();
+    buildExtArrow();
+    const band3Top = tlTop + M.camY - M.liftY - M.rise;
+    extNote.style.top = Math.max(headBottom + 16,
+      Math.round(band3Top - extNote.offsetHeight - 30)) + 'px';
+    link.querySelector('span').style.display = R.gapV < 34 ? 'none' : '';
+    setTimeout(() => {
+      buildChainLine();
+      relocateNotes();
+      buildExtArrow();
+    }, 50);
+  }
+
+  function buildExtArrow() {
+    const svg = document.getElementById('extArrow');
+    const w = Math.max(220, Math.round(svg.getBoundingClientRect().width / (M ? M.scale : 1)));
+    const h = 54, mid = 27, tip = w - 2;
+    let d = `M 4 ${mid}`;
+    const seg = 130;
+    for (let x = 4; x < tip - 40; x += seg) {
+      const w1 = (Math.round(x / seg) % 2 ? -6 : 6);
+      const nx = Math.min(x + seg, tip - 40);
+      d += ` C ${(x + seg * .33).toFixed(1)} ${mid - w1}, ${(x + seg * .67).toFixed(1)} ${mid + w1}, ${nx} ${mid}`;
+    }
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.setAttribute('width', w);
+    svg.setAttribute('height', h);
+    svg.innerHTML = `<path d="${d}" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>`
+      + `<path d="M ${tip - 36} ${mid - 14} L ${tip} ${mid} L ${tip - 36} ${mid + 14} Z" fill="currentColor"/>`;
+  }
+
+  function centerScale(cards, trackX) {
+    const fx = M.jx;
+    const plateau = M.vw * .085;
+    const range   = M.vw * .115;
+    cards.forEach(c => {
+      const cx = trackX + c.offsetLeft + c.offsetWidth / 2;
+      const d = Math.abs(cx - fx);
+      const k = d <= plateau ? 1 : Math.max(0, 1 - (d - plateau) / range);
+      const s = 1 + (M.amp || .15) * k;
+      if (!c.classList.contains('hub')) {
+        c.style.transform = k > 0 ? `scale(${s.toFixed(3)})` : '';
+      }
+      const note = noteMap.get(c);
+      if (note) note.style.opacity = (.3 + .7 * k).toFixed(2);
+    });
+  }
+
+  function highlight(cards, on) {
+    let best = null, bd = 1e9;
+    const fx = innerWidth * .5;
+    cards.forEach(c => {
+      const r = c.getBoundingClientRect();
+      if (r.right < 0 || r.left > innerWidth) return;
+      const d = Math.abs(r.left + r.width / 2 - fx);
+      if (d < bd) { bd = d; best = c; }
+    });
+    cards.forEach(c => c.classList.toggle('live', on && c === best));
+  }
+
+  let lastY = -1;
+
+  function frame() {
+    if (!M) { requestAnimationFrame(frame); return; }
+    if (Math.abs(scrollY - lastY) >= .5 || lastY < 0) {
+      lastY = scrollY;
+      const sc = Math.max(0, Math.min(scrollY - wrapTop, M.total * M.scale));
+      const s = sc / M.scale;
+      const { segU, segV, segL } = M;
+      if (s < segU) {
+        tU.style.transform = `translateX(${M.u0 - s}px)`;
+        tU.style.opacity = 1;
+        cam.style.transform = 'translateY(0)';
+        tL.style.transform = `translateX(${M.l0}px)`;
+        tL.classList.add('ghost');
+        tL.style.opacity = '';
+        link.style.opacity = Math.max(0, 1 - s / (segU * .18));
+        extNote.style.opacity = 0;
+        phaseEl.textContent = '① Working back · levels 1–7';
+        centerScale(chainU, M.u0 - s);
+        highlight(cardsU, true); highlight(cardsL, false);
+      } else if (s < segU + segV) {
+        const t = (s - segU) / segV;
+        const rise = -M.camY * t;
+        tU.style.transform = `translateX(${M.u1}px)`;
+        tU.style.opacity = Math.max(0, 1 - rise / 90);
+        cam.style.transform = `translateY(${-rise}px)`;
+        tL.classList.remove('ghost');
+        tL.style.transform = `translateX(${M.l0}px)`;
+        tL.style.opacity = .55 + .45 * t;
+        link.style.opacity = 0;
+        extNote.style.opacity = 0;
+        phaseEl.textContent = '② Turning to extensions';
+        highlight(cardsU, false); highlight(cardsL, false);
+      } else {
+        const k = s - segU - segV;
+        const lift = M.liftY * Math.min(1, k / (segL * .18));
+        tL.classList.remove('ghost');
+        tL.style.transform = `translateX(${M.l0 - k}px) translateY(${(-lift).toFixed(1)}px)`;
+        tL.style.opacity = 1;
+        cam.style.transform = `translateY(${M.camY}px)`;
+        tU.style.opacity = 0;
+        link.style.opacity = 0;
+        extNote.style.opacity = Math.min(1, k / (segL * .12));
+        phaseEl.textContent = '③ Extending L8 → L13';
+        centerScale(chainL, M.l0 - k);
+        highlight(cardsL, true); highlight(cardsU, false);
+      }
+      barFill.style.width = (s / M.total * 100) + '%';
+    }
+    requestAnimationFrame(frame);
+  }
+
+  addEventListener('resize', () => { M = null; lastY = -1; measure(); });
+  addEventListener('load', measure);
+  measure();
+  requestAnimationFrame(frame);
+})();
+
+</script>
+
+
+</body>
+</html>
