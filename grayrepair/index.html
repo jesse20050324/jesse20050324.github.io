@@ -114,17 +114,17 @@ mark, .mark {
 }
 .hero .title {
   font-weight: 900;
-  font-size: clamp(2.5rem,4.4vw,5.15rem);
+  font-size: clamp(2.5rem,4.65vw,5.45rem);
   letter-spacing: -.015em; line-height: 1.14;
   text-shadow: 0 5px 0 #f1f7fb, 0 9px 0 rgba(18,33,51,.2);
   margin-bottom: 34px;
 }
-.hero .facts { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px 6px; list-style: none; }
+.hero .facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px 6px; list-style: none; }
 .hero .facts li {
-  display: flex; align-items: baseline; gap: 8px;
+  display: flex; align-items: baseline; gap: 6px;
   background: var(--card); border: 2px solid var(--ink); border-radius: 8px;
   box-shadow: 0 2px 0 var(--shadow);
-  padding: 5px 10px; font-size: var(--portfolio-meta-size); font-weight: 600; letter-spacing: .02em;
+  padding: 4px 8px; font-size: calc(var(--portfolio-meta-size) - 1px); font-weight: 600; letter-spacing: .02em;
 }
 .hero .facts b { font-weight: 700; color: var(--accent-deep); letter-spacing: .14em; }
 .hero .overview { max-width: 54ch; margin: 0 0 24px 6px; }
@@ -628,7 +628,7 @@ p { color: var(--ink-soft); }
     width:1440px; max-width:none; margin-inline:auto; zoom:var(--cover-scale,1);
   }
   .hero.fit-cover .b-grid { grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:80px; }
-  .hero.fit-cover .title { font-size:5.15rem; }
+  .hero.fit-cover .title { font-size:5.45rem; }
   .hero.fit-cover .overview p { font-size:1.125rem; }
 </style>
 </head>
@@ -663,8 +663,8 @@ p { color: var(--ink-soft); }
         </ul>
         <div class="overview rv" style="--d:.2s">
           <h2>Project at a glance</h2>
-          <p>A photo-repair puzzle game: you run a small grayscale repair shop, and every job that comes in is a photo with its colors stripped away. You get exactly four moves—tap pixels, drag sliders, drag thresholds, drag color chips—and use them to bring each photo back, step by step. Thirteen levels, from recognizing gray to putting it all together.</p>
-          <p>What makes it unusual: there is not a single line of tutorial text anywhere. The rules live inside the level design, and players work them out by playing.</p>
+          <p>Restore grayscale photos using just four moves across thirteen puzzle levels.</p>
+          <p>Each level teaches through play, without tutorial text.</p>
         </div>
         <div class="hero-cta rv" style="--d:.3s">
           <a class="btn-play" href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">
