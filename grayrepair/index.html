@@ -630,6 +630,9 @@ p { color: var(--ink-soft); }
   .hero.fit-cover .b-grid { grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:80px; }
   .hero.fit-cover .title { font-size:5.45rem; }
   .hero.fit-cover .overview p { font-size:1.125rem; }
+  @media (max-height:640px) {
+    .hero.fit-cover { padding-top:18px; padding-bottom:56px; }
+  }
 </style>
 </head>
 <body>
@@ -663,8 +666,8 @@ p { color: var(--ink-soft); }
         </ul>
         <div class="overview rv" style="--d:.2s">
           <h2>Project at a glance</h2>
-          <p>Restore grayscale photos using just four moves across thirteen puzzle levels.</p>
-          <p>Each level teaches through play, without tutorial text.</p>
+          <p>A photo-repair puzzle game. Every job that comes in is a photo with its colors stripped away. You get exactly four moves and use them to bring each photo back, step by step. Thirteen levels, from recognizing gray to putting it all together.</p>
+          <p>What makes it unusual: there is not a single line of tutorial text anywhere. The rules live inside the level design, and players work them out by playing.</p>
         </div>
         <div class="hero-cta rv" style="--d:.3s">
           <a class="btn-play" href="https://jesse20050324.github.io/dip-game/game/blue/index.html" target="_blank" rel="noopener">
