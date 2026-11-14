@@ -185,14 +185,15 @@
   .title-art { max-width:none; }
   .lead { margin:12px 0 0; max-width:none; }
   .meta { margin-top:12px; }
-  .tag { border-style:solid; border-color:var(--edge); border-radius:4px; }
+  .tag { border-style:solid; border-color:var(--edge); border-radius:4px; background:var(--light); }
+  .tag b { margin-inline-end:.3em; }
   .cta {
-    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    display:grid; justify-items:start;
     gap:10px; padding-top:16px; margin-top:18px; border-top:1px solid var(--edge);
   }
   .cta .btn {
     display:flex; gap:.3em; align-items:center; justify-content:center; text-align:center;
-    min-height:46px; padding:8px 6px; font-size:clamp(.78rem, 1.15vw, .94rem);
+    min-height:46px; padding:8px 16px; border-width:2px; font-size:clamp(.78rem, 1.15vw, .94rem);
   }
   [data-theme="notebook"] .hero { --rule-ink:#5c7f9c26; }
   [data-theme="warm-notebook"] .hero { --rule-ink:#98724730; }
@@ -203,6 +204,9 @@
   @media (max-width:700px) {
     .hero-grid { grid-template-columns:minmax(0,1fr); }
     .hero-art { width:100%; justify-self:center; }
+  }
+  @media (min-width:701px) and (min-height:800px) {
+    .hero-copy { transform:translateY(-18px); }
   }
 </style>
 </head>
@@ -240,15 +244,14 @@
   <div class="hero-grid">
     <div class="hero-copy">
       <h1><img class="title-art" src="hand-drawn-title.webp" width="1400" height="746" alt="Stationery Fantasy" fetchpriority="high"></h1>
-      <p class="lead">A three-level side-scrolling shoot 'em up built in Unity.</p>
+      <p class="lead">In this three-level side-scrolling shoot ’em up, you fly a plane built from stationery and use its parts as weapons. Defeated enemies take on new forms: an eraser attack, for example, turns a tangle of anxiety into a lightbulb. The three levels follow a child from correcting mistakes on tests to confronting self-doubt and outside expectations.</p>
       <div class="meta">
-        <span class="tag">2026</span>
-        <span class="tag">Independent personal project</span>
-        <span class="tag">Unity</span>
+        <span class="tag"><b>Platform</b> PC (Unity)</span>
+        <span class="tag"><b>Development</b> Apr–Jun 2026</span>
+        <span class="tag"><b>Type</b> Independent project</span>
       </div>
       <div class="cta">
         <a class="btn primary" href="https://youtu.be/R7B-a1l2xzg" target="_blank" rel="noopener">Watch gameplay video <span class="external-arrow">↗</span></a>
-        <a class="btn" href="/">Back to portfolio</a>
       </div>
     </div>
     <figure class="hero-art">
