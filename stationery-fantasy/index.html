@@ -182,8 +182,9 @@
   }
   .hero-grid { grid-template-columns:minmax(0, 1.23fr) minmax(0, 1fr); gap:clamp(22px, 3.5vw, 56px); }
   .hero-copy h1 { line-height:1; }
-  .title-art { max-width:none; }
-  .lead { margin:12px 0 0; max-width:none; }
+  /* The ink starts about 4.6% in from the image edge. */
+  .title-art { width:110%; max-width:none; margin-inline-start:-5.5%; }
+  .lead { margin:10px 0 0; max-width:49ch; font-size:clamp(1rem,1.28vw,1.125rem); }
   .meta { margin-top:12px; }
   .tag { border-style:solid; border-color:var(--edge); border-radius:4px; background:var(--light); }
   .tag b { margin-inline-end:.3em; }
@@ -206,7 +207,7 @@
     .hero-art { width:100%; justify-self:center; }
   }
   @media (min-width:701px) and (min-height:800px) {
-    .hero-copy { transform:translateY(-18px); }
+    .hero-copy { position:relative; top:-18px; }
   }
 </style>
 </head>
