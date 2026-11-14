@@ -624,6 +624,12 @@ p { color: var(--ink-soft); }
   .sec { overflow-x: clip; }
   .asym-text, .asym-art { min-width: 0; }
 }
+  .hero.fit-cover .b-grid {
+    width:1440px; max-width:none; margin-inline:auto; zoom:var(--cover-scale,1);
+  }
+  .hero.fit-cover .b-grid { grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:80px; }
+  .hero.fit-cover .title { font-size:5.15rem; }
+  .hero.fit-cover .overview p { font-size:1.125rem; }
 </style>
 </head>
 <body>
@@ -1572,5 +1578,6 @@ p { color: var(--ink-soft); }
 </script>
 
 
+<script type="module" src="/portfolio-cover-fit.js"></script>
 </body>
 </html>

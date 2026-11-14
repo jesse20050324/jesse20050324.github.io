@@ -210,6 +210,17 @@
   @media (min-width:701px) and (min-height:800px) {
     .hero-copy { position:relative; top:-18px; }
   }
+  .hero.fit-cover .hero-grid {
+    width:1284px; max-width:none; margin-inline:auto; zoom:var(--cover-scale,1);
+  }
+  .hero.fit-cover .hero-grid { grid-template-columns:minmax(0,1.23fr) minmax(0,1fr); gap:56px; }
+  .hero.fit-cover .lead { font-size:1.125rem; }
+  .hero.fit-cover .cta .btn { font-size:.94rem; }
+  .hero.fit-cover .hero-copy { position:relative; top:-18px; }
+  @media (max-height:740px) {
+    .hero.fit-cover { padding-top:24px; padding-bottom:85px; }
+    .hero.fit-cover .hero-copy { top:0; }
+  }
 </style>
 </head>
 <body>
@@ -467,5 +478,6 @@
 
   showPlane();
 </script>
+<script type="module" src="/portfolio-cover-fit.js"></script>
 </body>
 </html>
