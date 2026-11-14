@@ -13,7 +13,7 @@
 </script>
 <link rel="modulepreload" href="./model-viewer-4.1.0.min.js">
 <link rel="preload" href="./stationery-plane-light.glb" as="fetch" crossorigin>
-<link rel="stylesheet" href="/portfolio-layout.css">
+<link rel="stylesheet" href="/portfolio-layout.css?v=cover-cue">
 <style>
   :root {
     --ink:#2d241a; --muted:#665542; --paper:#f1e2c9; --light:#fff7e6;
@@ -76,13 +76,6 @@
   .btn:hover { background:#ffe1a0; }
   .hero-art { margin:0; min-width:0; }
   .hero-art figcaption { margin:7px 3px 1px; color:var(--muted); font-size:.8125rem; }
-  .continue {
-    position:absolute; bottom:20px; left:50%; transform:translateX(-50%);
-    display:grid; justify-items:center; gap:2px; padding:4px 12px;
-    width:max-content; max-width:95%; text-align:center; font-size:.8125rem; color:#67472a;
-  }
-  .continue:hover { color:#2d241a; text-decoration:underline; }
-  .continue span { font-size:1.375rem; line-height:1; }
   .document { background:#bd9469; }
   .document section { display:flow-root; }
   .document img { display:block; width:100%; height:auto; }
@@ -115,7 +108,7 @@
     background:var(--light); color:var(--ink); font:inherit;
   }
   [data-theme] .nav { background:var(--light); }
-  [data-theme] .continue { color:var(--accent); }
+  .portfolio-scroll-cue { color:var(--accent); }
   [data-theme] .tag, [data-theme] .btn { border-color:var(--line); }
   [data-theme] .btn.primary { background:var(--button); color:var(--button-ink); border-color:var(--accent); }
   [data-theme] .btn:hover { box-shadow:inset 0 0 0 1px currentColor; background:var(--light); color:var(--ink); }
@@ -185,7 +178,8 @@
   .hero-copy h1 { line-height:1; }
   /* The ink starts about 4.6% in from the image edge. */
   .title-art { width:110%; max-width:none; margin-inline-start:-5.5%; }
-  .lead { margin:10px 0 0; max-width:49ch; font-size:var(--portfolio-intro-size); }
+  .lead { margin:14px 0 0; max-width:54ch; font-size:var(--portfolio-intro-size); line-height:1.62; }
+  .lead + .lead { margin-top:.6em; }
   .meta { margin-top:12px; }
   .tag { border-style:solid; border-color:var(--edge); border-radius:4px; background:var(--light); }
   .tag b { margin-inline-end:.3em; }
@@ -195,8 +189,10 @@
   }
   .cta .btn {
     display:flex; gap:.3em; align-items:center; justify-content:center; text-align:center;
-    min-height:46px; padding:8px 16px; border-width:2px; font-size:clamp(.78rem, 1.15vw, .94rem);
+    min-height:50px; padding:10px 20px; border-width:3px; font-size:1rem;
   }
+  .cta .btn.primary { background:var(--button, #d99d45); color:var(--button-ink, #302314); border-color:var(--accent, #775126); }
+  .cta .btn.primary:hover { background:var(--light, #ffe1a0); color:var(--ink, #302314); }
   [data-theme="notebook"] .hero { --rule-ink:#5c7f9c26; }
   [data-theme="warm-notebook"] .hero { --rule-ink:#98724730; }
   :is([data-theme="notebook"], [data-theme="warm-notebook"]) .hero {
@@ -215,7 +211,6 @@
   }
   .hero.fit-cover .hero-grid { grid-template-columns:minmax(0,1.23fr) minmax(0,1fr); gap:56px; }
   .hero.fit-cover .lead { font-size:1.125rem; }
-  .hero.fit-cover .cta .btn { font-size:.94rem; }
   .hero.fit-cover .hero-copy { position:relative; top:-18px; }
   @media (max-height:740px) {
     .hero.fit-cover { padding-top:24px; padding-bottom:85px; }
@@ -257,7 +252,8 @@
   <div class="hero-grid">
     <div class="hero-copy">
       <h1><img class="title-art" src="hand-drawn-title.webp" width="1400" height="746" alt="Stationery Fantasy" fetchpriority="high"></h1>
-      <p class="lead">In this three-level side-scrolling shoot ’em up, you fly a plane built from stationery and use its parts as weapons. Defeated enemies take on new forms: an eraser attack, for example, turns a tangle of anxiety into a lightbulb. The three levels follow a child from correcting mistakes on tests to confronting self-doubt and outside expectations.</p>
+      <p class="lead">In this three-level side-scrolling shoot ’em up, you fly a plane built from stationery and use its parts as weapons. Defeated enemies take on new forms: an eraser attack, for example, turns a tangle of anxiety into a lightbulb.</p>
+      <p class="lead">The three levels follow a child from correcting mistakes on tests to confronting self-doubt and outside expectations.</p>
       <div class="meta">
         <span class="tag"><b>Platform</b> PC (Unity)</span>
         <span class="tag"><b>Development</b> Apr–Jun 2026</span>
@@ -274,7 +270,10 @@
       <figcaption hidden>Stationery plane · Drag to rotate</figcaption>
     </figure>
   </div>
-  <a class="continue" href="#document">Read the design document <span aria-hidden="true">↓</span></a>
+  <a class="portfolio-scroll-cue" href="#document">
+    Read the design document
+    <svg viewBox="0 0 34 21" fill="none" aria-hidden="true"><path d="M4 5l13 10L30 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 </header>
 
 <main class="document" aria-label="Stationery Fantasy design document">

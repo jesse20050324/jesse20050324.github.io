@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Gray Workshop — Game Design Portfolio</title>
 <meta name="description" content="The Gray Workshop: a browser-based puzzle game about photo repair that teaches the basics of digital image processing through play. 13 levels, no text tutorials.">
-<link rel="stylesheet" href="/portfolio-layout.css">
+<link rel="stylesheet" href="/portfolio-layout.css?v=cover-cue">
 <style>
 :root {
   --paper: #cde8fa;
@@ -100,7 +100,7 @@ mark, .mark {
 .hero {
   position: relative;
   min-height: calc(100svh - var(--navh));
-  padding: clamp(28px,5vh,64px) var(--portfolio-gutter) clamp(28px,4vh,48px);
+  padding: clamp(28px,5vh,64px) var(--portfolio-gutter) 80px;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--paper);
   overflow: hidden;
@@ -688,6 +688,10 @@ p { color: var(--ink-soft); }
         </figure>
       </div>
     </div>
+    <a class="portfolio-scroll-cue" href="#video">
+      Explore the project
+      <svg viewBox="0 0 34 21" fill="none" aria-hidden="true"><path d="M4 5l13 10L30 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
   </section>
 
   <section class="sec sec-video" id="video">

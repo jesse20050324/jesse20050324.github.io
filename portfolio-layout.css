@@ -4,3 +4,35 @@
   --portfolio-intro-size: clamp(1rem, 0.85rem + 0.25vw, 1.125rem);
   --portfolio-meta-size: 0.875rem;
 }
+
+.portfolio-scroll-cue {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 14px;
+  display: grid;
+  place-items: center;
+  gap: 3px;
+  width: max-content;
+  margin-inline: auto;
+  padding: 5px 12px;
+  color: inherit;
+  font-size: .8125rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.portfolio-scroll-cue:hover { text-decoration: underline; }
+.portfolio-scroll-cue svg {
+  width: 34px;
+  height: 21px;
+  animation: portfolio-scroll-nudge 2.8s ease-in-out infinite;
+}
+
+@keyframes portfolio-scroll-nudge {
+  0%, 25%, 65%, 100% { transform: translateY(0); }
+  45% { transform: translateY(5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-scroll-cue svg { animation: none; }
+}
