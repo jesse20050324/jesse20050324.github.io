@@ -11,6 +11,8 @@
     if (["desk", "notebook", "sketch", "oat", "warm-notebook"].includes(theme)) document.documentElement.dataset.theme = theme;
   } catch {}
 </script>
+<link rel="modulepreload" href="./model-viewer-4.1.0.min.js">
+<link rel="preload" href="./stationery-plane-light.glb" as="fetch" crossorigin>
 <style>
   :root {
     --ink:#2d241a; --muted:#665542; --paper:#f1e2c9; --light:#fff7e6;
@@ -72,9 +74,6 @@
   .btn.primary { background:#ecc164; border-color:#ad783a; font-weight:650; }
   .btn:hover { background:#ffe1a0; }
   .hero-art { margin:0; min-width:0; }
-  .gameplay {
-    display:block; width:100%; height:auto; border-radius:4px;
-  }
   .hero-art figcaption { margin:7px 3px 1px; color:var(--muted); font-size:.8125rem; }
   .continue {
     position:absolute; bottom:20px; left:50%; transform:translateX(-50%);
@@ -155,7 +154,7 @@
     .theme-picker { order:1; }
     .nav-links { width:100%; order:2; }
   }
-  .plane-stage { position:relative; aspect-ratio:4 / 3; display:grid; align-items:center; border-radius:4px; overflow:hidden; background:var(--light); }
+  .plane-stage { position:relative; aspect-ratio:4 / 3; display:grid; align-items:center; border-radius:4px; overflow:hidden; }
   .plane-stage model-viewer {
     position:absolute; inset:0; width:100%; height:100%; opacity:0;
     background:transparent;
@@ -164,7 +163,9 @@
   .plane-stage[data-ready], .plane-stage[data-ready] model-viewer { background:transparent; }
   .plane-stage[data-ready] model-viewer { opacity:1; touch-action:none; cursor:grab; }
   .plane-stage model-viewer[data-dragging] { cursor:grabbing; }
-  .plane-stage[data-ready] .gameplay { visibility:hidden; }
+  .hero-art figcaption[hidden] { display:block; visibility:hidden; }
+  .plane-status { margin:0; text-align:center; color:var(--muted); font-size:.875rem; }
+  .plane-stage[data-ready] .plane-status { visibility:hidden; }
   .hero-art figcaption { text-align:center; }
   .title-art { display:block; width:100%; max-width:580px; height:auto; mix-blend-mode:multiply; }
   [data-theme="oat"] {
@@ -252,9 +253,9 @@
     </div>
     <figure class="hero-art">
       <div class="plane-stage">
-        <img class="gameplay" fetchpriority="high" src="gameplay.webp" width="828" height="360" alt="The stationery plane flies over a wooden school desk.">
+        <p class="plane-status" role="status">Loading 3D model…</p>
       </div>
-      <figcaption>In-game view</figcaption>
+      <figcaption hidden>Stationery plane · Drag to rotate</figcaption>
     </figure>
   </div>
   <a class="continue" href="#document">Read the design document <span aria-hidden="true">↓</span></a>
@@ -428,10 +429,14 @@
 
   }
 
+  const status = stage.querySelector(".plane-status");
+  const showError = () => { status.textContent = "3D model unavailable. Reload to try again."; };
+
   async function showPlane() {
     try {
       await import("./model-viewer-4.1.0.min.js");
     } catch {
+      showError();
       return;
     }
     const viewer = document.createElement("model-viewer");
@@ -447,27 +452,15 @@
     viewer.addEventListener("load", () => {
       stage.dataset.ready = "";
       viewer.inert = false;
-      stage.querySelector("img").setAttribute("aria-hidden", "true");
-      caption.textContent = "Stationery plane · Drag to rotate";
+      caption.hidden = false;
       enableScreenRotation(viewer);
     }, { once:true });
-    viewer.src = "./stationery-plane.glb?v=soft-light";
+    viewer.addEventListener("error", showError, { once:true });
+    viewer.src = "./stationery-plane-light.glb";
     stage.append(viewer);
   }
 
-  const poster = stage.querySelector("img");
-  poster.decode().catch(() => {}).then(() => {
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver(([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer.disconnect();
-        showPlane();
-      });
-      observer.observe(stage);
-    } else {
-      showPlane();
-    }
-  });
+  showPlane();
 </script>
 </body>
 </html>
