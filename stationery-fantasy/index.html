@@ -13,11 +13,12 @@
 </script>
 <link rel="modulepreload" href="./model-viewer-4.1.0.min.js">
 <link rel="preload" href="./stationery-plane-light.glb" as="fetch" crossorigin>
+<link rel="stylesheet" href="/portfolio-layout.css">
 <style>
   :root {
     --ink:#2d241a; --muted:#665542; --paper:#f1e2c9; --light:#fff7e6;
     --line:#927955; --edge:#92795570; --side-shadow:#38241442; --accent:#7b4220; --nav-height:72px;
-    --column:min(calc(100% - clamp(32px, 8vw, 128px)), 1440px);
+    --column:min(calc(100% - 2 * var(--portfolio-gutter)), var(--portfolio-project-width));
   }
   * { box-sizing:border-box; }
   html { scroll-padding-top:var(--nav-height); scroll-behavior:smooth; }
@@ -69,7 +70,7 @@
   .meta, .cta { display:flex; gap:8px 12px; flex-wrap:wrap; }
   .meta { margin-top:20px; }
   .cta { margin-top:28px; }
-  .tag { border:1px dashed #a78963; padding:3px 9px; font-size:.8125rem; }
+  .tag { border:1px dashed #a78963; padding:3px 9px; font-size:var(--portfolio-meta-size); }
   .btn { display:inline-block; padding:10px 16px; border:1px solid #7e6748; border-radius:5px; font-size:.9375rem; }
   .btn.primary { background:#ecc164; border-color:#ad783a; font-weight:650; }
   .btn:hover { background:#ffe1a0; }
@@ -184,7 +185,7 @@
   .hero-copy h1 { line-height:1; }
   /* The ink starts about 4.6% in from the image edge. */
   .title-art { width:110%; max-width:none; margin-inline-start:-5.5%; }
-  .lead { margin:10px 0 0; max-width:49ch; font-size:clamp(1rem,1.28vw,1.125rem); }
+  .lead { margin:10px 0 0; max-width:49ch; font-size:var(--portfolio-intro-size); }
   .meta { margin-top:12px; }
   .tag { border-style:solid; border-color:var(--edge); border-radius:4px; background:var(--light); }
   .tag b { margin-inline-end:.3em; }

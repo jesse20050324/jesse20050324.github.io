@@ -1,0 +1,6 @@
+:root {
+  --portfolio-gutter: clamp(16px, 4vw, 64px);
+  --portfolio-project-width: 1440px;
+  --portfolio-intro-size: clamp(1rem, 0.85rem + 0.25vw, 1.125rem);
+  --portfolio-meta-size: 0.875rem;
+}
