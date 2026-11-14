@@ -119,6 +119,7 @@ mark, .mark {
   text-shadow: 0 5px 0 #f1f7fb, 0 9px 0 rgba(18,33,51,.2);
   margin-bottom: 34px;
 }
+.hero .title-lead { display: inline-block; font-size: 1.12em; line-height: 1.06; }
 .hero .facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px 6px; list-style: none; }
 .hero .facts li {
   display: flex; align-items: baseline; gap: 6px;
@@ -127,12 +128,12 @@ mark, .mark {
   padding: 4px 8px; font-size: calc(var(--portfolio-meta-size) - 1px); font-weight: 600; letter-spacing: .02em;
 }
 .hero .facts b { font-weight: 700; color: var(--accent-deep); letter-spacing: .14em; }
-.hero .overview { max-width: 54ch; margin: 0 0 24px 6px; }
+.hero .overview { max-width: 54ch; margin: 0 0 20px 6px; }
 .hero .overview h2 {
   font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--muted); margin-bottom: 9px;
 }
-.hero .overview p { font-size: var(--portfolio-intro-size); line-height: 1.62; }
-.hero .overview p + p { margin-top: .6em; }
+.hero .overview p { font-size: 1rem; line-height: 1.48; }
+.hero .overview p + p { margin-top: .55em; }
 .hero .nums { display: flex; gap: 10px; list-style: none; flex-wrap: wrap; margin-left: 6px; }
 .hero .nums li {
   background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
@@ -629,7 +630,6 @@ p { color: var(--ink-soft); }
   }
   .hero.fit-cover .b-grid { grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:80px; }
   .hero.fit-cover .title { font-size:5.45rem; }
-  .hero.fit-cover .overview p { font-size:1.125rem; }
   @media (max-height:640px) {
     .hero.fit-cover { padding-top:18px; padding-bottom:56px; }
   }
@@ -658,7 +658,7 @@ p { color: var(--ink-soft); }
   <section class="hero" id="hero">
     <div class="b-grid">
       <div>
-        <h1 class="title rv" style="--d:.05s">The Gray Workshop</h1>
+        <h1 class="title rv" style="--d:.05s"><span class="title-lead">The Gray</span> Workshop</h1>
         <ul class="facts rv" style="--d:.12s">
           <li><b>Platform</b>Browser (HTML5)</li>
           <li><b>Dev cycle</b>2 months</li>
