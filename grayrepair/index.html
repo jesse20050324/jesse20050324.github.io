@@ -482,6 +482,7 @@ p { color: var(--ink-soft); }
 .lvg-title { font-size: clamp(1.3rem,2vw,1.75rem); font-weight: 900; letter-spacing: .03em; }
 .lvg-title span { font-family: var(--hand); font-weight: 400; font-size: 15px; color: var(--red); margin-left: 10px; letter-spacing: .04em; }
 .lvg-media { display: grid; gap: 12px; grid-template-columns: 1fr; }
+.lvg-media.stacked { width: calc((100% - 12px) / 2); justify-self: center; }
 .lvg-media.two, .lvg-media.multi { grid-template-columns: 1fr 1fr; }
 .lvg-media.multi .shot:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .shot {
@@ -615,6 +616,7 @@ p { color: var(--ink-soft); }
   .hero .card-side1, .hero .card-side2 { display: none; }
   .ops-rail { grid-template-columns: 1fr; }
   .lvg-media.two, .lvg-media.multi, .scene-row { grid-template-columns: 1fr; }
+  .lvg-media.stacked { width: min(100%, 420px); }
   .rail-hud { display: none; }
 }
 @media (max-width: 1050px) {
@@ -1089,7 +1091,7 @@ p { color: var(--ink-soft); }
       <div class="lvg-head">
         <h3 class="lvg-title">Levels 3–4<span>Color mapping</span></h3>
       </div>
-      <div class="lvg-media">
+      <div class="lvg-media stacked">
         <figure class="shot">
           <div class="shot-img"><span class="gif-badge">GIF</span><img class="px" src="素材/level-03.gif" alt="Level 3, animated"></div>
           <figcaption>L3 · four-color mapping · thresholds fixed</figcaption>

@@ -72,6 +72,8 @@
   a.card:hover{transform:translateY(-4px); box-shadow:0 12px 32px rgba(28,28,26,.08); text-decoration:none}
   .card-img{aspect-ratio:16/9; background:var(--accent-soft); overflow:hidden}
   .card-img img{width:100%; height:100%; object-fit:cover; display:block}
+  .card-img.terminal-cover{background:#2e2f2f}
+  .terminal-cover img{object-fit:contain}
   .card-body{padding:22px 22px 24px; display:flex; flex-direction:column; gap:10px; flex:1}
   .card-body h3{font-size:19px; font-weight:600}
   .card-body h3 .en{font-weight:400; color:var(--ink-3); font-size:15px; margin-left:6px}
@@ -157,9 +159,7 @@
         </a>
 
         <a class="card" href="he-said-she-said/" aria-label="查看 He Said, She Said 作品详情">
-          <div class="card-img" style="display:flex;align-items:center;justify-content:center;background:#e8eff6">
-            <span style="font-size:22px;font-weight:600;color:#2f5d8a;letter-spacing:.02em">He Said, She Said</span>
-          </div>
+          <div class="card-img terminal-cover"><img src="he-said-she-said/portfolio-cover.webp" alt="He Said, She Said 终端开始界面" width="1484" height="949" loading="lazy"></div>
           <div class="card-body">
             <h3>He Said, She Said</h3>
             <p>一款以聊天界面展开的叙事游戏：你扮演情侣二人的 AI 助手，分别听两边的说法，回复影响故事走向。</p>
