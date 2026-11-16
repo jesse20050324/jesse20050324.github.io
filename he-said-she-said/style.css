@@ -73,7 +73,9 @@ h1 { font: 700 clamp(3.9rem, 7.4vw, 7.8rem)/.99 var(--mono); letter-spacing: -.0
 .overview, .chapter p { color: var(--muted); font-size: .98rem; line-height: 1.87; overflow-wrap: anywhere; }
 .overview { max-width: 37em; }
 .play { display: inline-block; text-decoration: none; border: 1px solid var(--warm); padding: 10px 16px; color: var(--warm); font: 700 .88rem var(--mono); }
-.hero .play { margin-top: 23px; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 23px; }
+.play.ghost { border-color: var(--rule); color: var(--ink); }
+.play.ghost:hover { background: var(--ink); border-color: var(--ink); color: var(--surface); }
 .play:hover { background: var(--warm); color: var(--bg); }
 .demo { background: var(--surface); border: 1px solid var(--rule); box-shadow: 7px 7px 0 var(--shade); min-width: 0; }
 .demo-bar, .boot, .demo > figcaption { padding: 12px 15px; font-size: .79rem; }
