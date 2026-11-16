@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>唐浩翔 Jesse — 游戏设计与开发</title>
 <meta name="description" content="唐浩翔（Jesse）的个人作品集：游戏设计与开发方向，数字媒体技术本科在读。">
-<link rel="stylesheet" href="/portfolio-layout.css">
 <style>
   :root{
     --ink:#1c1c1a; --ink-2:#55554f; --ink-3:#8a8a82;
@@ -16,110 +15,75 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--paper); color:var(--ink);
-    line-height:1.7; font-size:16px;
-    -webkit-font-smoothing:antialiased;
-  }
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.7; font-size:16px; -webkit-font-smoothing:antialiased}
   a{color:var(--accent); text-decoration:none}
   a:hover{text-decoration:underline}
   :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
-  .wrap{max-width:var(--max); margin:0 auto; padding:0 var(--portfolio-gutter)}
-
-  /* ---------- 导航 ---------- */
-  .nav{
-    position:sticky; top:0; z-index:50;
-    background:rgba(250,250,247,.92); backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-inner{max-width:var(--max); margin:0 auto; padding:14px var(--portfolio-gutter); display:flex; align-items:center; justify-content:space-between}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
+  .nav{position:sticky; top:0; z-index:50; background:rgba(250,250,247,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:var(--max); margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between}
   .nav-logo{font-weight:600; color:var(--ink); letter-spacing:.02em}
   .nav-logo:hover{text-decoration:none}
   .nav-links{display:flex; gap:28px; list-style:none}
   .nav-links a{color:var(--ink-2); font-size:15px}
   .nav-links a:hover{color:var(--ink); text-decoration:none}
-
-  /* ---------- Hero ---------- */
-  .hero{padding:clamp(64px,8vh,110px) 0 clamp(56px,7vh,90px)}
-  .hero .kicker{font-size:14px; color:var(--ink-3); letter-spacing:.14em; margin-bottom:18px}
-  .hero h1{font-size:clamp(34px,5.5vw,54px); line-height:1.25; font-weight:600; letter-spacing:.01em}
-  .hero h1 .en{color:var(--ink-3); font-weight:400}
-  .hero p.lead{margin-top:22px; max-width:560px; font-size:var(--portfolio-intro-size); color:var(--ink-2)}
-  .hero .cta{margin-top:36px; display:flex; gap:14px; flex-wrap:wrap}
-  .btn{
-    display:inline-block; padding:11px 26px; border-radius:8px; font-size:15px;
-    border:1px solid var(--ink); color:var(--ink);
-  }
+  .lang-switch{display:flex; border:1px solid var(--line); border-radius:99px; overflow:hidden; background:var(--card); flex-shrink:0}
+  .lang-switch button{font:inherit; font-size:13px; padding:5px 16px; border:none; cursor:pointer; background:transparent; color:var(--ink-2)}
+  .lang-switch button.active{background:var(--ink); color:#fff}
+  /* 全站节奏收紧：段间距 44px */
+  .hero{padding:52px 0 40px}
+  .kicker{font-size:14px; color:var(--ink-3); letter-spacing:.14em; margin-bottom:14px}
+  h1{font-size:clamp(32px,5vw,50px); line-height:1.25; font-weight:600}
+  h1 .en{color:var(--ink-3); font-weight:400}
+  .lead{margin-top:16px; max-width:560px; font-size:16.5px; color:var(--ink-2)}
+  .cta{margin-top:24px; display:flex; gap:14px; flex-wrap:wrap}
+  .btn{display:inline-block; padding:10px 24px; border-radius:8px; font-size:15px; border:1px solid var(--ink); color:var(--ink)}
   .btn:hover{text-decoration:none; background:var(--ink); color:#fff}
   .btn.primary{background:var(--ink); color:#fff}
-  .btn.primary:hover{background:#000}
-
-  /* ---------- 区块通用 ---------- */
-  section{padding:84px 0}
-  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:44px}
+  section{padding:40px 0}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px}
   .sec-head .no{font-family:ui-monospace,Consolas,monospace; font-size:14px; color:var(--ink-3)}
-  .sec-head h2{font-size:28px; font-weight:600}
+  .sec-head h2{font-size:26px; font-weight:600}
   .sec-head .line{flex:1; height:1px; background:var(--line)}
-
-  /* ---------- 作品卡片 ---------- */
-  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%, 290px),1fr)); gap:28px}
-  .card{
-    background:var(--card); border:1px solid var(--line); border-radius:14px;
-    overflow:hidden; display:flex; flex-direction:column;
-    transition:transform .18s ease, box-shadow .18s ease;
-  }
-  a.card:hover{transform:translateY(-4px); box-shadow:0 12px 32px rgba(28,28,26,.08); text-decoration:none}
-  .card-img{aspect-ratio:16/9; background:var(--accent-soft); overflow:hidden}
-  .card-img img{width:100%; height:100%; object-fit:cover; display:block}
-  .card-img.terminal-cover{background:#2e2f2f}
-  .terminal-cover img{object-fit:contain}
-  .card-body{padding:22px 22px 24px; display:flex; flex-direction:column; gap:10px; flex:1}
-  .card-body h3{font-size:19px; font-weight:600}
-  .card-body h3 .en{font-weight:400; color:var(--ink-3); font-size:15px; margin-left:6px}
-  .card-body p{font-size:14.5px; color:var(--ink-2)}
-  .tags{margin-top:auto; display:flex; gap:8px; flex-wrap:wrap; padding-top:8px}
-  .tag{
-    font-size:12.5px; color:var(--ink-2); background:var(--paper);
-    border:1px solid var(--line); border-radius:99px; padding:3px 12px;
-  }
+  /* 作品区：杂志式大编号横排 */
+  .proj-row{display:grid; grid-template-columns:96px 1.15fr .85fr; gap:30px; align-items:center; padding:26px 0; border-top:1px solid var(--line); text-decoration:none}
+  .proj-row:last-child{border-bottom:1px solid var(--line)}
+  a.proj-row:hover{background:var(--card)}
+  .p-no{font-family:ui-monospace,Consolas,monospace; font-size:clamp(34px,4vw,44px); font-weight:400; color:var(--ink-3); line-height:1}
+  a.proj-row:hover .p-no{color:var(--accent)}
+  .p-img{aspect-ratio:16/10; border-radius:10px; overflow:hidden; background:var(--accent-soft)}
+  .p-img img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease}
+  .p-img.terminal-cover{background:#2e2f2f}
+  .p-img.terminal-cover img{object-fit:contain}
+  a.proj-row:hover .p-img img{transform:scale(1.03)}
+  .p-body h3{font-size:20px; font-weight:600}
+  .p-body h3 .en{font-weight:400; color:var(--ink-3); font-size:14px; margin-left:6px}
+  .p-body p{margin-top:8px; font-size:14px; color:var(--ink-2)}
+  .tags{margin-top:12px; display:flex; gap:8px; flex-wrap:wrap}
+  .tag{font-size:12.5px; color:var(--ink-2); background:var(--paper); border:1px solid var(--line); border-radius:99px; padding:3px 12px}
   .tag.accent{color:var(--accent); border-color:var(--accent); background:var(--accent-soft)}
-  .card.placeholder{border-style:dashed; background:transparent}
-  .card.placeholder .card-img{display:flex; align-items:center; justify-content:center; color:var(--ink-3); font-size:14px; background:transparent}
-  .badge-soon{font-size:12.5px; color:var(--ink-3); border:1px dashed var(--ink-3); border-radius:99px; padding:2px 12px; width:fit-content}
-
-  /* ---------- 关于 ---------- */
-  .about-text p{margin-bottom:16px; color:var(--ink-2); font-size:16px}
+  /* 关于+联系：页脚上方一条紧凑条 */
+  .strip{background:var(--card); border-top:1px solid var(--line)}
+  .strip-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:36px; padding:30px 0; align-items:center}
+  .about-text p{margin-bottom:6px; color:var(--ink-2); font-size:14.5px}
   .about-text p strong{color:var(--ink)}
-
-  /* ---------- 语言切换 ---------- */
-  .lang-switch{display:flex; border:1px solid var(--line); border-radius:99px; overflow:hidden; background:var(--card); flex-shrink:0}
-  .lang-switch button{
-    font:inherit; font-size:13px; padding:5px 16px; border:none; cursor:pointer;
-    background:transparent; color:var(--ink-2);
-  }
-  .lang-switch button.active{background:var(--ink); color:#fff}
-
-  /* ---------- 联系 ---------- */
-  .contact-inner{max-width:640px}
-  .contact-inner .big-mail{font-size:clamp(20px,3.4vw,30px); font-weight:600; word-break:break-all}
-  .contact-inner p{margin-top:14px; color:var(--ink-2)}
-  .contact-links{margin-top:26px; display:flex; gap:22px; flex-wrap:wrap}
-  .contact-links a{font-size:15px}
-
-  footer{border-top:1px solid var(--line); padding:28px 0; color:var(--ink-3); font-size:13.5px}
+  .strip-mail{border-left:1px solid var(--line); padding-left:32px}
+  .strip-mail .big-mail{font-size:clamp(16px,2.4vw,21px); font-weight:600; word-break:break-all}
+  .strip-mail p{margin-top:4px; color:var(--ink-2); font-size:13px}
+  footer{padding:20px 0; color:var(--ink-3); font-size:13.5px}
   footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px}
-
   @media (max-width:760px){
-    .hero{padding:72px 0 60px}
-    section{padding:60px 0}
+    .proj-row{grid-template-columns:1fr; gap:14px}
+    .p-no{font-size:28px}
+    .strip-grid{grid-template-columns:1fr; gap:16px}
+    .strip-mail{border-left:none; padding-left:0}
     .nav-inner{flex-wrap:wrap; gap:14px}
     .nav-links{gap:18px}
   }
 </style>
 </head>
 <body>
-
 <nav class="nav" aria-label="主导航">
   <div class="nav-inner">
     <a class="nav-logo" href="#top" data-i18n="logo">唐浩翔 Jesse</a>
@@ -134,7 +98,6 @@
     </div>
   </div>
 </nav>
-
 <header class="hero" id="top">
   <div class="wrap">
     <p class="kicker">GAME DESIGN &amp; DEVELOPMENT</p>
@@ -146,85 +109,69 @@
     </div>
   </div>
 </header>
-
 <main>
   <section id="work">
     <div class="wrap">
       <div class="sec-head"><span class="no">01</span><h2 data-i18n="workTitle">作品</h2><span class="line"></span></div>
-      <div class="cards">
-
-        <a class="card" href="grayrepair/" aria-label="查看灰度修理铺作品详情">
-          <div class="card-img"><img src="grayrepair/portfolio-cover.webp" alt="灰度修理铺介绍页首屏" width="640" height="360" loading="lazy"></div>
-          <div class="card-body">
-            <h3 data-i18n-html="g1t">灰度修理铺<span class="en">The Gray Workshop</span></h3>
-            <p data-i18n="g1d">一款围绕"色彩与修理"机制的独立游戏，在线上可以完整试玩，配套设计文书完整可读。</p>
-            <div class="tags">
-              <span class="tag accent" data-i18n="g1a">独立游戏</span>
-              <span class="tag" data-i18n="g1b">设计 / 开发</span>
-              <span class="tag" data-i18n="g1c">线上可玩</span>
-            </div>
+      <a class="proj-row" href="grayrepair/" aria-label="查看灰度修理铺作品详情">
+        <div class="p-no">01</div>
+        <div class="p-img"><img src="grayrepair/portfolio-cover.webp" alt="灰度修理铺介绍页首屏" loading="lazy"></div>
+        <div class="p-body">
+          <h3 data-i18n-html="g1t">灰度修理铺<span class="en">The Gray Workshop</span></h3>
+          <p data-i18n="g1d">一款围绕"色彩与修理"机制的独立游戏，在线上可以完整试玩，配套设计文书完整可读。</p>
+          <div class="tags">
+            <span class="tag accent" data-i18n="g1a">独立游戏</span>
+            <span class="tag" data-i18n="g1b">设计 / 开发</span>
+            <span class="tag" data-i18n="g1c">线上可玩</span>
           </div>
-        </a>
-
-        <a class="card" href="he-said-she-said/" aria-label="查看 He Said, She Said 作品详情">
-          <div class="card-img terminal-cover"><img src="he-said-she-said/portfolio-cover.webp" alt="He Said, She Said 终端开始界面" width="1484" height="949" loading="lazy"></div>
-          <div class="card-body">
-            <h3>He Said, She Said</h3>
-            <p data-i18n="g2d">一款以聊天界面展开的叙事游戏：你扮演情侣二人的 AI 助手，分别听两边的说法，回复影响故事走向。</p>
-            <div class="tags">
-              <span class="tag accent" data-i18n="g2a">叙事游戏</span>
-              <span class="tag" data-i18n="g2c">线上可玩</span>
-            </div>
+        </div>
+      </a>
+      <a class="proj-row" href="he-said-she-said/" aria-label="查看 He Said, She Said 作品详情">
+        <div class="p-no">02</div>
+        <div class="p-img terminal-cover"><img src="he-said-she-said/portfolio-cover.webp" alt="He Said, She Said 终端开始界面" loading="lazy"></div>
+        <div class="p-body">
+          <h3>He Said, She Said</h3>
+          <p data-i18n="g2d">一款以聊天界面展开的叙事游戏：你扮演情侣二人的 AI 助手，分别听两边的说法，回复影响故事走向。</p>
+          <div class="tags">
+            <span class="tag accent" data-i18n="g2a">叙事游戏</span>
+            <span class="tag" data-i18n="g2c">线上可玩</span>
           </div>
-        </a>
-
-        <a class="card" href="stationery-fantasy/" aria-label="查看文具幻想作品详情">
-          <div class="card-img"><img src="stationery-fantasy/portfolio-cover.webp" alt="文具幻想游戏主界面" width="480" height="270" loading="lazy"></div>
-          <div class="card-body">
-            <h3 data-i18n-html="g3t">文具幻想<span class="en">Stationery Fantasy</span></h3>
-            <p data-i18n="g3d">我的第一个游戏项目，Unity 制作的三关横版射击游戏；设计文书整理中。</p>
-            <div class="tags">
-              <span class="tag accent" data-i18n="g3a">早期作品</span>
-              <span class="tag">Unity</span>
-              <span class="tag" data-i18n="g3c">视频</span>
-            </div>
+        </div>
+      </a>
+      <a class="proj-row" href="stationery-fantasy/" aria-label="查看文具幻想作品详情">
+        <div class="p-no">03</div>
+        <div class="p-img"><img src="stationery-fantasy/portfolio-cover.webp" alt="文具幻想游戏主界面" loading="lazy"></div>
+        <div class="p-body">
+          <h3 data-i18n-html="g3t">文具幻想<span class="en">Stationery Fantasy</span></h3>
+          <p data-i18n="g3d">我的第一个游戏项目，Unity 制作的三关横版射击游戏；设计文书整理中。</p>
+          <div class="tags">
+            <span class="tag accent" data-i18n="g3a">早期作品</span>
+            <span class="tag">Unity</span>
+            <span class="tag" data-i18n="g3c">视频</span>
           </div>
-        </a>
-
-      </div>
+        </div>
+      </a>
     </div>
   </section>
-
-  <section id="about">
-    <div class="wrap">
-      <div class="sec-head"><span class="no">02</span><h2 data-i18n="aboutTitle">关于我</h2><span class="line"></span></div>
+  <section class="strip" id="about">
+    <div class="wrap strip-grid">
       <div class="about-text">
         <p><strong data-i18n="bioName">唐浩翔（Jesse）</strong><span data-i18n="bio1">，数字媒体技术专业本科在读。</span></p>
-        <p data-i18n="bio2">目前正在准备研究生申请，欢迎通过页面底部的邮箱与我联系。</p>
+        <p data-i18n="bio2">目前正在准备研究生申请，欢迎通过邮箱与我联系。</p>
       </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="wrap">
-      <div class="sec-head"><span class="no">03</span><h2 data-i18n="contactTitle">联系</h2><span class="line"></span></div>
-      <div class="contact-inner">
+      <div class="strip-mail" id="contact">
         <a class="big-mail" href="mailto:jesse20050324@gmail.com">jesse20050324@gmail.com</a>
         <p data-i18n="contactNote">申请、合作或只是聊聊游戏设计，都欢迎直接写信给我，我会认真回复每一封。</p>
-        <div class="contact-links">
-        </div>
       </div>
     </div>
   </section>
 </main>
-
 <footer>
   <div class="wrap">
     <span data-i18n="footLeft">© 2026 唐浩翔 Jesse</span>
     <span>Powered by GitHub Pages</span>
   </div>
 </footer>
-
 <script>
 var I18N = {
   en: {
@@ -235,16 +182,16 @@ var I18N = {
     lead: "Digital Media Technology undergraduate, focused on game design & development. I explore how mechanics and narrative meet — known for The Gray Workshop.",
     ctaWork: "See my work ↓", ctaContact: "Get in touch",
     workTitle: "Work",
-    g1t: "The Gray Workshop<span class=\"en\">灰度修理铺</span>",
+    g1t: "The Gray Workshop",
     g1d: "An indie game built around \"colour and repair\" — fully playable online, with a complete design document.",
     g1a: "Indie game", g1b: "Design / Dev", g1c: "Playable online",
     g2d: "A narrative game played through a chat interface: you are the couple's AI assistants, hearing both sides of the story — your replies steer where it goes.",
     g2a: "Narrative", g2c: "Playable online",
-    g3t: "Stationery Fantasy<span class=\"en\">文具幻想</span>",
+    g3t: "Stationery Fantasy",
     g3d: "My first game project — a three-level side-scrolling shooter made in Unity; design document in progress.",
     g3a: "Early work", g3c: "Video",
     aboutTitle: "About",
-    bioName: "Jesse Tang（唐浩翔）",
+    bioName: "Jesse Tang",
     bio1: ", undergraduate in Digital Media Technology.",
     bio2: "Currently preparing graduate applications — feel free to reach me by email at the bottom of this page.",
     contactTitle: "Contact",
@@ -302,6 +249,5 @@ applyLang(saved);
 document.getElementById("langEn").addEventListener("click", function(){ applyLang("en"); });
 document.getElementById("langZh").addEventListener("click", function(){ applyLang("zh"); });
 </script>
-
 </body>
 </html>
