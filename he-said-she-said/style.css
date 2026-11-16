@@ -450,3 +450,19 @@ footer { display: flex; justify-content: space-between; align-items: center; gap
 .lang-switch button + button { border-left: 1px solid var(--border); }
 .lang-switch button.on { background: var(--ink); color: var(--surface); }
 .lang-en .seg-wrap text { font-size: 12px !important; }
+
+/* ---------- EN 模式微调（英文版专属，不影响中文） ---------- */
+/* 动态矩阵：格子字号收紧，3 行英文可放进 70px 行高 */
+.lang-en .mxc, .lang-en .mx-chip { font-size: 12.5px; line-height: 1.42; padding: 8px 12px; }
+.lang-en .t1f, .lang-en .t2h, .lang-en .mx-chip.landed { font-size: .76rem; }
+/* 角色设计：双窗对照卡加宽，THINKING 行不再挤 */
+.lang-en #characters .text-with-mark { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: start; }
+.lang-en .dc-win p { font-size: .76rem; }
+.lang-en .dc-win .dc-t { line-height: 1.5; }
+/* 阶段×矩阵静态表：字号与内边距收紧，减少碎行 */
+.lang-en .table-wrap th, .lang-en .table-wrap td { font-size: .88rem; padding: 9px 11px; }
+.lang-en .table-wrap:has(.matrix-3) { max-width: 960px; }
+.lang-en .table-wrap:has(.matrix-3) table { table-layout: fixed; }
+.lang-en .table-wrap:has(.matrix-3) th:first-child,
+.lang-en .table-wrap:has(.matrix-3) td:first-child { width: 26%; }
+.lang-en .table-wrap:has(.matrix-3) tbody th { white-space: normal; }

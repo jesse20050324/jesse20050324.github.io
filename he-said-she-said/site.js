@@ -323,6 +323,8 @@ if (!motion.matches && "IntersectionObserver" in window) {
   if (!btns.length) return;
   const zhStore = new Map();
   document.querySelectorAll("[data-en]").forEach((el) => zhStore.set(el, el.innerHTML));
+  const dlgBand = document.querySelector("#dialogue .figure-band");
+  const dlgClosing = document.querySelectorAll("#dialogue > p.prose")[1] || null;
   function setLang(lang) {
     document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
     document.body.classList.toggle("lang-en", lang === "en");
@@ -332,6 +334,11 @@ if (!motion.matches && "IntersectionObserver" in window) {
     btns.forEach((b) => b.classList.toggle("on", b.dataset.lang === lang));
     if (typeof hero !== "undefined" && !hero.classList.contains("playing")) {
       bootStatus.textContent = lang === "en" ? "Both chats connected" : "两路会话已接通";
+    }
+    // 对话单元：EN 模式把收尾段挪到四项卡之后（中文版保持原结构）
+    if (dlgBand && dlgClosing) {
+      if (lang === "en") dlgBand.after(dlgClosing);
+      else dlgBand.before(dlgClosing);
     }
   }
   btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
