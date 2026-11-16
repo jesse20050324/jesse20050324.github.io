@@ -89,12 +89,16 @@
   .badge-soon{font-size:12.5px; color:var(--ink-3); border:1px dashed var(--ink-3); border-radius:99px; padding:2px 12px; width:fit-content}
 
   /* ---------- 关于 ---------- */
-  .about-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:56px; align-items:start}
   .about-text p{margin-bottom:16px; color:var(--ink-2); font-size:16px}
   .about-text p strong{color:var(--ink)}
-  .photo-wall h3{font-size:15px; font-weight:600; color:var(--ink-2); margin-bottom:16px; letter-spacing:.08em}
-  .photos{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
-  .ph{aspect-ratio:1; border:1px dashed var(--line); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--ink-3); font-size:12.5px; background:var(--card)}
+
+  /* ---------- 语言切换 ---------- */
+  .lang-switch{display:flex; border:1px solid var(--line); border-radius:99px; overflow:hidden; background:var(--card); flex-shrink:0}
+  .lang-switch button{
+    font:inherit; font-size:13px; padding:5px 16px; border:none; cursor:pointer;
+    background:transparent; color:var(--ink-2);
+  }
+  .lang-switch button.active{background:var(--ink); color:#fff}
 
   /* ---------- 联系 ---------- */
   .contact-inner{max-width:640px}
@@ -109,7 +113,7 @@
   @media (max-width:760px){
     .hero{padding:72px 0 60px}
     section{padding:60px 0}
-    .about-grid{grid-template-columns:1fr}
+    .nav-inner{flex-wrap:wrap; gap:14px}
     .nav-links{gap:18px}
   }
 </style>
@@ -118,23 +122,27 @@
 
 <nav class="nav" aria-label="主导航">
   <div class="nav-inner">
-    <a class="nav-logo" href="#top">唐浩翔 Jesse</a>
+    <a class="nav-logo" href="#top" data-i18n="logo">唐浩翔 Jesse</a>
     <ul class="nav-links">
-      <li><a href="#work">作品</a></li>
-      <li><a href="#about">关于</a></li>
-      <li><a href="#contact">联系</a></li>
+      <li><a href="#work" data-i18n="navWork">作品</a></li>
+      <li><a href="#about" data-i18n="navAbout">关于</a></li>
+      <li><a href="#contact" data-i18n="navContact">联系</a></li>
     </ul>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" id="langEn" class="active">EN</button>
+      <button type="button" id="langZh">中文</button>
+    </div>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <div class="wrap">
     <p class="kicker">GAME DESIGN &amp; DEVELOPMENT</p>
-    <h1>把日常情绪，<br>做成能玩的小游戏。<span class="en"> — 唐浩翔 / Jesse</span></h1>
-    <p class="lead">数字媒体技术本科在读，游戏设计与开发方向。关注玩法机制与叙事的结合，代表作《灰度修理铺》。</p>
+    <h1 data-i18n-html="h1">把日常情绪，<br>做成能玩的小游戏。<span class="en"> — 唐浩翔 / Jesse</span></h1>
+    <p class="lead" data-i18n="lead">数字媒体技术本科在读，游戏设计与开发方向。关注玩法机制与叙事的结合，代表作《灰度修理铺》。</p>
     <div class="cta">
-      <a class="btn primary" href="#work">看作品 ↓</a>
-      <a class="btn" href="#contact">联系我</a>
+      <a class="btn primary" href="#work" data-i18n="ctaWork">看作品 ↓</a>
+      <a class="btn" href="#contact" data-i18n="ctaContact">联系我</a>
     </div>
   </div>
 </header>
@@ -142,18 +150,18 @@
 <main>
   <section id="work">
     <div class="wrap">
-      <div class="sec-head"><span class="no">01</span><h2>作品</h2><span class="line"></span></div>
+      <div class="sec-head"><span class="no">01</span><h2 data-i18n="workTitle">作品</h2><span class="line"></span></div>
       <div class="cards">
 
         <a class="card" href="grayrepair/" aria-label="查看灰度修理铺作品详情">
           <div class="card-img"><img src="grayrepair/portfolio-cover.webp" alt="灰度修理铺介绍页首屏" width="640" height="360" loading="lazy"></div>
           <div class="card-body">
-            <h3>灰度修理铺<span class="en">The Gray Workshop</span></h3>
-            <p>一款围绕"色彩与修理"机制的独立游戏，在线上可以完整试玩，配套设计文书完整可读。</p>
+            <h3 data-i18n-html="g1t">灰度修理铺<span class="en">The Gray Workshop</span></h3>
+            <p data-i18n="g1d">一款围绕"色彩与修理"机制的独立游戏，在线上可以完整试玩，配套设计文书完整可读。</p>
             <div class="tags">
-              <span class="tag accent">独立游戏</span>
-              <span class="tag">设计 / 开发</span>
-              <span class="tag">线上可玩</span>
+              <span class="tag accent" data-i18n="g1a">独立游戏</span>
+              <span class="tag" data-i18n="g1b">设计 / 开发</span>
+              <span class="tag" data-i18n="g1c">线上可玩</span>
             </div>
           </div>
         </a>
@@ -162,10 +170,10 @@
           <div class="card-img terminal-cover"><img src="he-said-she-said/portfolio-cover.webp" alt="He Said, She Said 终端开始界面" width="1484" height="949" loading="lazy"></div>
           <div class="card-body">
             <h3>He Said, She Said</h3>
-            <p>一款以聊天界面展开的叙事游戏：你扮演情侣二人的 AI 助手，分别听两边的说法，回复影响故事走向。</p>
+            <p data-i18n="g2d">一款以聊天界面展开的叙事游戏：你扮演情侣二人的 AI 助手，分别听两边的说法，回复影响故事走向。</p>
             <div class="tags">
-              <span class="tag accent">叙事游戏</span>
-              <span class="tag">线上可玩</span>
+              <span class="tag accent" data-i18n="g2a">叙事游戏</span>
+              <span class="tag" data-i18n="g2c">线上可玩</span>
             </div>
           </div>
         </a>
@@ -173,12 +181,12 @@
         <a class="card" href="stationery-fantasy/" aria-label="查看文具幻想作品详情">
           <div class="card-img"><img src="stationery-fantasy/portfolio-cover.webp" alt="文具幻想游戏主界面" width="480" height="270" loading="lazy"></div>
           <div class="card-body">
-            <h3>文具幻想<span class="en">Stationery Fantasy</span></h3>
-            <p>我的第一个游戏项目，Unity 制作的三关横版射击游戏；设计文书整理中。</p>
+            <h3 data-i18n-html="g3t">文具幻想<span class="en">Stationery Fantasy</span></h3>
+            <p data-i18n="g3d">我的第一个游戏项目，Unity 制作的三关横版射击游戏；设计文书整理中。</p>
             <div class="tags">
-              <span class="tag accent">早期作品</span>
+              <span class="tag accent" data-i18n="g3a">早期作品</span>
               <span class="tag">Unity</span>
-              <span class="tag">视频</span>
+              <span class="tag" data-i18n="g3c">视频</span>
             </div>
           </div>
         </a>
@@ -189,35 +197,20 @@
 
   <section id="about">
     <div class="wrap">
-      <div class="sec-head"><span class="no">02</span><h2>关于我</h2><span class="line"></span></div>
-      <div class="about-grid">
-        <div class="about-text">
-          <p><strong>唐浩翔（Jesse）</strong>，数字媒体技术专业本科在读，方向是游戏设计与开发。</p>
-          <p>我喜欢从日常生活里找灵感，把情绪和经历转译成玩法机制。代表作《灰度修理铺》探索了色彩与修理的结合；正在进行的两个项目分别偏向叙事与系统设计。</p>
-          <p>除了做游戏，我也拍照 —— 相机教会我的事和游戏设计是同一件：取景即取舍。</p>
-          <p>目前正在准备研究生申请，欢迎通过页面底部的邮箱与我联系。</p>
-        </div>
-        <aside class="photo-wall" aria-label="摄影小画廊">
-          <h3>PHOTO WALL · 摄影</h3>
-          <div class="photos">
-            <div class="ph">照片占位</div>
-            <div class="ph">照片占位</div>
-            <div class="ph">照片占位</div>
-            <div class="ph">照片占位</div>
-            <div class="ph">照片占位</div>
-            <div class="ph">照片占位</div>
-          </div>
-        </aside>
+      <div class="sec-head"><span class="no">02</span><h2 data-i18n="aboutTitle">关于我</h2><span class="line"></span></div>
+      <div class="about-text">
+        <p><strong data-i18n="bioName">唐浩翔（Jesse）</strong><span data-i18n="bio1">，数字媒体技术专业本科在读。</span></p>
+        <p data-i18n="bio2">目前正在准备研究生申请，欢迎通过页面底部的邮箱与我联系。</p>
       </div>
     </div>
   </section>
 
   <section id="contact">
     <div class="wrap">
-      <div class="sec-head"><span class="no">03</span><h2>联系</h2><span class="line"></span></div>
+      <div class="sec-head"><span class="no">03</span><h2 data-i18n="contactTitle">联系</h2><span class="line"></span></div>
       <div class="contact-inner">
         <a class="big-mail" href="mailto:jesse20050324@gmail.com">jesse20050324@gmail.com</a>
-        <p>申请、合作或只是聊聊游戏设计，都欢迎直接写信给我，我会认真回复每一封。</p>
+        <p data-i18n="contactNote">申请、合作或只是聊聊游戏设计，都欢迎直接写信给我，我会认真回复每一封。</p>
         <div class="contact-links">
         </div>
       </div>
@@ -227,10 +220,88 @@
 
 <footer>
   <div class="wrap">
-    <span>© 2026 唐浩翔 Jesse</span>
+    <span data-i18n="footLeft">© 2026 唐浩翔 Jesse</span>
     <span>Powered by GitHub Pages</span>
   </div>
 </footer>
+
+<script>
+var I18N = {
+  en: {
+    _title: "Jesse Tang — Game Design & Development",
+    logo: "Jesse Tang",
+    navWork: "Work", navAbout: "About", navContact: "Contact",
+    h1: "I make small games out of everyday emotions.<span class=\"en\"> — Jesse Tang</span>",
+    lead: "Digital Media Technology undergraduate, focused on game design & development. I explore how mechanics and narrative meet — known for The Gray Workshop.",
+    ctaWork: "See my work ↓", ctaContact: "Get in touch",
+    workTitle: "Work",
+    g1t: "The Gray Workshop<span class=\"en\">灰度修理铺</span>",
+    g1d: "An indie game built around \"colour and repair\" — fully playable online, with a complete design document.",
+    g1a: "Indie game", g1b: "Design / Dev", g1c: "Playable online",
+    g2d: "A narrative game played through a chat interface: you are the couple's AI assistants, hearing both sides of the story — your replies steer where it goes.",
+    g2a: "Narrative", g2c: "Playable online",
+    g3t: "Stationery Fantasy<span class=\"en\">文具幻想</span>",
+    g3d: "My first game project — a three-level side-scrolling shooter made in Unity; design document in progress.",
+    g3a: "Early work", g3c: "Video",
+    aboutTitle: "About",
+    bioName: "Jesse Tang（唐浩翔）",
+    bio1: ", undergraduate in Digital Media Technology.",
+    bio2: "Currently preparing graduate applications — feel free to reach me by email at the bottom of this page.",
+    contactTitle: "Contact",
+    contactNote: "Applications, collaboration, or just talking game design — I read and reply to every email.",
+    footLeft: "© 2026 Jesse Tang"
+  },
+  zh: {
+    _title: "唐浩翔 Jesse — 游戏设计与开发",
+    logo: "唐浩翔 Jesse",
+    navWork: "作品", navAbout: "关于", navContact: "联系",
+    h1: "把日常情绪，<br>做成能玩的小游戏。<span class=\"en\"> — 唐浩翔 / Jesse</span>",
+    lead: "数字媒体技术本科在读，游戏设计与开发方向。关注玩法机制与叙事的结合，代表作《灰度修理铺》。",
+    ctaWork: "看作品 ↓", ctaContact: "联系我",
+    workTitle: "作品",
+    g1t: "灰度修理铺<span class=\"en\">The Gray Workshop</span>",
+    g1d: "一款围绕\"色彩与修理\"机制的独立游戏，在线上可以完整试玩，配套设计文书完整可读。",
+    g1a: "独立游戏", g1b: "设计 / 开发", g1c: "线上可玩",
+    g2d: "一款以聊天界面展开的叙事游戏：你扮演情侣二人的 AI 助手，分别听两边的说法，回复影响故事走向。",
+    g2a: "叙事游戏", g2c: "线上可玩",
+    g3t: "文具幻想<span class=\"en\">Stationery Fantasy</span>",
+    g3d: "我的第一个游戏项目，Unity 制作的三关横版射击游戏；设计文书整理中。",
+    g3a: "早期作品", g3c: "视频",
+    aboutTitle: "关于我",
+    bioName: "唐浩翔（Jesse）",
+    bio1: "，数字媒体技术专业本科在读。",
+    bio2: "目前正在准备研究生申请，欢迎通过页面底部的邮箱与我联系。",
+    contactTitle: "联系",
+    contactNote: "申请、合作或只是聊聊游戏设计，都欢迎直接写信给我，我会认真回复每一封。",
+    footLeft: "© 2026 唐浩翔 Jesse"
+  }
+};
+
+function applyLang(l){
+  var d = I18N[l === "zh" ? "zh" : "en"];
+  document.documentElement.lang = (l === "zh") ? "zh-CN" : "en";
+  document.title = d._title;
+  var t1 = document.querySelectorAll("[data-i18n]");
+  for (var i = 0; i < t1.length; i++){
+    var k = t1[i].getAttribute("data-i18n");
+    if (d[k] !== undefined) t1[i].textContent = d[k];
+  }
+  var t2 = document.querySelectorAll("[data-i18n-html]");
+  for (var j = 0; j < t2.length; j++){
+    var k2 = t2[j].getAttribute("data-i18n-html");
+    if (d[k2] !== undefined) t2[j].innerHTML = d[k2];
+  }
+  document.getElementById("langEn").classList.toggle("active", l !== "zh");
+  document.getElementById("langZh").classList.toggle("active", l === "zh");
+  try { localStorage.setItem("site-lang", l); } catch(e) {}
+}
+
+var saved = "en";
+try { saved = localStorage.getItem("site-lang") || "en"; } catch(e) {}
+applyLang(saved);
+document.getElementById("langEn").addEventListener("click", function(){ applyLang("en"); });
+document.getElementById("langZh").addEventListener("click", function(){ applyLang("zh"); });
+</script>
 
 </body>
 </html>
