@@ -393,13 +393,14 @@ footer { display: flex; justify-content: space-between; align-items: center; gap
 .flow-canvas { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
 .flow-canvas svg { display: block; }
 .flow-hint {
-  position: absolute; right: 12px; bottom: 10px; pointer-events: none; opacity: .8;
-  font: 400 .68rem var(--mono); font-style: italic; letter-spacing: .04em;
-  color: var(--muted); background: transparent;
-  border: 1px dashed var(--rule); padding: 4px 9px;
+  position: absolute; left: 12px; top: 10px; pointer-events: none;
+  font: 700 .7rem var(--mono); letter-spacing: .03em;
+  color: #fff; background: var(--violet);
+  border: 1px solid var(--ink); box-shadow: 3px 3px 0 var(--shade);
+  padding: 5px 11px;
 }
 .flow-fit {
-  position: absolute; right: 12px; top: 10px; cursor: pointer;
+  position: absolute; left: 12px; bottom: 10px; cursor: pointer;
   font: 700 .7rem var(--mono); color: var(--ink); background: var(--surface);
   border: 1px solid var(--rule); padding: 4px 11px;
 }
