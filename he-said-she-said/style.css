@@ -393,9 +393,10 @@ footer { display: flex; justify-content: space-between; align-items: center; gap
 .flow-canvas { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
 .flow-canvas svg { display: block; }
 .flow-hint {
-  position: absolute; right: 12px; bottom: 10px; pointer-events: none; opacity: .85;
-  font: 700 .68rem var(--mono); color: var(--muted); background: var(--surface);
-  border: 1px solid var(--rule); padding: 4px 9px;
+  position: absolute; right: 12px; bottom: 10px; pointer-events: none; opacity: .8;
+  font: 400 .68rem var(--mono); font-style: italic; letter-spacing: .04em;
+  color: var(--muted); background: transparent;
+  border: 1px dashed var(--rule); padding: 4px 9px;
 }
 .flow-fit {
   position: absolute; right: 12px; top: 10px; cursor: pointer;
@@ -460,9 +461,19 @@ footer { display: flex; justify-content: space-between; align-items: center; gap
 .lang-en .dc-win p { font-size: .76rem; }
 .lang-en .dc-win .dc-t { line-height: 1.5; }
 /* 阶段×矩阵静态表：字号与内边距收紧，减少碎行 */
-.lang-en .table-wrap th, .lang-en .table-wrap td { font-size: .88rem; padding: 9px 11px; }
+.lang-en .table-wrap th, .lang-en .table-wrap td { font-size: .88rem; padding: 10px 12px; }
+.lang-en .table-wrap:has(.matrix-3) tbody th,
+.lang-en .table-wrap:has(.matrix-3) tbody td { height: 4.6em; vertical-align: middle; }
 .lang-en .table-wrap:has(.matrix-3) { max-width: 960px; }
 .lang-en .table-wrap:has(.matrix-3) table { table-layout: fixed; }
 .lang-en .table-wrap:has(.matrix-3) th:first-child,
 .lang-en .table-wrap:has(.matrix-3) td:first-child { width: 26%; }
 .lang-en .table-wrap:has(.matrix-3) tbody th { white-space: normal; }
+
+/* EN 模式补充微调（大哥 11-17 反馈） */
+.lang-en #inspiration .deco-col { align-self: center; }
+/* design-map 卡片正文 EN 加粗 */
+.lang-en .map-node { font-weight: 600; }
+/* 九段图带：文字列加宽、图片右移，整体高度更协调 */
+.figure-band:has(#seg-wrap) { grid-template-columns: minmax(0, 6.2fr) minmax(0, 5.8fr); }
+.figure-band:has(#seg-wrap) > .band-copy { max-width: 44em; }
