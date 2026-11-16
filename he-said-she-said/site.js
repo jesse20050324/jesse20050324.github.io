@@ -18,7 +18,7 @@ function finish() {
   clearTimeout(finishTimer);
   hero.classList.remove("playing");
   spinner.textContent = "✓";
-  bootStatus.textContent = "两路会话已接通";
+  bootStatus.textContent = document.documentElement.lang === "en" ? "Both chats connected" : "两路会话已接通";
 }
 
 function replay() {
@@ -26,7 +26,7 @@ function replay() {
   if (motion.matches) return;
   void hero.offsetWidth;
   hero.classList.add("playing");
-  bootStatus.textContent = "正在接入两路会话";
+  bootStatus.textContent = document.documentElement.lang === "en" ? "Connecting both chats" : "正在接入两路会话";
   spinner.textContent = frames[0];
   let frame = 0;
   spinTimer = setInterval(() => {
@@ -316,3 +316,24 @@ if (!motion.matches && "IntersectionObserver" in window) {
   else addEventListener("load", init);
 })();
 
+
+/* ---------- 中英切换（默认英文） ---------- */
+(function () {
+  const btns = document.querySelectorAll(".lang-switch button");
+  if (!btns.length) return;
+  const zhStore = new Map();
+  document.querySelectorAll("[data-en]").forEach((el) => zhStore.set(el, el.innerHTML));
+  function setLang(lang) {
+    document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+    document.body.classList.toggle("lang-en", lang === "en");
+    document.querySelectorAll("[data-en]").forEach((el) => {
+      el.innerHTML = lang === "en" ? el.dataset.en : zhStore.get(el);
+    });
+    btns.forEach((b) => b.classList.toggle("on", b.dataset.lang === lang));
+    if (typeof hero !== "undefined" && !hero.classList.contains("playing")) {
+      bootStatus.textContent = lang === "en" ? "Both chats connected" : "两路会话已接通";
+    }
+  }
+  btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  setLang("en");
+})();

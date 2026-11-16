@@ -443,3 +443,10 @@ footer { display: flex; justify-content: space-between; align-items: center; gap
 .tradeoff-grid { display: grid; grid-template-columns: minmax(0, 230px) minmax(0, 1fr); gap: clamp(24px, 3.4vw, 48px); align-items: start; margin-top: clamp(20px, 3vw, 34px); }
 .tradeoff-fig { position: sticky; top: 90px; }
 .flow-scene-v { display: block; width: 100%; height: auto; }
+
+/* ---------- 中英切换 ---------- */
+.lang-switch { display: inline-flex; border: 1px solid var(--border); background: var(--surface); }
+.lang-switch button { border: 0; background: transparent; font: 700 .72rem var(--mono); letter-spacing: .08em; padding: 6px 11px; color: var(--muted); cursor: pointer; }
+.lang-switch button + button { border-left: 1px solid var(--border); }
+.lang-switch button.on { background: var(--ink); color: var(--surface); }
+.lang-en .seg-wrap text { font-size: 12px !important; }
