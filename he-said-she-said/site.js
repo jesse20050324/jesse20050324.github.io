@@ -88,7 +88,7 @@ function mxRender(p) {
   if (mxIntro) mxIntro.style.opacity = 1 - mxEz(mxSeg(p, .02, .09));
   if (mxCap) mxCap.style.opacity = mxEz(mxSeg(p, .42, .52));
   if (mxHead) mxHead.classList.toggle("capmode", p > .45);
-  if (mxStage) mxStage.classList.toggle("tight", p > .45);
+  if (mxStage) mxStage.style.translate = "0 " + (-46 * mxEz(mxSeg(p, .40, .50))).toFixed(2) + "px";
   const f1 = 1 - mxEz(mxSeg(p, .09, .27));
   for (const el of mxT1) el.style.opacity = f1;
   const lift = Math.sin(Math.PI * mxSeg(p, .17, .31));
@@ -122,7 +122,8 @@ function mxUpdate() {
   if (!desktop.matches || motion.matches) { mxRender(1); return; }
   const r = mxWrap.getBoundingClientRect();
   const total = mxWrap.offsetHeight - window.innerHeight;
-  mxRender(Math.min(1, Math.max(0, -r.top / (total || 1))));
+  // 进度重映射：动画在 .86 完成，尾部死区从 28vh 缩到 14vh（缩短 1/2）
+  mxRender(Math.min(1, Math.max(0, -r.top / (total || 1)) * 0.925));
 }
 
 function mxQueue() {

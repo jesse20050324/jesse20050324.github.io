@@ -266,8 +266,7 @@ figcaption { color: var(--muted); font-size: .78rem; line-height: 1.55; }
   padding-top: clamp(6px, 1.5vh, 20px); overflow: hidden;
 }
 .mx-wrap.static .mx-sticky { position: static; height: auto; padding-block: 6px; }
-.mx-stage { position: relative; width: 760px; height: 388px; transform-origin: top center; flex: 0 0 auto; transition: translate .5s cubic-bezier(.3,.6,.3,1); }
-.mx-stage.tight { translate: 0 -46px; }
+.mx-stage { position: relative; width: 760px; height: 388px; transform-origin: top center; flex: 0 0 auto; }
 .mx-head { display: grid; width: min(760px, 92%); margin-bottom: 12px; }
 .mx-lines, .mx-cap { grid-area: 1 / 1; }
 .mx-line { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--ink); line-height: 1.75; }
@@ -282,7 +281,7 @@ figcaption { color: var(--muted); font-size: .78rem; line-height: 1.55; }
 }
 .t1f, .t2h { color: var(--ink); font-weight: 700; font-size: .84rem; }
 .t1f { opacity: 0; }
-.mx-chip { border-color: var(--warm); background: var(--thinking); color: var(--ink); font-size: .95rem; }
+.mx-chip { border-color: var(--warm); background: var(--thinking); color: var(--ink); font-size: .95rem; transition: font-size .2s ease, background-color .2s ease, border-color .2s ease; }
 .mx-chip.landed { border-color: var(--border); color: var(--ink); font-weight: 700; font-size: .84rem; }
 
 /* ---------- 概念示意图 ---------- */
