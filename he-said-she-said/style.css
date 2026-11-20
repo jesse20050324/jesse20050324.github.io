@@ -165,12 +165,14 @@ h1 { font: 700 clamp(3.9rem, 7.4vw, 7.8rem)/.99 var(--mono); letter-spacing: -.0
 .figure-band.right > .band-copy { order: 2; }
 .figure-band.right > .shot { order: 1; }
 .figure-band.solo { display: flex; justify-content: center; }
-/* 上文字下通栏图：给宽扁对比图用，读得清细节 */
+/* 上文字下通栏图：图文同宽、整体居中，避免文字右边缘与图右边缘错开一大截 */
 .figure-band.stack { grid-template-columns: minmax(0, 1fr); align-items: start; }
-.figure-band.stack > .band-copy { max-width: 46em; }
-.figure-band.stack > .shot { justify-self: stretch; }
+.figure-band.stack > .band-copy { max-width: 790px; width: 100%; margin-inline: auto; }
+.figure-band.stack > .shot { max-width: 790px; width: 100%; margin-inline: auto; }
 .figure-band.stack > .shot > a { width: 100%; }
 .figure-band.stack .shot img { width: 100%; }
+.figure-band.stack .shot-pair { display: grid; gap: 20px; }
+.figure-band.stack .shot-pair a { width: 100%; }
 .figure-band.stack > .band-glyph { left: 10px; bottom: 6px; font-size: clamp(2rem, 3.2vw, 2.7rem); opacity: .16; }
 .figure-band .shot { max-width: min(100%, 860px); }
 .band-glyph {
